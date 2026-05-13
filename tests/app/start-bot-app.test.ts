@@ -17,6 +17,7 @@ const mocked = vi.hoisted(() => ({
   loggerInfoMock: vi.fn(),
   loggerWarnMock: vi.fn(),
   loggerDebugMock: vi.fn(),
+  loggerErrorMock: vi.fn(),
   initializeLoggerMock: vi.fn(),
   getLogFilePathMock: vi.fn(),
   config: {
@@ -89,6 +90,7 @@ vi.mock("../../src/utils/logger.js", () => ({
     debug: mocked.loggerDebugMock,
     info: mocked.loggerInfoMock,
     warn: mocked.loggerWarnMock,
+    error: mocked.loggerErrorMock,
   },
 }));
 
@@ -105,6 +107,12 @@ function createBot() {
     }),
     stop: vi.fn(),
   };
+}
+
+async function flushBackgroundTasks(): Promise<void> {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
 }
 
 describe("app/start-bot-app", () => {
@@ -125,6 +133,7 @@ describe("app/start-bot-app", () => {
     mocked.loggerInfoMock.mockReset();
     mocked.loggerWarnMock.mockReset();
     mocked.loggerDebugMock.mockReset();
+    mocked.loggerErrorMock.mockReset();
     mocked.initializeLoggerMock.mockReset();
     mocked.getLogFilePathMock.mockReset();
 
@@ -141,6 +150,7 @@ describe("app/start-bot-app", () => {
 
   it("registers ready refresh and performs startup health notification", async () => {
     await startBotApp();
+    await flushBackgroundTasks();
 
     expect(mocked.registerOpenCodeReadyRefreshHandlerMock).toHaveBeenCalledTimes(1);
     expect(mocked.notifyOpencodeReadyIfHealthyMock).toHaveBeenCalledWith("startup");
@@ -150,7 +160,28 @@ describe("app/start-bot-app", () => {
     mocked.autoRestartStartMock.mockResolvedValue(true);
 
     await startBotApp();
+    await flushBackgroundTasks();
 
+    expect(mocked.notifyOpencodeReadyIfHealthyMock).toHaveBeenCalledWith("startup");
+  });
+
+  it("starts Telegram polling without waiting for OpenCode startup checks", async () => {
+    let resolveAutoRestart: (value: boolean) => void = () => undefined;
+    mocked.autoRestartStartMock.mockReturnValue(
+      new Promise<boolean>((resolve) => {
+        resolveAutoRestart = resolve;
+      }),
+    );
+    const bot = createBot();
+    mocked.createBotMock.mockReturnValue(bot);
+
+    await startBotApp();
+
+    expect(bot.start).toHaveBeenCalledTimes(1);
+    expect(mocked.notifyOpencodeReadyIfHealthyMock).not.toHaveBeenCalled();
+
+    resolveAutoRestart(false);
+    await flushBackgroundTasks();
     expect(mocked.notifyOpencodeReadyIfHealthyMock).toHaveBeenCalledWith("startup");
   });
 });

@@ -16,6 +16,7 @@ import { getRuntimePaths } from "../runtime/paths.js";
 import { clearServiceStateFile } from "../service/manager.js";
 import { getServiceStateFilePathFromEnv, isServiceChildProcess } from "../service/runtime.js";
 import { getLogFilePath, initializeLogger, logger } from "../utils/logger.js";
+import { safeBackgroundTask } from "../utils/safe-background-task.js";
 
 const SHUTDOWN_TIMEOUT_MS = 5000;
 
@@ -53,8 +54,13 @@ export async function startBotApp(): Promise<void> {
   registerOpenCodeReadyRefreshHandler();
   const bot = createBot();
   await scheduledTaskRuntime.initialize(bot);
-  await opencodeAutoRestartService.start();
-  await notifyOpencodeReadyIfHealthy("startup");
+  safeBackgroundTask({
+    taskName: "app.opencodeStartup",
+    task: async () => {
+      await opencodeAutoRestartService.start();
+      await notifyOpencodeReadyIfHealthy("startup");
+    },
+  });
 
   let shutdownStarted = false;
   let serviceStateCleared = false;

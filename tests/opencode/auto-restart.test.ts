@@ -160,6 +160,29 @@ describe("opencode/auto-restart", () => {
     service.stop();
   });
 
+  it("treats a stuck startup health-check as unavailable", async () => {
+    mocked.config.opencode.autoRestartEnabled = true;
+    const childProcess = createChildProcess(456);
+    mocked.startLocalOpencodeServerMock.mockReturnValue(childProcess);
+    mocked.healthMock
+      .mockReturnValueOnce(new Promise(() => undefined))
+      .mockResolvedValueOnce(healthyResponse());
+    const service = new OpencodeAutoRestartService();
+
+    const startPromise = service.start();
+    await vi.advanceTimersByTimeAsync(3000);
+    await startPromise;
+
+    expect(mocked.loggerWarnMock).toHaveBeenCalledWith(
+      "[OpenCodeAutoRestart] Health-check timed out after 3000ms",
+    );
+    expect(mocked.startLocalOpencodeServerMock).toHaveBeenCalledTimes(1);
+    expect(mocked.notifyUnavailableMock).toHaveBeenCalledWith("auto_restart_startup");
+    expect(mocked.notifyReadyMock).toHaveBeenCalledWith("auto_restart_startup");
+
+    service.stop();
+  });
+
   it("does not refresh cache on every healthy interval", async () => {
     mocked.config.opencode.autoRestartEnabled = true;
     mocked.config.opencode.monitorIntervalSec = 300;
@@ -215,6 +238,7 @@ describe("opencode/auto-restart", () => {
 
   it("does not run overlapping checks", async () => {
     mocked.config.opencode.autoRestartEnabled = true;
+    mocked.config.opencode.monitorIntervalSec = 1;
     mocked.healthMock.mockResolvedValueOnce(healthyResponse());
     const service = new OpencodeAutoRestartService();
     await service.start();
@@ -225,11 +249,14 @@ describe("opencode/auto-restart", () => {
     });
     mocked.healthMock.mockImplementationOnce(() => pendingHealth);
 
-    await vi.advanceTimersByTimeAsync(300_000);
-    await vi.advanceTimersByTimeAsync(300_000);
+    await vi.advanceTimersByTimeAsync(1_000);
+    await vi.advanceTimersByTimeAsync(1_000);
+
+    expect(mocked.healthMock).toHaveBeenCalledTimes(2);
 
     mocked.healthMock.mockResolvedValueOnce(healthyResponse());
     resolveHealth(unhealthyResponse());
+    await vi.advanceTimersByTimeAsync(0);
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
