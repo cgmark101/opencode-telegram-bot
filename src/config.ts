@@ -157,7 +157,7 @@ export const config = {
       "SCHEDULED_TASK_EXECUTION_TIMEOUT_MINUTES",
       120,
     ),
-    responseStreamThrottleMs: getOptionalPositiveIntEnvVar("RESPONSE_STREAM_THROTTLE_MS", 500),
+    responseStreamThrottleMs: getOptionalPositiveIntEnvVar("RESPONSE_STREAM_THROTTLE_MS", 1000),
     bashToolDisplayMaxLength: getOptionalPositiveIntEnvVar("BASH_TOOL_DISPLAY_MAX_LENGTH", 128),
     locale: getOptionalLocaleEnvVar("BOT_LOCALE", "en"),
     hideThinkingMessages: getOptionalBooleanEnvVar("HIDE_THINKING_MESSAGES", false),
