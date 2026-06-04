@@ -1,14 +1,13 @@
-import { en, type I18nDictionary } from "./en.js";
+import type { I18nDictionary } from "./en.js";
 
 /**
  * Arabic localization for OpenCode Telegram Bot.
  *
  * Keep upstream emoji and technical terms where they help recognition.
  * Prefer natural Arabic wording over literal translation.
- * English values are inherited as a safe fallback for newly introduced keys.
+ * Keep this dictionary complete to avoid falling back to another locale.
  */
 export const ar: I18nDictionary = {
-  ...en,
   "cmd.description.status": "عرض حالة الخادم والجلسة",
   "cmd.description.new": "بدء جلسة جديدة",
   "cmd.description.stop": "إيقاف المهمة الحالية",
@@ -170,6 +169,69 @@ export const ar: I18nDictionary = {
   "messages.fork_success": "🔀 تم إنشاء جلسة متفرعة بدءًا من الرسالة التالية:\n\n{text}",
   "messages.fork_error": "❌ تعذر إنشاء جلسة متفرعة. حاول مرة أخرى.",
 
+  "attach.project_not_selected": "🏗 لم تحدد مشروعًا بعد.\n\nاختر مشروعًا أولًا باستخدام /projects.",
+  "attach.session_not_selected": "💬 لم تحدد جلسة بعد.\n\nاختر جلسة أولًا باستخدام /sessions.",
+  "attach.session_project_mismatch":
+    "⚠️ الجلسة المحددة لا تطابق المشروع الحالي. اختر الجلسة مجددًا باستخدام /sessions.",
+  "attach.connected": "✅ تم الاتصال بالجلسة: {title}",
+  "attach.already_connected": "ℹ️ أنت متصل بالفعل بالجلسة: {title}",
+  "attach.status.idle_message": "الحالة: خاملة. بانتظار أحداث جديدة.",
+  "attach.status.busy_message": "الحالة: مشغولة. الطلبات الجديدة محظورة مؤقتًا.",
+  "attach.restored_question": "تمت استعادة سؤال معلق لهذه الجلسة.",
+  "attach.restored_permissions": "تمت استعادة طلبات الصلاحيات المعلقة: {count}.",
+  "attach.disconnect_hint": "لقطع الاتصال، انتقل إلى جلسة أو مشروع آخر.",
+  "attach.error": "🔴 تعذر الاتصال بالجلسة الحالية.",
+
+  "detach.project_not_selected": "🏗 لم تحدد مشروعًا بعد.\n\nاختر مشروعًا أولًا باستخدام /projects.",
+  "detach.no_active_session": "ℹ️ البوت غير متصل بأي جلسة بالفعل.",
+  "detach.success":
+    "✅ تم قطع الاتصال بالجلسة: {title}\n\nلم يتم إيقاف جلسة OpenCode. إذا كانت لا تزال تعمل، فستستمر بشكل منفصل. للتحقق منها لاحقًا، اخترها مجددًا باستخدام /sessions.",
+  "detach.error": "🔴 تعذر قطع الاتصال بالجلسة الحالية.",
+
+  "new.project_not_selected": "🏗 لم تحدد مشروعًا بعد.\n\nاختر مشروعًا أولًا باستخدام /projects.",
+  "new.created": "✅ تم إنشاء جلسة جديدة: {title}",
+  "new.create_error": "🔴 خادم OpenCode غير متاح أو حدث خطأ أثناء إنشاء الجلسة.",
+
+  "stop.no_active_session":
+    "🛑 لم يتم تشغيل الوكيل\n\nأنشئ جلسة باستخدام /new أو اختر جلسة باستخدام /sessions.",
+  "stop.in_progress":
+    "🛑 تم إيقاف تدفق الأحداث، جارٍ إرسال إشارة الإيقاف...\n\nبانتظار توقف الوكيل.",
+  "stop.warn_unconfirmed":
+    "⚠️ تم إيقاف تدفق الأحداث، لكن الخادم لم يؤكد الإيقاف.\n\nتحقق من /status ثم أعد محاولة /abort بعد بضع ثوانٍ.",
+  "stop.warn_maybe_finished": "⚠️ تم إيقاف تدفق الأحداث، لكن الوكيل ربما كان قد انتهى بالفعل.",
+  "stop.success": "✅ تم إيقاف إجراء الوكيل. لن تُرسل أي رسائل أخرى من هذا التشغيل.",
+  "stop.warn_still_busy":
+    "⚠️ تم إرسال الإشارة، لكن الوكيل لا يزال مشغولًا.\n\nتدفق الأحداث معطّل بالفعل، لذلك لن تُرسل رسائل وسيطة.",
+  "stop.warn_timeout":
+    "⚠️ انتهت مهلة طلب الإيقاف.\n\nتدفق الأحداث معطّل بالفعل، أعد محاولة /abort بعد بضع ثوانٍ.",
+  "stop.warn_local_only": "⚠️ تم إيقاف تدفق الأحداث محليًا، لكن فشل الإيقاف على الخادم.",
+  "stop.error": "🔴 تعذر إيقاف الإجراء.\n\nتم إيقاف تدفق الأحداث، حاول /abort مرة أخرى.",
+
+  "opencode_start.already_running_managed":
+    "⚠️ خادم OpenCode يعمل بالفعل\n\nPID: {pid}\nمدة التشغيل: {seconds} ثانية",
+  "opencode_start.already_running_external":
+    "✅ خادم OpenCode يعمل بالفعل كعملية خارجية\n\nالإصدار: {version}\n\nلم يتم تشغيل هذا الخادم بواسطة البوت، لذلك لا يمكن إيقافه باستخدام /opencode-stop.",
+  "opencode_start.already_running": "✅ خادم OpenCode يعمل بالفعل\n\nالإصدار: {version}",
+  "opencode_start.remote_configured": "⚠️ يعمل /opencode_start فقط مع خادم OpenCode محلي.",
+  "opencode_start.starting": "🔄 جارٍ تشغيل خادم OpenCode...",
+  "opencode_start.start_error":
+    "🔴 تعذر تشغيل خادم OpenCode\n\nالخطأ: {error}\n\nتأكد من تثبيت OpenCode CLI وأنه متاح في PATH:\nopencode --version\nnpm install -g @opencode-ai/cli",
+  "opencode_start.started_not_ready":
+    "⚠️ تم تشغيل خادم OpenCode، لكنه لا يستجيب\n\nPID: {pid}\n\nقد لا يزال الخادم قيد التشغيل. جرّب /status بعد بضع ثوانٍ.",
+  "opencode_start.success": "✅ تم تشغيل خادم OpenCode بنجاح\n\nPID: {pid}\nالإصدار: {version}",
+  "opencode_start.error": "🔴 حدث خطأ أثناء تشغيل الخادم.\n\nراجع سجلات التطبيق للتفاصيل.",
+  "opencode_stop.external_running":
+    "⚠️ خادم OpenCode يعمل كعملية خارجية\n\nلم يتم تشغيل هذا الخادم عبر /opencode-start.\nأوقفه يدويًا أو استخدم /status للتحقق من الحالة.",
+  "opencode_stop.remote_configured": "⚠️ يعمل /opencode_stop فقط مع خادم OpenCode محلي.",
+  "opencode_stop.not_running": "⚠️ خادم OpenCode لا يعمل",
+  "opencode_stop.pid_not_found":
+    "⚠️ يستجيب خادم OpenCode على المنفذ {port}، لكن لم يتم العثور على عملية محلية لإيقافها.",
+  "opencode_stop.stopping": "🛑 جارٍ إيقاف خادم OpenCode...\n\nPID: {pid}",
+  "opencode_stop.stop_error": "🔴 تعذر إيقاف خادم OpenCode\n\nالخطأ: {error}",
+  "opencode_stop.still_running": "لا يزال الخادم يستجيب بعد طلب الإيقاف.",
+  "opencode_stop.success": "✅ تم إيقاف خادم OpenCode بنجاح",
+  "opencode_stop.error": "🔴 حدث خطأ أثناء إيقاف الخادم.\n\nراجع سجلات التطبيق للتفاصيل.",
+
   "agent.changed_callback": "تم تغيير الوكيل إلى: {name}",
   "agent.changed_message": "✅ تم تغيير الوكيل إلى: {name}",
   "agent.change_error_callback": "تعذر تغيير الوكيل",
@@ -187,12 +249,33 @@ export const ar: I18nDictionary = {
   "model.menu.favorites_empty": "— لا توجد نماذج في المفضلة.",
   "model.menu.recent_title": "🕘 المستخدمة مؤخرًا",
   "model.menu.recent_empty": "— لا توجد نماذج مستخدمة مؤخرًا.",
+  "model.menu.favorites_hint": "ℹ️ أضف النماذج إلى المفضلة في OpenCode CLI لإبقائها أعلى القائمة.",
+  "model.menu.error": "🔴 تعذر تحميل قائمة النماذج",
   "model.search.button": "🔍 بحث",
   "model.search.prompt": "🔍 اكتب اسم النموذج للبحث عنه:",
   "model.search.results_title": "نتائج البحث عن \"{query}\":",
   "model.search.no_results": "لم يتم العثور على نماذج مطابقة لـ \"{query}\"",
   "model.search.search_again": "↩ البحث مرة أخرى",
   "model.search.error": "تعذر البحث عن النماذج",
+
+  "variant.model_not_selected_callback": "خطأ: لم يتم تحديد النموذج",
+  "variant.changed_callback": "تم تغيير الخيار إلى: {name}",
+  "variant.changed_message": "✅ تم تغيير الخيار إلى: {name}",
+  "variant.change_error_callback": "تعذر تغيير الخيار",
+  "variant.select_model_first": "⚠️ اختر نموذجًا أولًا",
+  "variant.menu.empty": "⚠️ لا توجد خيارات متاحة",
+  "variant.menu.current": "الخيار الحالي: {name}\n\nاختر خيارًا:",
+  "variant.menu.error": "🔴 تعذر تحميل قائمة الخيارات",
+
+  "context.button.confirm": "✅ نعم، اضغط السياق",
+  "context.no_active_session": "⚠️ لا توجد جلسة نشطة. أنشئ جلسة باستخدام /new",
+  "context.confirm_text":
+    '📊 ضغط السياق للجلسة "{title}"\n\nسيؤدي ذلك إلى تقليل استخدام السياق عبر إزالة الرسائل القديمة من السجل. لن تتم مقاطعة المهمة الحالية.\n\nهل تريد المتابعة؟',
+  "context.callback_session_not_found": "لم يتم العثور على الجلسة",
+  "context.callback_compacting": "جارٍ ضغط السياق...",
+  "context.progress": "⏳ جارٍ ضغط السياق...",
+  "context.error": "❌ فشل ضغط السياق",
+  "context.success": "✅ تم ضغط السياق بنجاح",
 
   "permission.inactive_callback": "انتهت صلاحية طلب الصلاحية",
   "permission.processing_error_callback": "تعذر تنفيذ الطلب",
@@ -201,6 +284,8 @@ export const ar: I18nDictionary = {
   "permission.reply.always": "تم السماح دائمًا",
   "permission.reply.reject": "تم الرفض",
   "permission.send_reply_error": "❌ تعذر إرسال رد الصلاحية",
+  "permission.blocked.expected_reply": "⚠️ أجب عن طلب الصلاحية أولًا باستخدام الأزرار أعلاه.",
+  "permission.blocked.command_not_allowed": "⚠️ لا يمكن استخدام هذا الأمر قبل الرد على طلب الصلاحية.",
   "permission.header": "{emoji} طلب صلاحية: {name}\n\n",
   "permission.button.allow": "✅ سماح لمرة واحدة",
   "permission.button.always": "🔓 سماح دائم",
@@ -215,13 +300,67 @@ export const ar: I18nDictionary = {
   "permission.name.grep": "البحث داخل الملفات",
   "permission.name.list": "عرض محتويات مجلد",
   "permission.name.task": "تشغيل مهمة فرعية",
+  "permission.name.lsp": "LSP",
   "permission.name.external_directory": "الوصول إلى مجلد خارجي",
+
+  "question.inactive_callback": "انتهت صلاحية الاستبيان",
+  "question.processing_error_callback": "تعذر تنفيذ الطلب",
+  "question.select_one_required_callback": "اختر خيارًا واحدًا على الأقل",
+  "question.enter_custom_callback": "أرسل إجابتك المخصصة كرسالة",
+  "question.cancelled": "❌ تم إلغاء الاستبيان",
+  "question.answer_already_received": "تم استلام الإجابة بالفعل، يرجى الانتظار...",
+  "question.completed_no_answers": "✅ اكتمل الاستبيان (بدون إجابات)",
+  "question.no_active_project": "❌ لا يوجد مشروع نشط",
+  "question.no_active_request": "❌ لا يوجد طلب نشط",
+  "question.send_answers_error": "❌ تعذر إرسال الإجابات إلى الوكيل",
+  "question.multi_hint": "\n(يمكنك اختيار عدة خيارات)",
+  "question.button.submit": "✅ تم",
+  "question.button.custom": "🔤 إجابة مخصصة",
+  "question.button.cancel": "❌ إلغاء",
+  "question.use_custom_button_first":
+    '⚠️ لإرسال نص، اضغط أولًا على زر "إجابة مخصصة" للسؤال الحالي.',
+  "question.summary.title": "✅ اكتمل الاستبيان!\n\n",
+  "question.summary.question": "السؤال {index}:\n{question}\n\n",
+  "question.summary.answer": "الإجابة:\n{answer}\n\n",
 
   "keyboard.agent_mode": "{emoji} الوكيل: {name}",
   "keyboard.context": "📊 {used} / {limit} ({percent}%)",
   "keyboard.context_empty": "📊 0",
+  "keyboard.variant": "💭 {name}",
   "keyboard.variant_default": "💡 الإعداد الافتراضي",
   "keyboard.updated": "⌨️ تم تحديث لوحة التحكم",
+
+  "pinned.default_session_title": "جلسة جديدة",
+  "pinned.unknown": "غير معروف",
+  "pinned.line.project": "المشروع: {project}",
+  "pinned.line.worktree": "نسخة العمل: {worktree}",
+  "pinned.line.model": "النموذج: {model}",
+  "pinned.line.attach": "التتبع: {status}",
+  "pinned.attach.status.idle": "نشط، خامل",
+  "pinned.attach.status.busy": "نشط، مشغول",
+  "pinned.line.context": "السياق: {used} / {limit} ({percent}%)",
+  "pinned.line.cost": "التكلفة: تم إنفاق {cost}",
+  "subagent.header": "وكيل فرعي {agent}: {description}",
+  "subagent.line.status": "الحالة: {status}",
+  "subagent.line.task": "المهمة: {task}",
+  "subagent.line.agent": "الوكيل: {agent}",
+  "subagent.working": "جارٍ العمل...",
+  "subagent.working_with_details": "جارٍ العمل: {details}",
+  "subagent.completed": "مكتملة",
+  "subagent.failed": "فشلت المهمة",
+  "subagent.status.pending": "قيد الانتظار",
+  "subagent.status.running": "قيد التشغيل",
+  "subagent.status.completed": "مكتملة",
+  "subagent.status.error": "خطأ",
+  "pinned.files.title": "الملفات ({count}):",
+  "pinned.files.item": "  {path}{diff}",
+  "pinned.files.more": "  ... و{count} أخرى",
+
+  "tool.todo.overflow": "*({count} مهام أخرى)*",
+  "tool.file_header.write":
+    "كتابة ملف/مسار: {path}\n============================================================\n\n",
+  "tool.file_header.edit":
+    "تعديل ملف/مسار: {path}\n============================================================\n\n",
 
   "runtime.wizard.ask_token": "أدخل رمز بوت Telegram الذي حصلت عليه من @BotFather.\n> ",
   "runtime.wizard.ask_language": "اختر لغة الواجهة.\nأدخل رقم اللغة من القائمة أو رمز اللغة.\nاضغط Enter لاستخدام اللغة الافتراضية: {defaultLocale}\n{options}\n> ",
@@ -232,27 +371,76 @@ export const ar: I18nDictionary = {
   "runtime.wizard.ask_user_id": "أدخل معرّف حسابك في Telegram. يمكنك الحصول عليه من @userinfobot.\n> ",
   "runtime.wizard.user_id_invalid": "أدخل رقمًا صحيحًا موجبًا أكبر من صفر.\n",
   "runtime.wizard.ask_api_url": "أدخل رابط OpenCode API، أو اضغط Enter لاستخدام الرابط الافتراضي: {defaultUrl}\n> ",
+  "runtime.wizard.ask_server_username":
+    "أدخل اسم مستخدم خادم OpenCode (اختياري).\nاضغط Enter لاستخدام القيمة الافتراضية: {defaultUsername}\n> ",
+  "runtime.wizard.ask_server_password":
+    "أدخل كلمة مرور خادم OpenCode (اختياري).\nاضغط Enter لتركها فارغة.\n> ",
+  "runtime.wizard.api_url_invalid": "أدخل رابطًا صالحًا (http/https) أو اضغط Enter لاستخدام الافتراضي.\n",
   "runtime.wizard.start": "إعداد OpenCode Telegram Bot.\n",
   "runtime.wizard.saved": "تم حفظ الإعدادات في:\n- {envPath}\n- {settingsPath}\n",
+  "runtime.wizard.not_configured_starting": "لم يتم إعداد التطبيق بعد. جارٍ تشغيل معالج الإعداد...\n",
+  "runtime.wizard.tty_required":
+    "يتطلب معالج الإعداد التفاعلي طرفية TTY. شغّل `opencode-telegram config` في shell تفاعلية.",
 
+  "rename.no_session": "⚠️ لا توجد جلسة نشطة. أنشئ جلسة أو اختر واحدة أولًا.",
+  "rename.prompt": "📝 أدخل عنوانًا جديدًا للجلسة:\n\nالحالي: {title}",
+  "rename.empty_title": "⚠️ لا يمكن أن يكون العنوان فارغًا.",
+  "rename.success": "✅ تمت إعادة تسمية الجلسة إلى: {title}",
+  "rename.error": "🔴 تعذر تغيير اسم الجلسة.",
+  "rename.cancelled": "❌ تم إلغاء تغيير الاسم.",
+  "rename.inactive_callback": "انتهت صلاحية طلب تغيير الاسم",
+  "rename.inactive": "⚠️ طلب تغيير الاسم غير نشط. شغّل /rename مرة أخرى.",
+  "rename.blocked.expected_name":
+    "⚠️ أدخل اسم الجلسة الجديد كنص أو اضغط إلغاء في رسالة تغيير الاسم.",
+  "rename.blocked.command_not_allowed":
+    "⚠️ لا يمكن استخدام هذا الأمر أثناء انتظار اسم جديد للجلسة.",
+  "rename.button.cancel": "❌ إلغاء",
+
+  "task.prompt.schedule":
+    "⏰ أرسل موعد المهمة بلغة طبيعية.\n\nأمثلة:\n- كل 5 دقائق\n- كل يوم الساعة 17:00\n- غدًا الساعة 12:00",
+  "task.schedule_empty": "⚠️ لا يمكن أن يكون الموعد فارغًا.",
   "task.parse.in_progress": "⏳ جارٍ فهم الموعد...",
   "task.parse_error": "🔴 تعذر فهم الموعد.\n\n{message}\n\nأرسله مرة أخرى بصيغة أوضح.",
+  "task.schedule_preview":
+    "✅ تم فهم الموعد\n\nكما فهمته: {summary}\n{cronLine}المنطقة الزمنية: {timezone}\nالنوع: {kind}\nالتشغيل التالي: {nextRunAt}",
+  "task.schedule_preview.cron": "Cron: {cron}",
   "task.prompt.body": "📝 أرسل الآن وصف المهمة التي تريد تشغيلها تلقائيًا.",
   "task.prompt_empty": "⚠️ لا يمكن أن يكون وصف المهمة فارغًا.",
+  "task.created":
+    "✅ تم إنشاء المهمة المجدولة\n\nالمهمة: {description}\nالمشروع: {project}\nالنموذج: {model}\nالموعد: {schedule}\n{cronLine}التشغيل التالي: {nextRunAt}",
+  "task.created.cron": "Cron: {cron}",
   "task.button.retry_schedule": "🔁 تعديل الموعد",
   "task.button.cancel": "❌ إلغاء",
+  "task.retry_schedule_callback": "جارٍ إعادة إدخال الموعد...",
+  "task.cancel_callback": "جارٍ الإلغاء...",
   "task.cancelled": "❌ تم إلغاء إنشاء المهمة المجدولة.",
+  "task.inactive_callback": "انتهت صلاحية مسار إنشاء المهمة المجدولة",
+  "task.inactive": "⚠️ إنشاء المهمة المجدولة غير نشط. شغّل /task مرة أخرى.",
+  "task.blocked.expected_input":
+    "⚠️ أكمل إعداد المهمة المجدولة الحالية أولًا بإرسال نص أو استخدام الزر في رسالة الموعد.",
+  "task.blocked.command_not_allowed":
+    "⚠️ لا يمكن استخدام هذا الأمر أثناء إنشاء مهمة مجدولة.",
   "task.limit_reached": "⚠️ وصلت إلى الحد الأقصى للمهام ({limit}). احذف مهمة مجدولة أولًا.",
+  "task.schedule_too_frequent":
+    "الموعد المتكرر متقارب جدًا. أقل فترة مسموحة هي مرة واحدة كل 5 دقائق.",
   "task.kind.cron": "متكررة",
   "task.kind.once": "لمرة واحدة",
   "task.run.success": "⏰ اكتملت المهمة المجدولة: {description}",
   "task.run.error": "🔴 فشلت المهمة المجدولة: {description}\n\nالخطأ: {error}",
+  "task.run.error.interactive_question":
+    "طلبت المهمة المجدولة سؤالًا تفاعليًا ولا يمكنها المتابعة دون تدخل المستخدم.",
+  "task.run.error.interactive_permission":
+    "طلبت المهمة المجدولة صلاحية تفاعلية ولا يمكنها المتابعة دون تدخل المستخدم.",
   "tasklist.empty": "📭 لا توجد مهام مجدولة حتى الآن.",
   "tasklist.select": "اختر مهمة مجدولة:",
+  "tasklist.details":
+    "⏰ مهمة مجدولة\n\nالمهمة: {prompt}\nالمشروع: {project}\nالموعد: {schedule}\n{cronLine}المنطقة الزمنية: {timezone}\nالتشغيل التالي: {nextRunAt}\nآخر تشغيل: {lastRunAt}\nعدد مرات التشغيل: {runCount}",
+  "tasklist.details.cron": "Cron: {cron}",
   "tasklist.button.delete": "🗑 حذف",
   "tasklist.button.cancel": "❌ إلغاء",
   "tasklist.deleted_callback": "تم الحذف",
   "tasklist.cancelled_callback": "تم الإلغاء",
+  "tasklist.inactive_callback": "انتهت صلاحية قائمة المهام المجدولة",
   "tasklist.load_error": "🔴 تعذر تحميل المهام المجدولة.",
 
   "commands.select": "اختر أمرًا من OpenCode:",
@@ -261,12 +449,27 @@ export const ar: I18nDictionary = {
   "commands.no_description": "لا يوجد وصف",
   "commands.button.execute": "✅ تنفيذ",
   "commands.button.cancel": "❌ إلغاء",
+  "commands.confirm":
+    "أكد تنفيذ الأمر {command}. لتنفيذه مع وسيطات، أرسل الوسيطات كرسالة.",
   "commands.inactive_callback": "انتهت صلاحية قائمة الأوامر",
   "commands.cancelled_callback": "تم الإلغاء",
   "commands.execute_callback": "جارٍ تنفيذ الأمر...",
   "commands.executing_prefix": "⚡ جارٍ تنفيذ الأمر:",
+  "commands.arguments_empty": "⚠️ لا يمكن أن تكون الوسيطات فارغة. أرسل نصًا أو اضغط تنفيذ.",
+  "commands.execute_error": "🔴 تعذر تنفيذ أمر OpenCode.",
+  "commands.select_page": "اختر أمرًا من OpenCode (الصفحة {page}):",
   "commands.button.prev_page": "⬅️ السابق",
   "commands.button.next_page": "التالي ➡️",
+  "commands.page_empty_callback": "لا توجد أوامر في هذه الصفحة",
+  "commands.page_load_error_callback": "تعذر تحميل هذه الصفحة. حاول مرة أخرى.",
+  "commands.download.no_roots": "لم يتم إعداد أي مسارات رئيسية مسموح بها للاستعراض.",
+  "commands.download.downloading": "جارٍ تنزيل الملف...",
+  "commands.download.not_found": "لم يتم العثور على الملف",
+  "commands.download.not_file": "المسار ليس ملفًا",
+  "commands.download.file_too_large": "الملف كبير جدًا",
+  "commands.download.size": "الحجم",
+  "commands.download.modified": "آخر تعديل",
+  "commands.download.error": "تعذر تنزيل الملف.",
 
   "skills.select": "اختر مهارة من OpenCode:",
   "skills.empty": "📭 لا توجد مهارات متاحة لهذا المشروع.",
@@ -274,12 +477,18 @@ export const ar: I18nDictionary = {
   "skills.no_description": "لا يوجد وصف",
   "skills.button.execute": "✅ تشغيل",
   "skills.button.cancel": "❌ إلغاء",
+  "skills.confirm":
+    "أكد تشغيل المهارة {skill}. لتشغيلها مع وسيطات، أرسل الوسيطات كرسالة.",
   "skills.inactive_callback": "انتهت صلاحية قائمة المهارات",
   "skills.cancelled_callback": "تم الإلغاء",
   "skills.execute_callback": "جارٍ تشغيل المهارة...",
   "skills.executing_prefix": "⚡ جارٍ تشغيل المهارة:",
+  "skills.arguments_empty": "⚠️ لا يمكن أن تكون الوسيطات فارغة. أرسل نصًا أو اضغط تشغيل.",
+  "skills.select_page": "اختر مهارة من OpenCode (الصفحة {page}):",
   "skills.button.prev_page": "⬅️ السابق",
   "skills.button.next_page": "التالي ➡️",
+  "skills.page_empty_callback": "لا توجد مهارات في هذه الصفحة",
+  "skills.page_load_error_callback": "تعذر تحميل هذه الصفحة. حاول مرة أخرى.",
 
   "mcps.select": "خوادم MCP:",
   "mcps.empty": "📭 لم تتم إضافة أي خوادم MCP.",
@@ -300,6 +509,13 @@ export const ar: I18nDictionary = {
   "mcps.button.back": "⬅️ رجوع",
   "mcps.auth_required": "هذا الخادم يحتاج إلى تسجيل دخول، ولا يمكن تفعيله من داخل البوت.",
 
+  "legacy.models.fetch_error": "🔴 تعذر تحميل قائمة النماذج. تحقق من حالة الخادم باستخدام /status.",
+  "legacy.models.empty": "📋 لا توجد نماذج متاحة. اضبط المزوّدين في OpenCode.",
+  "legacy.models.header": "📋 النماذج المتاحة:\n\n",
+  "legacy.models.no_provider_models": "  ⚠️ لا توجد نماذج متاحة\n",
+  "legacy.models.env_hint": "💡 لاستخدام النموذج في .env:\n",
+  "legacy.models.error": "🔴 حدث خطأ أثناء تحميل قائمة النماذج.",
+
   "stt.recognizing": "🎤 جارٍ تحويل الصوت إلى نص...",
   "stt.recognized": "🎤 النص المستخرج من الرسالة الصوتية:\n{text}",
   "stt.not_configured": "🎤 ميزة تحويل الصوت إلى نص غير مهيأة بعد.\n\nاضبط STT_API_URL وSTT_API_KEY داخل ملف .env لتفعيلها.",
@@ -312,6 +528,10 @@ export const ar: I18nDictionary = {
   "worktree.not_git_repo": "🌿 لا يمكن استخدام Git worktrees مع المشروع الحالي لأنه ليس مستودع Git.",
   "worktree.empty": "📭 لا توجد نسخ عمل (Git worktrees) لهذا المستودع.",
   "worktree.fetch_error": "🔴 تعذر تحميل نسخ العمل من Git.",
+  "worktree.not_git_repo_callback": "المشروع الحالي ليس مستودع Git",
+  "worktree.page_empty_callback": "لا توجد نسخ عمل في هذه الصفحة",
+  "worktree.selection_missing_callback": "نسخة العمل المحددة لم تعد متاحة",
+  "worktree.already_selected_callback": "نسخة العمل هذه محددة بالفعل",
   "worktree.selected": "✅ تم اختيار نسخة العمل: {worktree}\n\n📋 تمت إعادة ضبط الجلسة الحالية. استخدم /sessions لاختيار جلسة أو /new للمتابعة.",
   "worktree.select_error": "🔴 تعذر اختيار نسخة العمل.",
   "open.back": "⬆️ مجلد سابق",
