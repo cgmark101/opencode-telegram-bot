@@ -1,7 +1,7 @@
 import { CommandContext, Context, InlineKeyboard } from "grammy";
 import path from "node:path";
-import { appendInlineMenuCancelButton, ensureActiveInlineMenu } from "../handlers/inline-menu.js";
-import { interactionManager } from "../../interaction/manager.js";
+import { appendInlineMenuCancelButton, ensureActiveInlineMenu } from "../core/interactions/inline-menu.js";
+import { interactionManager } from "../core/interactions/active-flow/manager.js";
 import { isForegroundBusy, replyBusyBlocked } from "../utils/busy-guard.js";
 import {
   pathToDisplayPath,

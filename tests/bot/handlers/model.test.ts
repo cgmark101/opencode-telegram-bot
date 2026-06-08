@@ -18,7 +18,7 @@ vi.mock("../../../src/model/manager.js", () => ({
   fetchCurrentModel: vi.fn(),
 }));
 
-vi.mock("../../../src/interaction/manager.js", () => ({
+vi.mock("../../../src/bot/core/interactions/active-flow/manager.js", () => ({
   interactionManager: {
     getSnapshot: mocked.interactionManagerGetSnapshotMock,
     start: mocked.interactionManagerStartMock,
@@ -27,7 +27,7 @@ vi.mock("../../../src/interaction/manager.js", () => ({
   },
 }));
 
-vi.mock("../../../src/bot/handlers/inline-menu.js", () => ({
+vi.mock("../../../src/bot/core/interactions/inline-menu.js", () => ({
   ensureActiveInlineMenu: mocked.ensureActiveInlineMenuMock,
   clearActiveInlineMenu: vi.fn(),
   replyWithInlineMenu: vi.fn(),

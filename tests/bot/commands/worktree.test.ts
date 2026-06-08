@@ -27,7 +27,7 @@ vi.mock("../../../src/git/worktree.js", () => ({
   getGitWorktreeContext: mocked.getGitWorktreeContextMock,
 }));
 
-vi.mock("../../../src/bot/handlers/inline-menu.js", () => ({
+vi.mock("../../../src/bot/core/interactions/inline-menu.js", () => ({
   appendInlineMenuCancelButton: vi.fn((keyboard: unknown) => keyboard),
   ensureActiveInlineMenu: mocked.ensureActiveInlineMenuMock,
   replyWithInlineMenu: mocked.replyWithInlineMenuMock,
@@ -51,7 +51,7 @@ vi.mock("../../../src/bot/utils/switch-project.js", () => ({
   switchToProject: mocked.switchToProjectMock,
 }));
 
-vi.mock("../../../src/interaction/cleanup.js", () => ({
+vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
   clearAllInteractionState: mocked.clearAllInteractionStateMock,
 }));
 

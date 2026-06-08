@@ -87,14 +87,14 @@ vi.mock("../../../src/summary/aggregator.js", () => ({
   },
 }));
 
-vi.mock("../../../src/interaction/manager.js", () => ({
+vi.mock("../../../src/bot/core/interactions/active-flow/manager.js", () => ({
   interactionManager: {
     clear: vi.fn(),
     getSnapshot: vi.fn(() => null),
   },
 }));
 
-vi.mock("../../../src/interaction/cleanup.js", () => ({
+vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
   clearAllInteractionState: vi.fn(),
 }));
 

@@ -1,15 +1,15 @@
 import { Context, InlineKeyboard } from "grammy";
-import { questionManager } from "../../question/manager.js";
-import { opencodeClient } from "../../opencode/client.js";
-import { getCurrentProject } from "../../settings/manager.js";
-import { getCurrentSession } from "../../session/manager.js";
-import { summaryAggregator } from "../../summary/aggregator.js";
-import { interactionManager } from "../../interaction/manager.js";
-import { logger } from "../../utils/logger.js";
-import { safeBackgroundTask } from "../../utils/safe-background-task.js";
-import { t } from "../../i18n/index.js";
-import { editRenderedBotPart, sendRenderedBotPart } from "../ui/telegram-text.js";
-import type { TelegramRenderedPart } from "../ui/render/types.js";
+import { questionManager } from "./manager.js";
+import { opencodeClient } from "../../../../opencode/client.js";
+import { getCurrentProject } from "../../../../settings/manager.js";
+import { getCurrentSession } from "../../../../session/manager.js";
+import { summaryAggregator } from "../../../../summary/aggregator.js";
+import { interactionManager } from "../active-flow/manager.js";
+import { logger } from "../../../../utils/logger.js";
+import { safeBackgroundTask } from "../../../../utils/safe-background-task.js";
+import { t } from "../../../../i18n/index.js";
+import { editRenderedBotPart, sendRenderedBotPart } from "../../../ui/telegram-text.js";
+import type { TelegramRenderedPart } from "../../../ui/render/types.js";
 import type { MessageEntity } from "grammy/types";
 
 const MAX_BUTTON_LENGTH = 60;

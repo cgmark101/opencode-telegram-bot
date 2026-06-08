@@ -50,8 +50,8 @@ import {
   handleQuestionCallback,
   showCurrentQuestion,
   handleQuestionTextAnswer,
-} from "./handlers/question.js";
-import { handlePermissionCallback, showPermissionRequest } from "./handlers/permission.js";
+} from "./core/interactions/questions/question.js";
+import { handlePermissionCallback, showPermissionRequest } from "./core/interactions/permissions/permission.js";
 import { handleAgentSelect, showAgentSelectionMenu } from "./handlers/agent.js";
 import {
   handleModelSelect,
@@ -62,10 +62,10 @@ import {
 } from "./handlers/model.js";
 import { handleVariantSelect, showVariantSelectionMenu } from "./handlers/variant.js";
 import { handleContextButtonPress, handleCompactConfirm } from "./handlers/context.js";
-import { handleInlineMenuCancel } from "./handlers/inline-menu.js";
-import { questionManager } from "../question/manager.js";
-import { interactionManager } from "../interaction/manager.js";
-import { clearAllInteractionState } from "../interaction/cleanup.js";
+import { handleInlineMenuCancel } from "./core/interactions/inline-menu.js";
+import { questionManager } from "./core/interactions/questions/manager.js";
+import { interactionManager } from "./core/interactions/active-flow/manager.js";
+import { clearAllInteractionState } from "./core/interactions/active-flow/cleanup.js";
 import { keyboardManager } from "./ui/keyboard/manager.js";
 import { stopEventListening, subscribeToEvents } from "../opencode/events.js";
 import { opencodeReadyLifecycle } from "../opencode/ready-lifecycle.js";

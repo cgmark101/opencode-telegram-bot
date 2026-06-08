@@ -2,7 +2,7 @@ import { CommandContext, Context } from "grammy";
 import { getCurrentProject } from "../../settings/manager.js";
 import { clearSession, getCurrentSession } from "../../session/manager.js";
 import { detachAttachedSession } from "../../attach/service.js";
-import { clearAllInteractionState } from "../../interaction/cleanup.js";
+import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
 import { pinnedMessageManager } from "../ui/pinned/manager.js";
 import { keyboardManager } from "../ui/keyboard/manager.js";
 import { foregroundSessionState } from "../../scheduled-task/foreground-state.js";

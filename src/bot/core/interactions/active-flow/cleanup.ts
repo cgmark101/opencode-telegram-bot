@@ -1,9 +1,9 @@
-import { permissionManager } from "../permission/manager.js";
-import { questionManager } from "../question/manager.js";
-import { renameManager } from "../rename/manager.js";
-import { taskCreationManager } from "../scheduled-task/creation-manager.js";
+import { permissionManager } from "../permissions/manager.js";
+import { questionManager } from "../questions/manager.js";
+import { renameManager } from "../../../../rename/manager.js";
+import { taskCreationManager } from "../../../../scheduled-task/creation-manager.js";
 import { interactionManager } from "./manager.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "../../../../utils/logger.js";
 
 export function clearAllInteractionState(reason: string): void {
   const questionActive = questionManager.isActive();

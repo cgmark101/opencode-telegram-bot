@@ -57,10 +57,10 @@ export async function resetSingletonState(): Promise<void> {
     { __resetSessionDirectoryCacheForTests },
     loggerModule,
   ] = await Promise.all([
-    import("../../src/question/manager.js"),
-    import("../../src/permission/manager.js"),
+    import("../../src/bot/core/interactions/questions/manager.js"),
+    import("../../src/bot/core/interactions/permissions/manager.js"),
     import("../../src/rename/manager.js"),
-    import("../../src/interaction/manager.js"),
+    import("../../src/bot/core/interactions/active-flow/manager.js"),
     import("../../src/summary/aggregator.js"),
     import("../../src/bot/ui/keyboard/manager.js"),
     import("../../src/bot/ui/pinned/manager.js"),

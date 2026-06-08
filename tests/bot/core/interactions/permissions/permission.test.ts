@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context, InlineKeyboard } from "grammy";
-import type { PermissionRequest } from "../../../src/permission/types.js";
-import { permissionManager } from "../../../src/permission/manager.js";
-import { interactionManager } from "../../../src/interaction/manager.js";
+import type { PermissionRequest } from "../../../../../src/bot/core/interactions/permissions/types.js";
+import { permissionManager } from "../../../../../src/bot/core/interactions/permissions/manager.js";
+import { interactionManager } from "../../../../../src/bot/core/interactions/active-flow/manager.js";
 import {
   showPermissionRequest,
   handlePermissionCallback,
-} from "../../../src/bot/handlers/permission.js";
-import { t } from "../../../src/i18n/index.js";
+} from "../../../../../src/bot/core/interactions/permissions/permission.js";
+import { t } from "../../../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({
   permissionReplyMock: vi.fn(),
@@ -18,7 +18,7 @@ const mocked = vi.hoisted(() => ({
   currentSession: null as { id: string; title: string; directory: string } | null,
 }));
 
-vi.mock("../../../src/opencode/client.js", () => ({
+vi.mock("../../../../../src/opencode/client.js", () => ({
   opencodeClient: {
     permission: {
       reply: mocked.permissionReplyMock,
@@ -26,15 +26,15 @@ vi.mock("../../../src/opencode/client.js", () => ({
   },
 }));
 
-vi.mock("../../../src/settings/manager.js", () => ({
+vi.mock("../../../../../src/settings/manager.js", () => ({
   getCurrentProject: vi.fn(() => mocked.currentProject),
 }));
 
-vi.mock("../../../src/session/manager.js", () => ({
+vi.mock("../../../../../src/session/manager.js", () => ({
   getCurrentSession: vi.fn(() => mocked.currentSession),
 }));
 
-vi.mock("../../../src/utils/safe-background-task.js", () => ({
+vi.mock("../../../../../src/utils/safe-background-task.js", () => ({
   safeBackgroundTask: ({
     task,
     onSuccess,
@@ -112,7 +112,7 @@ async function flushMicrotasks(): Promise<void> {
   await Promise.resolve();
 }
 
-describe("bot/handlers/permission", () => {
+describe("bot/core/interactions/permissions/permission", () => {
   beforeEach(() => {
     permissionManager.clear();
     interactionManager.clear("test_setup");

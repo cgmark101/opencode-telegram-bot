@@ -8,8 +8,8 @@ import type {
   IncomingInputType,
   InteractionState,
 } from "./types.js";
-import { foregroundSessionState } from "../scheduled-task/foreground-state.js";
-import { attachManager } from "../attach/manager.js";
+import { foregroundSessionState } from "../../../../scheduled-task/foreground-state.js";
+import { attachManager } from "../../../../attach/manager.js";
 
 function normalizeIncomingCommand(text: string): string | null {
   const trimmed = text.trim();

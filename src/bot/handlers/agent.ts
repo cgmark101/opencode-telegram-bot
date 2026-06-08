@@ -11,7 +11,7 @@ import {
   clearActiveInlineMenu,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "./inline-menu.js";
+} from "../core/interactions/inline-menu.js";
 import { t } from "../../i18n/index.js";
 
 /**

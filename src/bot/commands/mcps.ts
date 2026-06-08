@@ -1,8 +1,8 @@
 import { CommandContext, Context, InlineKeyboard } from "grammy";
 import { opencodeClient } from "../../opencode/client.js";
 import { getCurrentProject } from "../../settings/manager.js";
-import { interactionManager } from "../../interaction/manager.js";
-import type { InteractionState } from "../../interaction/types.js";
+import { interactionManager } from "../core/interactions/active-flow/manager.js";
+import type { InteractionState } from "../core/interactions/active-flow/types.js";
 import { logger } from "../../utils/logger.js";
 import { t } from "../../i18n/index.js";
 import type { McpStatus } from "@opencode-ai/sdk/v2";

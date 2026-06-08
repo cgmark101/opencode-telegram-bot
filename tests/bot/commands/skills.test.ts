@@ -8,7 +8,7 @@ import {
   parseSkillPageCallback,
   skillsCommand,
 } from "../../../src/bot/commands/skills.js";
-import { interactionManager } from "../../../src/interaction/manager.js";
+import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
 import { t } from "../../../src/i18n/index.js";
 import type { ProcessPromptDeps } from "../../../src/bot/handlers/prompt.js";
 

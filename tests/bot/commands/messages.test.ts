@@ -6,7 +6,7 @@ import {
   messagesCommand,
   parseMessagePageCallback,
 } from "../../../src/bot/commands/messages.js";
-import { interactionManager } from "../../../src/interaction/manager.js";
+import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
 import { t } from "../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({

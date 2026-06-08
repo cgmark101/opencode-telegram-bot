@@ -4,7 +4,7 @@ import type {
   StartInteractionOptions,
   TransitionInteractionOptions,
 } from "./types.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "../../../../utils/logger.js";
 
 export const DEFAULT_ALLOWED_INTERACTION_COMMANDS = ["/help", "/status", "/abort", "/detach"] as const;
 

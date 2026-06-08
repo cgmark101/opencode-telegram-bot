@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { questionManager } from "../../src/question/manager.js";
-import type { Question } from "../../src/question/types.js";
+import { questionManager } from "../../../../../src/bot/core/interactions/questions/manager.js";
+import type { Question } from "../../../../../src/bot/core/interactions/questions/types.js";
 
 const SINGLE_QUESTION: Question = {
   question: "Pick one option",

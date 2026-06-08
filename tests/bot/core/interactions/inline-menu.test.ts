@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Context, InlineKeyboard } from "grammy";
-import { interactionManager } from "../../../src/interaction/manager.js";
+import { interactionManager } from "../../../../src/bot/core/interactions/active-flow/manager.js";
 import {
   appendInlineMenuCancelButton,
   ensureActiveInlineMenu,
   handleInlineMenuCancel,
   replyWithInlineMenu,
-} from "../../../src/bot/handlers/inline-menu.js";
-import { t } from "../../../src/i18n/index.js";
+} from "../../../../src/bot/core/interactions/inline-menu.js";
+import { t } from "../../../../src/i18n/index.js";
 
 function createReplyContext(messageId: number = 1): Context {
   return {
@@ -41,7 +41,7 @@ function getCallbackData(button: unknown): string | undefined {
   return maybeButton.callback_data;
 }
 
-describe("bot/handlers/inline-menu", () => {
+describe("bot/core/interactions/inline-menu", () => {
   beforeEach(() => {
     interactionManager.clear("test_setup");
   });

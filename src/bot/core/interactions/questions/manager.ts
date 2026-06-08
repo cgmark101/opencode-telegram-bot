@@ -1,5 +1,5 @@
 import { Question, QuestionState, QuestionAnswer } from "./types.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "../../../../utils/logger.js";
 
 class QuestionManager {
   private state: QuestionState = {

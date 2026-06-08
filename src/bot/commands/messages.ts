@@ -1,12 +1,12 @@
 import type { Bot } from "grammy";
 import { CommandContext, Context, InlineKeyboard } from "grammy";
 import { config } from "../../config.js";
-import type { InteractionState } from "../../interaction/types.js";
-import { interactionManager } from "../../interaction/manager.js";
+import type { InteractionState } from "../core/interactions/active-flow/types.js";
+import { interactionManager } from "../core/interactions/active-flow/manager.js";
 import { opencodeClient } from "../../opencode/client.js";
 import { getCurrentSession, setCurrentSession, SessionInfo } from "../../session/manager.js";
 import { getCurrentProject } from "../../settings/manager.js";
-import { clearAllInteractionState } from "../../interaction/cleanup.js";
+import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
 import { attachToSession } from "../../attach/service.js";
 import { ingestSessionInfoForCache } from "../../session/cache-manager.js";
 import { t } from "../../i18n/index.js";

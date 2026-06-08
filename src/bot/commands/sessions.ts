@@ -5,14 +5,14 @@ import { opencodeClient } from "../../opencode/client.js";
 import { resolveProjectAgent } from "../../agent/manager.js";
 import { setCurrentSession, SessionInfo } from "../../session/manager.js";
 import { getCurrentProject } from "../../settings/manager.js";
-import { clearAllInteractionState } from "../../interaction/cleanup.js";
-import { interactionManager } from "../../interaction/manager.js";
+import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
+import { interactionManager } from "../core/interactions/active-flow/manager.js";
 import { keyboardManager } from "../ui/keyboard/manager.js";
 import {
   appendInlineMenuCancelButton,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "../handlers/inline-menu.js";
+} from "../core/interactions/inline-menu.js";
 import { isForegroundBusy, replyBusyBlocked } from "../utils/busy-guard.js";
 import { logger } from "../../utils/logger.js";
 import { safeBackgroundTask } from "../../utils/safe-background-task.js";

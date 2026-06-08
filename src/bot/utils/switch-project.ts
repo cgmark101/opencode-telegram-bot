@@ -11,7 +11,7 @@ import { backgroundSessionTracker } from "../../background-session/tracker.js";
 import { getStoredAgent, resolveProjectAgent } from "../../agent/manager.js";
 import { getStoredModel } from "../../model/manager.js";
 import { formatVariantForButton } from "../../variant/manager.js";
-import { clearAllInteractionState } from "../../interaction/cleanup.js";
+import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
 import { createMainKeyboard } from "../ui/keyboard/keyboard.js";
 import { logger } from "../../utils/logger.js";
 import { config } from "../../config.js";
