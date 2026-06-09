@@ -4,7 +4,7 @@ import type { CodeFileData } from "./formatter.js";
 import { normalizePathForDisplay, prepareCodeFile } from "./formatter.js";
 import type { Question } from "../bot/core/interactions/questions/types.js";
 import type { PermissionRequest } from "../bot/core/interactions/permissions/types.js";
-import type { FileChange } from "../bot/ui/pinned/types.js";
+import type { FileChange } from "../bot/pinned/pinned-message-types.js";
 import { logger } from "../utils/logger.js";
 import { getCurrentProject } from "../settings/manager.js";
 

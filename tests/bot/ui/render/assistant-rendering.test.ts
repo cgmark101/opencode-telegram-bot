@@ -74,15 +74,15 @@ async function loadAssistantRendering(mode: "raw" | "markdown") {
       error: vi.fn(),
     },
   }));
-  vi.doMock("../../../../src/bot/ui/render/pipeline.js", () => ({
+  vi.doMock("../../../../src/bot/render/pipeline.js", () => ({
     renderTelegramBlocks,
     renderTelegramParts,
   }));
-  vi.doMock("../../../../src/bot/ui/render/chunker.js", () => ({
+  vi.doMock("../../../../src/bot/render/chunker.js", () => ({
     chunkTelegramRenderedBlocks,
   }));
 
-  const module = await import("../../../../src/bot/ui/render/assistant-rendering.js");
+  const module = await import("../../../../src/bot/render/assistant-rendering.js");
   return {
     module,
     debug,

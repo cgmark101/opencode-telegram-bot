@@ -1,4 +1,4 @@
-import { logger } from "../../../utils/logger.js";
+import { logger } from "../../utils/logger.js";
 import type { TelegramBlock, TelegramRenderedBlock } from "./types.js";
 import * as blockRenderer from "./block-renderer.js";
 

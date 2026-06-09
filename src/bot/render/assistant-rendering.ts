@@ -1,5 +1,5 @@
-import { config } from "../../../config.js";
-import { logger } from "../../../utils/logger.js";
+import { config } from "../../config.js";
+import { logger } from "../../utils/logger.js";
 import { chunkTelegramRenderedBlocks } from "./chunker.js";
 import { renderTelegramBlocks, renderTelegramParts } from "./pipeline.js";
 import type { TelegramRenderedBlock, TelegramRenderedPart } from "./types.js";

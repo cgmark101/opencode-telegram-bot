@@ -7,7 +7,7 @@ import { setCurrentSession, SessionInfo } from "../../session/manager.js";
 import { getCurrentProject } from "../../settings/manager.js";
 import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
 import { interactionManager } from "../core/interactions/active-flow/manager.js";
-import { keyboardManager } from "../ui/keyboard/manager.js";
+import { keyboardManager } from "../keyboards/keyboard-manager.js";
 import {
   appendInlineMenuCancelButton,
   ensureActiveInlineMenu,
@@ -19,7 +19,7 @@ import { safeBackgroundTask } from "../../utils/safe-background-task.js";
 import { config } from "../../config.js";
 import { getDateLocale, t } from "../../i18n/index.js";
 import { attachToSession } from "../../attach/service.js";
-import { renderAssistantFinalPartsSafe } from "../ui/render/assistant-rendering.js";
+import { renderAssistantFinalPartsSafe } from "../render/assistant-rendering.js";
 import { sendRenderedBotPart } from "../ui/telegram-text.js";
 
 const SESSION_CALLBACK_PREFIX = "session:";

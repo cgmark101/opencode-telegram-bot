@@ -47,7 +47,7 @@ vi.mock("../../../../src/i18n/index.js", async (importOriginal) => {
     },
   };
 });
-vi.mock("../../../../src/bot/ui/pinned/format.js", () => ({
+vi.mock("../../../../src/bot/pinned/pinned-message-format.js", () => ({
   DEFAULT_CONTEXT_LIMIT: 204800,
   formatContextLine: (used: number, limit: number) => `${used}/${limit}`,
   formatCostLine: (cost: number) => `$${cost.toFixed(2)}`,
@@ -55,7 +55,7 @@ vi.mock("../../../../src/bot/ui/pinned/format.js", () => ({
 }));
 
 // Must import AFTER vi.mock calls
-const { pinnedMessageManager } = await import("../../../../src/bot/ui/pinned/manager.js");
+const { pinnedMessageManager } = await import("../../../../src/bot/pinned/pinned-message-manager.js");
 
 describe("pinned/manager", () => {
   let fakeApi: {

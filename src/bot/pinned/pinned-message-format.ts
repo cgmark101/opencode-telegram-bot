@@ -1,4 +1,4 @@
-import { t } from "../../../i18n/index.js";
+import { t } from "../../i18n/index.js";
 
 export const DEFAULT_CONTEXT_LIMIT = 200000;
 

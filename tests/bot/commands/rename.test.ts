@@ -33,7 +33,7 @@ vi.mock("../../../src/session/manager.js", () => ({
   setCurrentSession: mocked.setCurrentSessionMock,
 }));
 
-vi.mock("../../../src/bot/ui/pinned/manager.js", () => ({
+vi.mock("../../../src/bot/pinned/pinned-message-manager.js", () => ({
   pinnedMessageManager: {
     isInitialized: vi.fn(() => false),
     onSessionChange: mocked.pinnedOnSessionChangeMock,

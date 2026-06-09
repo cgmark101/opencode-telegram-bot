@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { renderTelegramBlock } from "../../../../src/bot/ui/render/block-renderer.js";
-import type { TelegramBlock } from "../../../../src/bot/ui/render/types.js";
+import { renderTelegramBlock } from "../../../../src/bot/render/block-renderer.js";
+import type { TelegramBlock } from "../../../../src/bot/render/types.js";
 
 describe("telegram/render/block-renderer", () => {
   it("renders paragraph blocks with inline entities", () => {

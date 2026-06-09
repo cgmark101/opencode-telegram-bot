@@ -4,9 +4,9 @@ import { getAgentDisplayName } from "../../agent/types.js";
 import { getStoredModel } from "../../model/manager.js";
 import { formatVariantForButton } from "../../variant/manager.js";
 import { logger } from "../../utils/logger.js";
-import { createMainKeyboard } from "../ui/keyboard/keyboard.js";
-import { pinnedMessageManager } from "../ui/pinned/manager.js";
-import { keyboardManager } from "../ui/keyboard/manager.js";
+import { createMainKeyboard } from "../keyboards/main-reply-keyboard.js";
+import { pinnedMessageManager } from "../pinned/pinned-message-manager.js";
+import { keyboardManager } from "../keyboards/keyboard-manager.js";
 import {
   clearActiveInlineMenu,
   ensureActiveInlineMenu,

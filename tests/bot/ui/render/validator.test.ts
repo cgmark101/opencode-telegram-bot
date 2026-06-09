@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { MessageEntity } from "grammy/types";
-import { validateTelegramEntities } from "../../../../src/bot/ui/render/validator.js";
+import { validateTelegramEntities } from "../../../../src/bot/render/validator.js";
 
 describe("telegram/render/validator", () => {
   it("accepts nested style entities and style-link nesting", () => {

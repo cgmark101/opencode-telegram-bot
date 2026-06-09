@@ -38,7 +38,7 @@ vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
   clearAllInteractionState: mocked.clearAllInteractionStateMock,
 }));
 
-vi.mock("../../../src/bot/ui/pinned/manager.js", () => ({
+vi.mock("../../../src/bot/pinned/pinned-message-manager.js", () => ({
   pinnedMessageManager: {
     isInitialized: mocked.pinnedIsInitializedMock,
     clear: mocked.pinnedClearMock,
@@ -47,7 +47,7 @@ vi.mock("../../../src/bot/ui/pinned/manager.js", () => ({
   },
 }));
 
-vi.mock("../../../src/bot/ui/keyboard/manager.js", () => ({
+vi.mock("../../../src/bot/keyboards/keyboard-manager.js", () => ({
   keyboardManager: {
     initialize: mocked.keyboardInitializeMock,
     updateContext: mocked.keyboardUpdateContextMock,

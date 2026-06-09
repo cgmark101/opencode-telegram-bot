@@ -347,7 +347,7 @@ src/bot/
   4. Не переносить остальные доменные модули на этом этапе.
   5. Запустить `npm run build`.
 
-- [ ] **Этап 6. Bot frontend UI alignment**
+- [x] **Этап 6. Bot frontend UI alignment**
 
   1. Перенести `src/bot/ui/render/*` в `src/bot/render/*`.
   2. Перенести `src/bot/ui/streaming/*` в `src/bot/streaming/*`.

@@ -50,7 +50,7 @@ vi.mock("../../../src/git/worktree.js", () => ({
   getGitWorktreeContext: mocked.getGitWorktreeContextMock,
 }));
 
-vi.mock("../../../src/bot/ui/keyboard/manager.js", () => ({
+vi.mock("../../../src/bot/keyboards/keyboard-manager.js", () => ({
   keyboardManager: {
     initialize: mocked.keyboardInitializeMock,
     updateContext: mocked.keyboardUpdateContextMock,
@@ -58,7 +58,7 @@ vi.mock("../../../src/bot/ui/keyboard/manager.js", () => ({
   },
 }));
 
-vi.mock("../../../src/bot/ui/pinned/manager.js", () => ({
+vi.mock("../../../src/bot/pinned/pinned-message-manager.js", () => ({
   pinnedMessageManager: {
     isInitialized: mocked.pinnedIsInitializedMock,
     initialize: mocked.pinnedInitializeMock,

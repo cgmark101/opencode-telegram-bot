@@ -1,4 +1,4 @@
-import { logger } from "../../../utils/logger.js";
+import { logger } from "../../utils/logger.js";
 
 const TELEGRAM_MESSAGE_SAFE_LENGTH = 4000;
 const DEFAULT_STREAM_KEY = "default";

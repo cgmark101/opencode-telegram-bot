@@ -1,10 +1,10 @@
 import { Context } from "grammy";
-import { createMainKeyboard } from "../ui/keyboard/keyboard.js";
+import { createMainKeyboard } from "../keyboards/main-reply-keyboard.js";
 import { getStoredAgent } from "../../agent/manager.js";
 import { getStoredModel } from "../../model/manager.js";
 import { formatVariantForButton } from "../../variant/manager.js";
-import { pinnedMessageManager } from "../ui/pinned/manager.js";
-import { keyboardManager } from "../ui/keyboard/manager.js";
+import { pinnedMessageManager } from "../pinned/pinned-message-manager.js";
+import { keyboardManager } from "../keyboards/keyboard-manager.js";
 import { clearSession } from "../../session/manager.js";
 import { clearProject } from "../../settings/manager.js";
 import { foregroundSessionState } from "../../scheduled-task/foreground-state.js";

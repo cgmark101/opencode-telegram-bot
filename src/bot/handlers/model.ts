@@ -9,10 +9,10 @@ import { formatModelForDisplay } from "../../model/types.js";
 import type { FavoriteModel, ModelInfo, ModelSelectionLists } from "../../model/types.js";
 import { formatVariantForButton } from "../../variant/manager.js";
 import { logger } from "../../utils/logger.js";
-import { createMainKeyboard } from "../ui/keyboard/keyboard.js";
+import { createMainKeyboard } from "../keyboards/main-reply-keyboard.js";
 import { getStoredAgent, resolveProjectAgent } from "../../agent/manager.js";
-import { pinnedMessageManager } from "../ui/pinned/manager.js";
-import { keyboardManager } from "../ui/keyboard/manager.js";
+import { pinnedMessageManager } from "../pinned/pinned-message-manager.js";
+import { keyboardManager } from "../keyboards/keyboard-manager.js";
 import {
   clearActiveInlineMenu,
   ensureActiveInlineMenu,

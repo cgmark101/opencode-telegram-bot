@@ -1,6 +1,6 @@
 import type { MessageEntity } from "grammy/types";
 import type { TelegramRenderedBlock, TelegramRenderedPart } from "./types.js";
-import { logger } from "../../../utils/logger.js";
+import { logger } from "../../utils/logger.js";
 import { validateTelegramEntities } from "./validator.js";
 
 const DEFAULT_MAX_PART_LENGTH = 4096;

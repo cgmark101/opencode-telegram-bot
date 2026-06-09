@@ -1,25 +1,25 @@
 import type { Api } from "grammy";
-import { logger } from "../../../utils/logger.js";
-import { opencodeClient } from "../../../opencode/client.js";
-import { getGitWorktreeContext } from "../../../git/worktree.js";
-import { getCurrentSession } from "../../../session/manager.js";
+import { logger } from "../../utils/logger.js";
+import { opencodeClient } from "../../opencode/client.js";
+import { getGitWorktreeContext } from "../../git/worktree.js";
+import { getCurrentSession } from "../../session/manager.js";
 import {
   getCurrentProject,
   getPinnedMessageId,
   setPinnedMessageId,
   clearPinnedMessageId,
-} from "../../../settings/manager.js";
-import { getStoredModel } from "../../../model/manager.js";
-import { getModelContextLimit } from "../../../model/context-limit.js";
-import { isExpectedOpencodeUnavailableError } from "../../../utils/opencode-error.js";
-import type { FileChange, PinnedMessageState, TokensInfo } from "./types.js";
-import { t } from "../../../i18n/index.js";
+} from "../../settings/manager.js";
+import { getStoredModel } from "../../model/manager.js";
+import { getModelContextLimit } from "../../model/context-limit.js";
+import { isExpectedOpencodeUnavailableError } from "../../utils/opencode-error.js";
+import type { FileChange, PinnedMessageState, TokensInfo } from "./pinned-message-types.js";
+import { t } from "../../i18n/index.js";
 import {
   DEFAULT_CONTEXT_LIMIT,
   formatContextLine,
   formatCostLine,
   formatModelDisplayName,
-} from "./format.js";
+} from "./pinned-message-format.js";
 
 class PinnedMessageManager {
   private api: Api | null = null;
