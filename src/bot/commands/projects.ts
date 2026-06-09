@@ -9,9 +9,9 @@ import {
   appendInlineMenuCancelButton,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "../core/interactions/inline-menu.js";
+} from "../menus/inline-menu.js";
 import { switchToProject } from "../utils/switch-project.js";
-import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
+import { clearAllInteractionState } from "../../app/managers/interaction-manager.js";
 import { isForegroundBusy, replyBusyBlocked } from "../core/assistant-execution/busy-guard.js";
 import { logger } from "../../utils/logger.js";
 import { t } from "../../i18n/index.js";

@@ -6,7 +6,7 @@ import {
   handleRenameTextAnswer,
 } from "../../../src/bot/commands/rename.js";
 import { renameManager } from "../../../src/rename/manager.js";
-import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
+import { interactionManager } from "../../../src/app/managers/interaction-manager.js";
 import { t } from "../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({

@@ -356,7 +356,7 @@ src/bot/
   5. Обновить imports в bot/app/tests.
   6. Запустить render/streaming/keyboard/pinned тесты, затем build.
 
-- [ ] **Этап 7. Interactions alignment**
+- [x] **Этап 7. Interactions alignment**
 
   1. Перенести state managers из `bot/core/interactions/active-flow/*` в `app/managers/interaction-manager.ts` и связанные app types.
   2. Перенести `questions/manager.ts` в `app/managers/question-manager.ts`, `questions/types.ts` в `app/types/question.ts`.

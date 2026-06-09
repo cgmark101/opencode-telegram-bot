@@ -1,5 +1,5 @@
-import { PermissionRequest, PermissionState } from "./types.js";
-import { logger } from "../../../../utils/logger.js";
+import type { PermissionRequest, PermissionState } from "../types/permission.js";
+import { logger } from "../../utils/logger.js";
 
 class PermissionManager {
   private state: PermissionState = {

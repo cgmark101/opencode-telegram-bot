@@ -1,11 +1,11 @@
 import { Context, InlineKeyboard } from "grammy";
-import { interactionManager } from "./active-flow/manager.js";
-import type { InteractionState } from "./active-flow/types.js";
-import { logger } from "../../../utils/logger.js";
-import { t } from "../../../i18n/index.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
+import type { InteractionState } from "../../app/types/interaction.js";
+import { logger } from "../../utils/logger.js";
+import { t } from "../../i18n/index.js";
 
-const INLINE_MENU_CANCEL_PREFIX = "inline:cancel:";
-const LEGACY_CONTEXT_CANCEL_CALLBACK = "compact:cancel";
+export const INLINE_MENU_CANCEL_PREFIX = "inline:cancel:";
+export const LEGACY_CONTEXT_CANCEL_CALLBACK = "compact:cancel";
 
 const INLINE_MENU_KINDS = [
   "project",
@@ -33,7 +33,7 @@ interface InlineMenuReplyOptions {
   parseMode?: "Markdown" | "HTML";
 }
 
-function isInlineMenuKind(value: string): value is InlineMenuKind {
+export function isInlineMenuKind(value: string): value is InlineMenuKind {
   return INLINE_MENU_KINDS.includes(value as InlineMenuKind);
 }
 
@@ -161,40 +161,4 @@ export function clearActiveInlineMenu(reason: string): void {
   if (state?.kind === "inline") {
     interactionManager.clear(reason);
   }
-}
-
-export async function handleInlineMenuCancel(ctx: Context): Promise<boolean> {
-  const data = ctx.callbackQuery?.data;
-  if (!data) {
-    return false;
-  }
-
-  let menuKind: InlineMenuKind | null = null;
-
-  if (data === LEGACY_CONTEXT_CANCEL_CALLBACK) {
-    menuKind = "context";
-  } else if (data.startsWith(INLINE_MENU_CANCEL_PREFIX)) {
-    const rawKind = data.slice(INLINE_MENU_CANCEL_PREFIX.length);
-    if (!isInlineMenuKind(rawKind)) {
-      return false;
-    }
-
-    menuKind = rawKind;
-  } else {
-    return false;
-  }
-
-  const isActive = await ensureActiveInlineMenu(ctx, menuKind);
-  if (!isActive) {
-    return true;
-  }
-
-  clearActiveInlineMenu(`inline_menu_cancel:${menuKind}`);
-
-  await ctx.answerCallbackQuery({ text: t("inline.cancelled_callback") }).catch(() => {});
-  await ctx.deleteMessage().catch(() => {});
-
-  logger.debug(`[InlineMenu] Menu cancelled: kind=${menuKind}`);
-
-  return true;
 }

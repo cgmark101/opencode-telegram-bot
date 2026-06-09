@@ -6,7 +6,7 @@ import {
   clearActiveInlineMenu,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "../core/interactions/inline-menu.js";
+} from "../menus/inline-menu.js";
 import { logger } from "../../utils/logger.js";
 import { t } from "../../i18n/index.js";
 

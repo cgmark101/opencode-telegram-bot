@@ -6,8 +6,8 @@ import {
   restoreAttachedCurrentSession,
 } from "../../src/attach/service.js";
 import { attachManager } from "../../src/attach/manager.js";
-import { questionManager } from "../../src/bot/core/interactions/questions/manager.js";
-import { permissionManager } from "../../src/bot/core/interactions/permissions/manager.js";
+import { questionManager } from "../../src/app/managers/question-manager.js";
+import { permissionManager } from "../../src/app/managers/permission-manager.js";
 
 const mocked = vi.hoisted(() => ({
   currentProject: {
@@ -98,11 +98,11 @@ vi.mock("../../src/bot/keyboards/keyboard-manager.js", () => ({
   },
 }));
 
-vi.mock("../../src/bot/core/interactions/questions/question.js", () => ({
+vi.mock("../../src/bot/menus/question-menu.js", () => ({
   showCurrentQuestion: mocked.showCurrentQuestionMock,
 }));
 
-vi.mock("../../src/bot/core/interactions/permissions/permission.js", () => ({
+vi.mock("../../src/bot/menus/permission-menu.js", () => ({
   showPermissionRequest: mocked.showPermissionRequestMock,
 }));
 

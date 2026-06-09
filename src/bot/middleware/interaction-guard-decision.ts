@@ -1,15 +1,26 @@
 import type { Context } from "grammy";
-import { interactionManager } from "./manager.js";
-import { allowsBusyInteraction, isBusyAllowedCommand } from "./busy.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
 import type {
   BlockReason,
   ExpectedInput,
   GuardDecision,
   IncomingInputType,
   InteractionState,
-} from "./types.js";
-import { foregroundSessionState } from "../../../../scheduled-task/foreground-state.js";
-import { attachManager } from "../../../../attach/manager.js";
+  InteractionKind,
+} from "../../app/types/interaction.js";
+import { foregroundSessionState } from "../../scheduled-task/foreground-state.js";
+import { attachManager } from "../../attach/manager.js";
+
+const BUSY_ALLOWED_COMMANDS = ["/abort", "/detach", "/status", "/help"] as const;
+const BUSY_ALLOWED_COMMAND_SET = new Set<string>(BUSY_ALLOWED_COMMANDS);
+
+function isBusyAllowedCommand(command?: string): boolean {
+  return Boolean(command && BUSY_ALLOWED_COMMAND_SET.has(command));
+}
+
+function allowsBusyInteraction(kind: InteractionKind | undefined): boolean {
+  return kind === "question" || kind === "permission";
+}
 
 function normalizeIncomingCommand(text: string): string | null {
   const trimmed = text.trim();

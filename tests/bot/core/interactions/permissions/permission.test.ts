@@ -1,12 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context, InlineKeyboard } from "grammy";
-import type { PermissionRequest } from "../../../../../src/bot/core/interactions/permissions/types.js";
-import { permissionManager } from "../../../../../src/bot/core/interactions/permissions/manager.js";
-import { interactionManager } from "../../../../../src/bot/core/interactions/active-flow/manager.js";
-import {
-  showPermissionRequest,
-  handlePermissionCallback,
-} from "../../../../../src/bot/core/interactions/permissions/permission.js";
+import type { PermissionRequest } from "../../../../../src/app/types/permission.js";
+import { permissionManager } from "../../../../../src/app/managers/permission-manager.js";
+import { interactionManager } from "../../../../../src/app/managers/interaction-manager.js";
+import { showPermissionRequest } from "../../../../../src/bot/menus/permission-menu.js";
+import { handlePermissionCallback } from "../../../../../src/bot/callbacks/permission-callback-handler.js";
 import { t } from "../../../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({
@@ -112,7 +110,7 @@ async function flushMicrotasks(): Promise<void> {
   await Promise.resolve();
 }
 
-describe("bot/core/interactions/permissions/permission", () => {
+describe("bot permission menu/callbacks", () => {
   beforeEach(() => {
     permissionManager.clear();
     interactionManager.clear("test_setup");

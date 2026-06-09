@@ -65,7 +65,8 @@ vi.mock("../../../src/variant/manager.js", () => ({
   formatVariantForButton: vi.fn(() => "Default"),
 }));
 
-vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
+vi.mock("../../../src/app/managers/interaction-manager.js", () => ({
+  interactionManager: { clear: vi.fn() },
   clearAllInteractionState: vi.fn(),
 }));
 
@@ -73,7 +74,7 @@ vi.mock("../../../src/bot/keyboards/main-reply-keyboard.js", () => ({
   createMainKeyboard: vi.fn(() => ({ keyboard: true })),
 }));
 
-vi.mock("../../../src/bot/core/interactions/inline-menu.js", () => ({
+vi.mock("../../../src/bot/menus/inline-menu.js", () => ({
   appendInlineMenuCancelButton: vi.fn(),
   ensureActiveInlineMenu: vi.fn(),
   replyWithInlineMenu: mocked.replyWithInlineMenuMock,

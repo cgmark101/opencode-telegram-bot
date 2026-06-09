@@ -17,8 +17,8 @@ import {
   clearActiveInlineMenu,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "../core/interactions/inline-menu.js";
-import { interactionManager } from "../core/interactions/active-flow/manager.js";
+} from "../menus/inline-menu.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
 import { t } from "../../i18n/index.js";
 
 const MODEL_SEARCH_CALLBACK = "model:search";

@@ -32,7 +32,8 @@ vi.mock("../../../src/session/manager.js", () => ({
 vi.mock("../../../src/summary/aggregator.js", () => ({
   summaryAggregator: { clear: mocked.summaryAggregatorClearMock },
 }));
-vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
+vi.mock("../../../src/app/managers/interaction-manager.js", () => ({
+  interactionManager: { clear: vi.fn() },
   clearAllInteractionState: mocked.clearAllInteractionStateMock,
 }));
 vi.mock("../../../src/bot/pinned/pinned-message-manager.js", () => ({

@@ -32,7 +32,8 @@ vi.mock("../../../src/session/cache-manager.js", () => ({
   __resetSessionDirectoryCacheForTests: vi.fn(),
 }));
 
-vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
+vi.mock("../../../src/app/managers/interaction-manager.js", () => ({
+  interactionManager: { clear: vi.fn() },
   clearAllInteractionState: vi.fn(),
 }));
 

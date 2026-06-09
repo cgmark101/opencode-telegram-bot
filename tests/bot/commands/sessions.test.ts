@@ -6,7 +6,7 @@ import {
   handleSessionSelect,
   sessionsCommand,
 } from "../../../src/bot/commands/sessions.js";
-import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
+import { interactionManager } from "../../../src/app/managers/interaction-manager.js";
 import { foregroundSessionState } from "../../../src/scheduled-task/foreground-state.js";
 import { t } from "../../../src/i18n/index.js";
 import { safeBackgroundTask } from "../../../src/utils/safe-background-task.js";
@@ -61,9 +61,14 @@ vi.mock("../../../src/summary/aggregator.js", () => ({
   },
 }));
 
-vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
-  clearAllInteractionState: mocked.clearInteractionMock,
-}));
+vi.mock("../../../src/app/managers/interaction-manager.js", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../../src/app/managers/interaction-manager.js")>();
+
+  return {
+    ...actual,
+    clearAllInteractionState: mocked.clearInteractionMock,
+  };
+});
 
 vi.mock("../../../src/bot/keyboards/keyboard-manager.js", () => ({
   keyboardManager: {

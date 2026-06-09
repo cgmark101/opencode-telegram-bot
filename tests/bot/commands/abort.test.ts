@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "grammy";
 import { abortCommand, abortCurrentOperation } from "../../../src/bot/commands/abort.js";
-import { clearAllInteractionState } from "../../../src/bot/core/interactions/active-flow/cleanup.js";
-import { questionManager } from "../../../src/bot/core/interactions/questions/manager.js";
-import { permissionManager } from "../../../src/bot/core/interactions/permissions/manager.js";
+import { clearAllInteractionState } from "../../../src/app/managers/interaction-manager.js";
+import { questionManager } from "../../../src/app/managers/question-manager.js";
+import { permissionManager } from "../../../src/app/managers/permission-manager.js";
 import { renameManager } from "../../../src/rename/manager.js";
-import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
+import { interactionManager } from "../../../src/app/managers/interaction-manager.js";
 import { foregroundSessionState } from "../../../src/scheduled-task/foreground-state.js";
-import type { Question } from "../../../src/bot/core/interactions/questions/types.js";
-import type { PermissionRequest } from "../../../src/bot/core/interactions/permissions/types.js";
+import type { Question } from "../../../src/app/types/question.js";
+import type { PermissionRequest } from "../../../src/app/types/permission.js";
 import { t } from "../../../src/i18n/index.js";
 import {
   __resetUserAbortErrorSuppressionForTests,

@@ -1,7 +1,7 @@
 import { CommandContext, Context, InlineKeyboard } from "grammy";
 import { getDateLocale, t } from "../../i18n/index.js";
-import { interactionManager } from "../core/interactions/active-flow/manager.js";
-import type { InteractionState } from "../core/interactions/active-flow/types.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
+import type { InteractionState } from "../../app/types/interaction.js";
 import { formatTaskListBadge } from "../../scheduled-task/display.js";
 import { scheduledTaskRuntime } from "../../scheduled-task/runtime.js";
 import {

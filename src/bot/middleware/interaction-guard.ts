@@ -1,6 +1,6 @@
 import type { Context, NextFunction } from "grammy";
-import { resolveInteractionGuardDecision } from "../core/interactions/active-flow/guard.js";
-import type { BlockReason, InteractionKind } from "../core/interactions/active-flow/types.js";
+import { resolveInteractionGuardDecision } from "./interaction-guard-decision.js";
+import type { BlockReason, InteractionKind } from "../../app/types/interaction.js";
 import { reconcileForegroundBusyState } from "../core/assistant-execution/busy-guard.js";
 import { logger } from "../../utils/logger.js";
 import { t } from "../../i18n/index.js";

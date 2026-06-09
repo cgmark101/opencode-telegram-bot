@@ -34,7 +34,8 @@ vi.mock("../../../src/attach/service.js", () => ({
   detachAttachedSession: mocked.detachAttachedSessionMock,
 }));
 
-vi.mock("../../../src/bot/core/interactions/active-flow/cleanup.js", () => ({
+vi.mock("../../../src/app/managers/interaction-manager.js", () => ({
+  interactionManager: { clear: vi.fn() },
   clearAllInteractionState: mocked.clearAllInteractionStateMock,
 }));
 

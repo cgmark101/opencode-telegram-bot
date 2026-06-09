@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "grammy";
-import { questionManager } from "../../../../../src/bot/core/interactions/questions/manager.js";
-import { interactionManager } from "../../../../../src/bot/core/interactions/active-flow/manager.js";
+import { questionManager } from "../../../../../src/app/managers/question-manager.js";
+import { interactionManager } from "../../../../../src/app/managers/interaction-manager.js";
+import { showCurrentQuestion } from "../../../../../src/bot/menus/question-menu.js";
 import {
   handleQuestionCallback,
   handleQuestionTextAnswer,
-  showCurrentQuestion,
-} from "../../../../../src/bot/core/interactions/questions/question.js";
-import type { Question } from "../../../../../src/bot/core/interactions/questions/types.js";
+} from "../../../../../src/bot/callbacks/question-callback-handler.js";
+import type { Question } from "../../../../../src/app/types/question.js";
 import { t } from "../../../../../src/i18n/index.js";
 
 const QUESTION_ONE: Question = {
@@ -80,7 +80,7 @@ function createTextContext(text: string, api: Context["api"]): Context {
   } as unknown as Context;
 }
 
-describe("bot/core/interactions/questions/question", () => {
+describe("bot question menu/callbacks", () => {
   beforeEach(() => {
     questionManager.clear();
     interactionManager.clear("test_setup");

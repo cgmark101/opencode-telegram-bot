@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "grammy";
 import { mcpsCommand, handleMcpsCallback } from "../../../src/bot/commands/mcps.js";
-import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
+import { interactionManager } from "../../../src/app/managers/interaction-manager.js";
 import { t } from "../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({

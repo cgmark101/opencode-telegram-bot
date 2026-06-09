@@ -8,8 +8,8 @@ import {
   type SessionInfo,
 } from "../../session/manager.js";
 import { ingestSessionInfoForCache } from "../../session/cache-manager.js";
-import { interactionManager } from "../core/interactions/active-flow/manager.js";
-import type { InteractionState } from "../core/interactions/active-flow/types.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
+import type { InteractionState } from "../../app/types/interaction.js";
 import { summaryAggregator } from "../../summary/aggregator.js";
 import { getStoredAgent, resolveProjectAgent } from "../../agent/manager.js";
 import { getStoredModel } from "../../model/manager.js";

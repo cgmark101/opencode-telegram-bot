@@ -1,7 +1,7 @@
 import { CommandContext, Context, InlineKeyboard } from "grammy";
 import { config } from "../../config.js";
 import { getGitWorktreeContext, type GitWorktreeEntry } from "../../git/worktree.js";
-import { clearAllInteractionState } from "../core/interactions/active-flow/cleanup.js";
+import { clearAllInteractionState } from "../../app/managers/interaction-manager.js";
 import { getProjectByWorktree } from "../../project/manager.js";
 import { upsertSessionDirectory } from "../../session/cache-manager.js";
 import { getCurrentProject } from "../../settings/manager.js";
@@ -11,7 +11,7 @@ import {
   appendInlineMenuCancelButton,
   ensureActiveInlineMenu,
   replyWithInlineMenu,
-} from "../core/interactions/inline-menu.js";
+} from "../menus/inline-menu.js";
 import { switchToProject } from "../utils/switch-project.js";
 import { isForegroundBusy, replyBusyBlocked } from "../core/assistant-execution/busy-guard.js";
 import { buildProjectButtonLabel, calculateProjectsPaginationRange } from "./projects.js";

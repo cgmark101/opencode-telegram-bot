@@ -6,8 +6,8 @@ import {
   appendInlineMenuCancelButton,
   clearActiveInlineMenu,
   ensureActiveInlineMenu,
-} from "../core/interactions/inline-menu.js";
-import { interactionManager } from "../core/interactions/active-flow/manager.js";
+} from "../menus/inline-menu.js";
+import { interactionManager } from "../../app/managers/interaction-manager.js";
 import { isForegroundBusy, replyBusyBlocked } from "../core/assistant-execution/busy-guard.js";
 import { getCurrentProject } from "../../settings/manager.js";
 import { sendDownloadedFile } from "../utils/send-downloaded-file.js";

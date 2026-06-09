@@ -46,12 +46,10 @@ import {
 } from "./commands/skills.js";
 import { mcpsCommand, handleMcpsCallback } from "./commands/mcps.js";
 import { ttsCommand } from "./commands/tts.js";
-import {
-  handleQuestionCallback,
-  showCurrentQuestion,
-  handleQuestionTextAnswer,
-} from "./core/interactions/questions/question.js";
-import { handlePermissionCallback, showPermissionRequest } from "./core/interactions/permissions/permission.js";
+import { showCurrentQuestion } from "./menus/question-menu.js";
+import { handleQuestionCallback, handleQuestionTextAnswer } from "./callbacks/question-callback-handler.js";
+import { showPermissionRequest } from "./menus/permission-menu.js";
+import { handlePermissionCallback } from "./callbacks/permission-callback-handler.js";
 import { handleAgentSelect, showAgentSelectionMenu } from "./handlers/agent.js";
 import {
   handleModelSelect,
@@ -62,10 +60,10 @@ import {
 } from "./handlers/model.js";
 import { handleVariantSelect, showVariantSelectionMenu } from "./handlers/variant.js";
 import { handleContextButtonPress, handleCompactConfirm } from "./handlers/context.js";
-import { handleInlineMenuCancel } from "./core/interactions/inline-menu.js";
-import { questionManager } from "./core/interactions/questions/manager.js";
-import { interactionManager } from "./core/interactions/active-flow/manager.js";
-import { clearAllInteractionState } from "./core/interactions/active-flow/cleanup.js";
+import { handleInlineMenuCancel } from "./callbacks/inline-menu-cancel-callback-handler.js";
+import { questionManager } from "../app/managers/question-manager.js";
+import { interactionManager } from "../app/managers/interaction-manager.js";
+import { clearAllInteractionState } from "../app/managers/interaction-manager.js";
 import { keyboardManager } from "./keyboards/keyboard-manager.js";
 import { stopEventListening, subscribeToEvents } from "../opencode/events.js";
 import { opencodeReadyLifecycle } from "../opencode/ready-lifecycle.js";

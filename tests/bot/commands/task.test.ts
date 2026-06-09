@@ -5,7 +5,7 @@ import {
   handleTaskTextInput,
   taskCommand,
 } from "../../../src/bot/commands/task.js";
-import { interactionManager } from "../../../src/bot/core/interactions/active-flow/manager.js";
+import { interactionManager } from "../../../src/app/managers/interaction-manager.js";
 import { taskCreationManager } from "../../../src/scheduled-task/creation-manager.js";
 import { t } from "../../../src/i18n/index.js";
 
