@@ -1,8 +1,8 @@
 import { config } from "../../config.js";
 import { logger } from "../../utils/logger.js";
-import { chunkTelegramRenderedBlocks } from "./chunker.js";
-import { renderTelegramBlocks, renderTelegramParts } from "./pipeline.js";
-import type { TelegramRenderedBlock, TelegramRenderedPart } from "./types.js";
+import { chunkTelegramRenderedBlocks } from "../render/chunker.js";
+import { renderTelegramBlocks, renderTelegramParts } from "../render/pipeline.js";
+import type { TelegramRenderedBlock, TelegramRenderedPart } from "../render/types.js";
 import type { StreamingMessagePayload } from "../streaming/response-streamer.js";
 
 export function createPlainRenderedBlock(text: string): TelegramRenderedBlock {

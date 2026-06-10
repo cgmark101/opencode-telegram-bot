@@ -35,7 +35,7 @@ vi.mock("../../../src/opencode/process.js", () => ({
   killServerProcess: mocked.killServerProcessMock,
 }));
 
-vi.mock("../../../src/bot/render/telegram-text.js", () => ({
+vi.mock("../../../src/bot/messages/telegram-text.js", () => ({
   editBotText: mocked.editBotTextMock,
 }));
 

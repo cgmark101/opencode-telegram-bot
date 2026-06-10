@@ -15,7 +15,7 @@ import {
   parseWorktreePageCallback,
   WORKTREE_CALLBACK_PREFIX,
 } from "../menus/worktree-selection-menu.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 import { createProjectSwitchPresentation } from "../services/project-switch-presentation.js";
 
 interface WorktreeCallbackDeps {

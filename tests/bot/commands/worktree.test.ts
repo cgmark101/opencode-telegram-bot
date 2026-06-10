@@ -37,7 +37,7 @@ vi.mock("../../../src/app/services/run-control-service.js", () => ({
   isForegroundBusy: mocked.isForegroundBusyMock,
 }));
 
-vi.mock("../../../src/bot/render/busy-blocked-renderer.js", () => ({
+vi.mock("../../../src/bot/messages/busy-blocked-renderer.js", () => ({
   replyBusyBlocked: mocked.replyBusyBlockedMock,
 }));
 

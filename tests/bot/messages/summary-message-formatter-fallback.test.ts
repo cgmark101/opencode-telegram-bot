@@ -8,7 +8,7 @@ vi.mock("../../../src/bot/render/markdown-to-telegram-v2.js", () => ({
   convertToTelegramMarkdownV2: mocked.convertToTelegramMarkdownV2,
 }));
 
-describe("bot/render/summary-message-formatter markdown fallback", () => {
+describe("bot/messages/summary-message-formatter markdown fallback", () => {
   beforeEach(() => {
     mocked.convertToTelegramMarkdownV2.mockReset();
   });
@@ -19,7 +19,7 @@ describe("bot/render/summary-message-formatter markdown fallback", () => {
     });
 
     const { formatSummaryWithMode } = await import(
-      "../../../src/bot/render/summary-message-formatter.js"
+      "../../../src/bot/messages/summary-message-formatter.js"
     );
 
     expect(formatSummaryWithMode("**raw** text!", "markdown")).toEqual(["**raw** text!"]);

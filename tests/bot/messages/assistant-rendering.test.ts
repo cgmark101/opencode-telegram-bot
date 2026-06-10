@@ -82,7 +82,7 @@ async function loadAssistantRendering(mode: "raw" | "markdown") {
     chunkTelegramRenderedBlocks,
   }));
 
-  const module = await import("../../../src/bot/render/assistant-rendering.js");
+  const module = await import("../../../src/bot/messages/assistant-rendering.js");
   return {
     module,
     debug,
@@ -93,7 +93,7 @@ async function loadAssistantRendering(mode: "raw" | "markdown") {
   };
 }
 
-describe("bot/render/assistant-rendering", () => {
+describe("bot/messages/assistant-rendering", () => {
   it("uses plain parts only for assistant final delivery in raw mode", async () => {
     const { module, debug, renderTelegramParts, chunkTelegramRenderedBlocks } =
       await loadAssistantRendering("raw");

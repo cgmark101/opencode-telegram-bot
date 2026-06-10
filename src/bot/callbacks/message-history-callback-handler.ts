@@ -13,9 +13,9 @@ import { isForegroundBusy } from "../../app/services/run-control-service.js";
 import { t } from "../../i18n/index.js";
 import { logger } from "../../utils/logger.js";
 import { safeBackgroundTask } from "../../utils/safe-background-task.js";
-import { renderAssistantFinalPartsSafe } from "../render/assistant-rendering.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
-import { sendRenderedBotPart } from "../render/telegram-text.js";
+import { renderAssistantFinalPartsSafe } from "../messages/assistant-rendering.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
+import { sendRenderedBotPart } from "../messages/telegram-text.js";
 import {
   buildMessageDetailKeyboard,
   buildMessagesListKeyboard,

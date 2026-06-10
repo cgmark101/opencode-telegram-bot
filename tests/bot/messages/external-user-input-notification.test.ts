@@ -4,17 +4,17 @@ import {
 } from "../../../src/app/services/external-user-input-service.js";
 import {
   deliverExternalUserInputNotification,
-} from "../../../src/bot/render/external-user-input-notification.js";
+} from "../../../src/bot/messages/external-user-input-notification.js";
 
 const mocked = vi.hoisted(() => ({
   sendBotTextMock: vi.fn(),
 }));
 
-vi.mock("../../../src/bot/render/telegram-text.js", () => ({
+vi.mock("../../../src/bot/messages/telegram-text.js", () => ({
   sendBotText: mocked.sendBotTextMock,
 }));
 
-describe("bot/render/external-user-input-notification", () => {
+describe("bot/messages/external-user-input-notification", () => {
   beforeEach(() => {
     mocked.sendBotTextMock.mockReset();
     mocked.sendBotTextMock.mockResolvedValue(undefined);

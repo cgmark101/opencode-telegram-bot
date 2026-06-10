@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import { readFile } from "node:fs/promises";
 
 import { cleanupBotRuntime, createBot } from "../../bot/index.js";
-import { createScheduledTaskDeliverySender } from "../../bot/render/scheduled-task-delivery.js";
+import { createScheduledTaskDeliverySender } from "../../bot/messages/scheduled-task-delivery.js";
 import { config } from "../../config.js";
 import { opencodeAutoRestartService } from "../../opencode/auto-restart.js";
 import {

@@ -56,7 +56,7 @@ vi.mock("../../../src/app/services/scheduled-task-session-ignore-service.js", ()
   cleanupScheduledTaskSessionIgnores: mocked.cleanupIgnoresMock,
 }));
 
-vi.mock("../../../src/bot/render/telegram-text.js", () => ({
+vi.mock("../../../src/bot/messages/telegram-text.js", () => ({
   sendBotText: mocked.sendBotTextMock,
 }));
 
@@ -147,7 +147,7 @@ function createTask(partial: Partial<ScheduledTask> = {}): ScheduledTask {
 
 async function createDeliverySender() {
   const { createScheduledTaskDeliverySender } = await import(
-    "../../../src/bot/render/scheduled-task-delivery.js"
+    "../../../src/bot/messages/scheduled-task-delivery.js"
   );
 
   return createScheduledTaskDeliverySender({ sendMessage: vi.fn() } as never, 777);

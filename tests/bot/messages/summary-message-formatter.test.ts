@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   formatSummary,
   formatSummaryWithMode,
-} from "../../../src/bot/render/summary-message-formatter.js";
+} from "../../../src/bot/messages/summary-message-formatter.js";
 import {
   formatToolInfo,
   prepareCodeFile,
@@ -23,7 +23,7 @@ vi.mock("../../../src/app/stores/settings-store.js", async () => {
   };
 });
 
-describe("bot/render/summary-message-formatter", () => {
+describe("bot/messages/summary-message-formatter", () => {
   beforeEach(() => {
     mocked.getCurrentProjectMock.mockReset();
     mocked.getCurrentProjectMock.mockReturnValue({ id: "p1", worktree: "D:/repo", name: "repo" });

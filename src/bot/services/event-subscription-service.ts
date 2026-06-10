@@ -22,7 +22,7 @@ import {
 } from "../../app/services/busy-reconciliation-service.js";
 import { finalizeAssistantResponse } from "../streaming/finalize-assistant-response.js";
 import { sendTtsResponseForSession } from "../handlers/tts-response-handler.js";
-import { deliverThinkingMessage } from "../render/thinking-message.js";
+import { deliverThinkingMessage } from "../messages/thinking-message.js";
 import { shouldSuppressUserAbortSessionError } from "../../app/managers/abort-suppression-manager.js";
 import {
   completeDraftPart,
@@ -31,7 +31,7 @@ import {
   sendBotText,
   sendDraftBotPart,
   sendRenderedBotPart,
-} from "../render/telegram-text.js";
+} from "../messages/telegram-text.js";
 import { formatAssistantRunFooter } from "../../app/formatters/assistant-run-footer-formatter.js";
 import { foregroundSessionState } from "../../app/managers/foreground-session-state-manager.js";
 import { scheduledTaskRuntime } from "../../app/services/scheduled-task-runtime-service.js";
@@ -48,8 +48,8 @@ import {
   prepareAssistantFinalStreamingPayload,
   prepareAssistantStreamingPayload,
   renderAssistantFinalPartsSafe,
-} from "../render/assistant-rendering.js";
-import { deliverExternalUserInputNotification } from "../render/external-user-input-notification.js";
+} from "../messages/assistant-rendering.js";
+import { deliverExternalUserInputNotification } from "../messages/external-user-input-notification.js";
 import {
   backgroundSessionTracker,
   type BackgroundSessionNotification,

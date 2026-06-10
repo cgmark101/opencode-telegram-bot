@@ -11,9 +11,9 @@ import { t } from "../../i18n/index.js";
 import { getProjectByWorktree } from "../../app/services/project-service.js";
 import { upsertSessionDirectory } from "../../app/services/session-cache-service.js";
 import { logger } from "../../utils/logger.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 import { ensureActiveInlineMenu, clearActiveInlineMenu } from "../menus/inline-menu.js";
-import { sendDownloadedFile } from "../render/send-downloaded-file.js";
+import { sendDownloadedFile } from "../messages/send-downloaded-file.js";
 import { switchToProject } from "../../app/services/project-switch-service.js";
 import { createProjectSwitchPresentation } from "../services/project-switch-presentation.js";
 import {

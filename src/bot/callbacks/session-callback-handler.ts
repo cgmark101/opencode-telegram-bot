@@ -8,14 +8,14 @@ import { clearAllInteractionState, interactionManager } from "../../app/managers
 import { keyboardManager } from "../keyboards/keyboard-manager.js";
 import { appendInlineMenuCancelButton, ensureActiveInlineMenu } from "../menus/inline-menu.js";
 import { isForegroundBusy } from "../../app/services/run-control-service.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 import { logger } from "../../utils/logger.js";
 import { safeBackgroundTask } from "../../utils/safe-background-task.js";
 import { config } from "../../config.js";
 import { t } from "../../i18n/index.js";
 import { attachToSession } from "../../app/services/attach-service.js";
-import { renderAssistantFinalPartsSafe } from "../render/assistant-rendering.js";
-import { sendRenderedBotPart } from "../render/telegram-text.js";
+import { renderAssistantFinalPartsSafe } from "../messages/assistant-rendering.js";
+import { sendRenderedBotPart } from "../messages/telegram-text.js";
 import {
   buildSessionSelectionMenuView,
   parseBackgroundSessionCallback,

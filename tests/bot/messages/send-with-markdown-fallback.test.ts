@@ -3,9 +3,9 @@ import {
   editMessageWithMarkdownFallback,
   isTelegramMarkdownParseError,
   sendMessageWithMarkdownFallback,
-} from "../../../src/bot/render/send-with-markdown-fallback.js";
+} from "../../../src/bot/messages/send-with-markdown-fallback.js";
 
-describe("bot/render/send-with-markdown-fallback", () => {
+describe("bot/messages/send-with-markdown-fallback", () => {
   it("sends with MarkdownV2 when there is no parse error", async () => {
     const sendMessage = vi.fn().mockResolvedValue(undefined);
     const replyMarkup = { keyboard: [[{ text: "A" }]] };

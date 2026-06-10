@@ -6,7 +6,7 @@ import { t } from "../../i18n/index.js";
 import { logger } from "../../utils/logger.js";
 import { buildProjectsMenuView } from "../menus/project-selection-menu.js";
 import { replyWithInlineMenu } from "../menus/inline-menu.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 
 export async function projectsCommand(ctx: CommandContext<Context>) {
   try {

@@ -5,9 +5,9 @@ import {
   getTelegramRenderedPartSignature,
   sendBotText,
   sendRenderedBotPart,
-} from "../../../src/bot/render/telegram-text.js";
+} from "../../../src/bot/messages/telegram-text.js";
 
-describe("bot/render/telegram-text", () => {
+describe("bot/messages/telegram-text", () => {
   it("sends raw messages by default", async () => {
     const sendMessage = vi.fn().mockResolvedValue(undefined);
 

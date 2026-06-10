@@ -7,7 +7,7 @@ import { t } from "../../i18n/index.js";
 import { logger } from "../../utils/logger.js";
 import { appendInlineMenuCancelButton, ensureActiveInlineMenu } from "../menus/inline-menu.js";
 import { buildProjectsMenuView, parseProjectPageCallback } from "../menus/project-selection-menu.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 import { createProjectSwitchPresentation } from "../services/project-switch-presentation.js";
 
 interface ProjectSelectDeps {

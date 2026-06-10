@@ -6,7 +6,7 @@ import { logger } from "../../utils/logger.js";
 import { t } from "../../i18n/index.js";
 import { replyWithInlineMenu } from "../menus/inline-menu.js";
 import { buildWorktreeMenuView } from "../menus/worktree-selection-menu.js";
-import { replyBusyBlocked } from "../render/busy-blocked-renderer.js";
+import { replyBusyBlocked } from "../messages/busy-blocked-renderer.js";
 
 async function loadCurrentWorktreeContext() {
   const currentProject = getCurrentProject();

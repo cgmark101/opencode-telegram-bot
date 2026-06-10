@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { deliverThinkingMessage } from "../../../src/bot/render/thinking-message.js";
+import { deliverThinkingMessage } from "../../../src/bot/messages/thinking-message.js";
 import { t } from "../../../src/i18n/index.js";
 
-describe("bot/render/thinking-message", () => {
+describe("bot/messages/thinking-message", () => {
   it("sends thinking immediately when visible", () => {
     const batcher = {
       enqueue: vi.fn(),
