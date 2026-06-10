@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "grammy";
-import { startCommand } from "../../../src/bot/commands/start.js";
+import { startCommand } from "../../../src/bot/commands/start-command.js";
 import { t } from "../../../src/i18n/index.js";
 
 const mocked = vi.hoisted(() => ({
@@ -85,7 +85,7 @@ function createStartContext(): Context {
   } as unknown as Context;
 }
 
-describe("bot/commands/start", () => {
+describe("bot/commands/start-command", () => {
   beforeEach(() => {
     mocked.abortCurrentOperationMock.mockReset();
     mocked.abortCurrentOperationMock.mockResolvedValue(undefined);

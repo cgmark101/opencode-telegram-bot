@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "grammy";
-import { statusCommand } from "../../../src/bot/commands/status.js";
+import { statusCommand } from "../../../src/bot/commands/status-command.js";
 
 const mocked = vi.hoisted(() => ({
   healthMock: vi.fn(),
@@ -72,7 +72,7 @@ vi.mock("../../../src/bot/ui/telegram-text.js", () => ({
   sendBotText: mocked.sendBotTextMock,
 }));
 
-describe("bot/commands/status", () => {
+describe("bot/commands/status-command", () => {
   beforeEach(() => {
     mocked.healthMock.mockReset();
     mocked.getCurrentSessionMock.mockReset();

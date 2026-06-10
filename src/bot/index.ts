@@ -7,9 +7,9 @@ import { authMiddleware } from "./middleware/auth.js";
 import { interactionGuardMiddleware } from "./middleware/interaction-guard.js";
 import { unknownCommandMiddleware } from "./middleware/unknown-command.js";
 import { BOT_COMMANDS } from "./commands/definitions.js";
-import { startCommand } from "./commands/start.js";
-import { helpCommand } from "./commands/help.js";
-import { statusCommand } from "./commands/status.js";
+import { startCommand } from "./commands/start-command.js";
+import { helpCommand } from "./commands/help-command.js";
+import { statusCommand } from "./commands/status-command.js";
 import {
   AGENT_MODE_BUTTON_TEXT_PATTERN,
   MODEL_BUTTON_TEXT_PATTERN,

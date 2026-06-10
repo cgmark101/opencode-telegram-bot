@@ -477,7 +477,7 @@ src/bot/
   4. Обновить imports/tests.
   5. Запустить opencode-start/opencode-stop/opencode process tests, затем build.
 
-- [ ] **Этап 19. Bot basics и Telegram command registry**
+- [x] **Этап 19. Bot basics и Telegram command registry**
 
   1. Перенести `bot/commands/start.ts`, `help.ts`, `status.ts` -> `bot/commands/start-command.ts`, `help-command.ts`, `status-command.ts`.
   2. Оставить `bot/commands/definitions.ts` как централизованный источник Telegram command list.
