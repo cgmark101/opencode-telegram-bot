@@ -28,7 +28,12 @@ export async function statusCommand(ctx: CommandContext<Context>) {
     }
     const ttsMode = getTtsMode();
     message += `${t("status.line.tts", {
-      tts: ttsMode === 'off' ? t("status.tts.off") : ttsMode === 'all' ? t("status.tts.all") : t("status.tts.auto"),
+      tts:
+        ttsMode === "off"
+          ? t("status.tts.off")
+          : ttsMode === "all"
+            ? t("status.tts.all")
+            : t("status.tts.auto"),
     })}\n`;
 
     // Add agent information

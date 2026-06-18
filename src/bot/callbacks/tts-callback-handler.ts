@@ -1,11 +1,11 @@
-import { Context, InlineKeyboard } from "grammy";
+import { Context } from "grammy";
 import { isTtsConfigured } from "../../app/services/tts-service.js";
-import { getTtsMode, setTtsMode, type TtsMode } from "../../app/stores/settings-store.js";
+import { setTtsMode, type TtsMode } from "../../app/stores/settings-store.js";
 import { TTS_CALLBACK_PREFIX } from "../commands/tts-command.js";
 import { t } from "../../i18n/index.js";
 import { logger } from "../../utils/logger.js";
 
-const TTS_MODES: TtsMode[] = ['off', 'all', 'auto'];
+const TTS_MODES: TtsMode[] = ["off", "all", "auto"];
 
 export async function handleTtsCallback(ctx: Context): Promise<boolean> {
   const callbackQuery = ctx.callbackQuery;
@@ -20,28 +20,27 @@ export async function handleTtsCallback(ctx: Context): Promise<boolean> {
     return false;
   }
 
-  if (!isTtsConfigured()) {
+  if (mode !== "off" && !isTtsConfigured()) {
     await ctx.answerCallbackQuery({ text: t("tts.not_configured"), show_alert: true });
     return true;
   }
 
   setTtsMode(mode);
 
-  const current = getTtsMode();
-
-  const keyboard = new InlineKeyboard()
-    .text(`${current === 'off' ? '✅ ' : ''}🔇 ${t("status.tts.off")}`, `${TTS_CALLBACK_PREFIX}off`)
-    .text(`${current === 'all' ? '✅ ' : ''}🔊 ${t("status.tts.all")}`, `${TTS_CALLBACK_PREFIX}all`)
-    .text(`${current === 'auto' ? '✅ ' : ''}🎤 ${t("status.tts.auto")}`, `${TTS_CALLBACK_PREFIX}auto`);
+  const messageKey = mode === "off" ? "tts.off" : mode === "all" ? "tts.all" : "tts.auto";
+  await ctx.answerCallbackQuery({ text: t(messageKey) });
 
   try {
-    await ctx.editMessageReplyMarkup({ reply_markup: keyboard });
-  } catch (err) {
-    logger.warn("[TTS] Failed to update inline keyboard:", err);
-  }
+    await ctx.deleteMessage();
+  } catch (deleteError) {
+    logger.warn("[TTS] Failed to delete mode selection message:", deleteError);
 
-  const messageKey = mode === 'off' ? "tts.off" : mode === 'all' ? "tts.all" : "tts.auto";
-  await ctx.answerCallbackQuery({ text: t(messageKey) });
+    try {
+      await ctx.editMessageReplyMarkup();
+    } catch (editError) {
+      logger.warn("[TTS] Failed to remove mode selection keyboard:", editError);
+    }
+  }
 
   return true;
 }

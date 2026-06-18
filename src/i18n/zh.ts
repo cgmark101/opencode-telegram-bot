@@ -7,7 +7,7 @@ export const zh: I18nDictionary = {
   "cmd.description.detach": "从当前会话分离",
   "cmd.description.sessions": "列出会话",
   "cmd.description.messages": "浏览会话消息",
-  "cmd.description.tts": "Choose audio reply mode",
+  "cmd.description.tts": "选择语音回复模式",
   "cmd.description.projects": "列出项目",
   "cmd.description.worktree": "切换 git worktree",
   "cmd.description.task": "创建定时任务",
@@ -83,7 +83,8 @@ export const zh: I18nDictionary = {
   "bot.file_too_large": "⚠️ 文件过大（最大 {maxSizeMb}MB）",
   "bot.file_download_error": "🔴 下载文件失败",
   "bot.file_type_unsupported": "⚠️ 不支持此文件类型。请发送图片、PDF 或文本/代码文件。",
-  "bot.media_group_not_processed": "⚠️ 此相册中有一个或多个文件无法处理。未向 OpenCode 发送任何内容。",
+  "bot.media_group_not_processed":
+    "⚠️ 此相册中有一个或多个文件无法处理。未向 OpenCode 发送任何内容。",
   "bot.media_group_download_error": "🔴 无法下载其中一个文件。未向 OpenCode 发送任何内容。",
   "bot.model_no_pdf": "⚠️ 当前模型不支持PDF输入。将仅发送文本。",
   "bot.text_file_too_large": "⚠️ 文本文件过大（最大 {maxSizeKb}KB）",
@@ -113,7 +114,7 @@ export const zh: I18nDictionary = {
   "status.session_hint": "使用 /sessions 选择一个会话，或 /new 创建",
   "status.server_unavailable": "🔴 OpenCode 服务器不可用\n\n使用 /opencode_start 启动服务器。",
 
-  "tts.prompt": "Select audio reply mode:",
+  "tts.prompt": "请选择语音回复模式：",
   "tts.off": "🔇 语音回复已关闭。",
   "tts.all": "🔊 已为所有消息启用语音回复。",
   "tts.auto": "🎤 仅为语音消息启用语音回复。",
@@ -254,8 +255,8 @@ export const zh: I18nDictionary = {
   "model.menu.error": "🔴 获取模型列表失败",
   "model.search.button": "🔍 搜索",
   "model.search.prompt": "🔍 输入模型名称进行搜索：",
-  "model.search.results_title": "\"{query}\" 的搜索结果：",
-  "model.search.no_results": "未找到 \"{query}\" 的模型",
+  "model.search.results_title": '"{query}" 的搜索结果：',
+  "model.search.no_results": '未找到 "{query}" 的模型',
   "model.search.search_again": "↩ 重新搜索",
   "model.search.error": "搜索失败",
 

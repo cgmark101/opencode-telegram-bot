@@ -287,8 +287,8 @@ export const en = {
   "model.menu.error": "🔴 Failed to get models list",
   "model.search.button": "🔍 Search",
   "model.search.prompt": "🔍 Enter model name to search:",
-  "model.search.results_title": "Search results for \"{query}\":",
-  "model.search.no_results": "No models found for \"{query}\"",
+  "model.search.results_title": 'Search results for "{query}":',
+  "model.search.no_results": 'No models found for "{query}"',
   "model.search.search_again": "↩ Search again",
   "model.search.error": "Search failed",
 

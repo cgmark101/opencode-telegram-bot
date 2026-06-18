@@ -14,7 +14,7 @@ export const ar: I18nDictionary = {
   "cmd.description.detach": "الخروج من الجلسة دون إيقافها",
   "cmd.description.sessions": "عرض الجلسات السابقة",
   "cmd.description.messages": "استعراض رسائل الجلسة",
-  "cmd.description.tts": "Choose audio reply mode",
+  "cmd.description.tts": "اختيار وضع الردود الصوتية",
   "cmd.description.projects": "عرض المشاريع",
   "cmd.description.worktree": "التبديل بين نسخ العمل في Git",
   "cmd.description.task": "إنشاء مهمة مجدولة",
@@ -115,7 +115,7 @@ export const ar: I18nDictionary = {
   "status.session_hint": "استخدم /sessions لاختيار جلسة أو /new لبدء جلسة جديدة",
   "status.server_unavailable": "🔴 خادم OpenCode غير متاح\n\nاستخدم /opencode_start لتشغيل الخادم.",
 
-  "tts.prompt": "Select audio reply mode:",
+  "tts.prompt": "اختر وضع الردود الصوتية:",
   "tts.off": "🔇 تم تعطيل الردود الصوتية.",
   "tts.all": "🔊 تم تفعيل الردود الصوتية لجميع الرسائل.",
   "tts.auto": "🎤 تم تفعيل الردود الصوتية للرسائل الصوتية فقط.",

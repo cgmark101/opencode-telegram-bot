@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Bot, Context } from "grammy";
-import { processUserPrompt, type ProcessPromptDeps } from "../../../src/bot/handlers/prompt.js";
+import {
+  consumePromptResponseMode,
+  processUserPrompt,
+  type ProcessPromptDeps,
+} from "../../../src/bot/handlers/prompt.js";
 
 const mocked = vi.hoisted(() => ({
   currentProject: { id: "project-1", worktree: "D:\\Projects\\Repo" },
@@ -18,6 +22,7 @@ const mocked = vi.hoisted(() => ({
   setSessionSummaryMock: vi.fn(),
   setBotAndChatIdMock: vi.fn(),
   attachToSessionMock: vi.fn(),
+  getTtsModeMock: vi.fn(),
 }));
 
 vi.mock("../../../src/opencode/client.js", () => ({
@@ -44,7 +49,7 @@ vi.mock("../../../src/app/services/session-cache-service.js", () => ({
 
 vi.mock("../../../src/app/stores/settings-store.js", () => ({
   getCurrentProject: vi.fn(() => mocked.currentProject),
-  getTtsMode: vi.fn(() => "off"),
+  getTtsMode: mocked.getTtsModeMock,
 }));
 
 vi.mock("../../../src/app/services/agent-selection-service.js", () => ({
@@ -153,11 +158,15 @@ function getScheduledBackgroundTask(): {
   onSuccess?: (value: { error: unknown | null }) => void;
   onError?: (error: unknown) => void;
 } {
-  const [[options]] = mocked.safeBackgroundTaskMock.mock.calls as [[{
-    task: () => Promise<unknown>;
-    onSuccess?: (value: { error: unknown | null }) => void;
-    onError?: (error: unknown) => void;
-  }]];
+  const [[options]] = mocked.safeBackgroundTaskMock.mock.calls as [
+    [
+      {
+        task: () => Promise<unknown>;
+        onSuccess?: (value: { error: unknown | null }) => void;
+        onError?: (error: unknown) => void;
+      },
+    ],
+  ];
 
   return options;
 }
@@ -179,6 +188,8 @@ describe("bot/handlers/prompt", () => {
     mocked.setSessionSummaryMock.mockReset();
     mocked.setBotAndChatIdMock.mockReset();
     mocked.attachToSessionMock.mockReset();
+    mocked.getTtsModeMock.mockReset();
+    mocked.getTtsModeMock.mockReturnValue("off");
     mocked.attachToSessionMock.mockResolvedValue({
       busy: false,
       alreadyAttached: false,
@@ -285,6 +296,15 @@ describe("bot/handlers/prompt", () => {
 
     expect(handled).toBe(true);
     expect(mocked.suppressionRegisterMock).not.toHaveBeenCalled();
+  });
+
+  it("keeps text prompts text-only when TTS mode is auto", async () => {
+    mocked.getTtsModeMock.mockReturnValue("auto");
+
+    const handled = await processUserPrompt(createContext(), "Review README", createDeps());
+
+    expect(handled).toBe(true);
+    expect(consumePromptResponseMode("session-1")).toBe("text_only");
   });
 
   it("uses plural placeholder text for multiple file-only prompts", async () => {

@@ -7,7 +7,7 @@ export const ru: I18nDictionary = {
   "cmd.description.detach": "Отсоединиться от текущей сессии",
   "cmd.description.sessions": "Список сессий",
   "cmd.description.messages": "Сообщения текущей сессии",
-  "cmd.description.tts": "Choose audio reply mode",
+  "cmd.description.tts": "Выбрать режим аудиоответов",
   "cmd.description.projects": "Список проектов",
   "cmd.description.worktree": "Переключить git worktree",
   "cmd.description.task": "Создать задачу по расписанию",
@@ -126,7 +126,7 @@ export const ru: I18nDictionary = {
   "status.server_unavailable":
     "🔴 OpenCode Server недоступен\n\nИспользуйте /opencode_start для запуска сервера.",
 
-  "tts.prompt": "Select audio reply mode:",
+  "tts.prompt": "Выберите режим аудиоответов:",
   "tts.off": "🔇 Аудиоответы выключены.",
   "tts.all": "🔊 Аудиоответы включены для всех сообщений.",
   "tts.auto": "🎤 Аудиоответы включены только для голосовых сообщений.",
@@ -290,8 +290,8 @@ export const ru: I18nDictionary = {
   "model.menu.error": "🔴 Не удалось получить список моделей",
   "model.search.button": "🔍 Поиск",
   "model.search.prompt": "🔍 Введите название модели для поиска:",
-  "model.search.results_title": "Результаты поиска для \"{query}\":",
-  "model.search.no_results": "Модели не найдены для \"{query}\"",
+  "model.search.results_title": 'Результаты поиска для "{query}":',
+  "model.search.no_results": 'Модели не найдены для "{query}"',
   "model.search.search_again": "↩ Искать снова",
   "model.search.error": "Ошибка поиска",
 
