@@ -96,6 +96,8 @@ type QuestionErrorCallback = () => void;
 
 type ThinkingCallback = (update: ThinkingUpdate) => void;
 
+type ThinkingFinishedCallback = (sessionId: string, messageId: string) => void;
+
 export interface TokensInfo {
   input: number;
   output: number;
@@ -237,6 +239,7 @@ class SummaryAggregator {
   private onQuestionCallback: QuestionCallback | null = null;
   private onQuestionErrorCallback: QuestionErrorCallback | null = null;
   private onThinkingCallback: ThinkingCallback | null = null;
+  private onThinkingFinishedCallback: ThinkingFinishedCallback | null = null;
   private onTokensCallback: TokensCallback | null = null;
   private onCostCallback: CostCallback | null = null;
   private onSubagentCallback: SubagentCallback | null = null;
@@ -250,6 +253,7 @@ class SummaryAggregator {
   private onClearedCallback: ClearedCallback | null = null;
   private processedToolStates: Set<string> = new Set();
   private thinkingFiredForMessages: Set<string> = new Set();
+  private thinkingFinishedForMessages: Set<string> = new Set();
   private deliveredExternalUserMessageIds: Set<string> = new Set();
   private knownTextPartIds: Map<string, Set<string>> = new Map();
   private bot: Bot | null = null;
@@ -301,6 +305,10 @@ class SummaryAggregator {
 
   setOnThinking(callback: ThinkingCallback): void {
     this.onThinkingCallback = callback;
+  }
+
+  setOnThinkingFinished(callback: ThinkingFinishedCallback): void {
+    this.onThinkingFinishedCallback = callback;
   }
 
   setOnTokens(callback: TokensCallback): void {
@@ -477,6 +485,7 @@ class SummaryAggregator {
     this.knownTextPartIds.clear();
     this.processedToolStates.clear();
     this.thinkingFiredForMessages.clear();
+    this.thinkingFinishedForMessages.clear();
     this.deliveredExternalUserMessageIds.clear();
     this.trackedSessionParents.clear();
     this.subagentStates.clear();
@@ -1221,6 +1230,7 @@ class SummaryAggregator {
       typeof deltaFromUpdated === "string" &&
       deltaFromUpdated.length > 0
     ) {
+      this.emitThinkingFinishedOnce(part.sessionID, messageID);
       this.applyTextDelta(part.sessionID, messageID, part.id, deltaFromUpdated, part.text);
       this.lastUpdated = Date.now();
       return;
@@ -1271,6 +1281,8 @@ class SummaryAggregator {
       if (!wasUpdated) {
         return;
       }
+
+      this.emitThinkingFinishedOnce(part.sessionID, messageID);
 
       const fullText = this.getCombinedMessageText(messageID);
 
@@ -1422,6 +1434,7 @@ class SummaryAggregator {
       }
     }
 
+    this.emitThinkingFinishedOnce(sessionID, messageID);
     this.applyTextDelta(sessionID, messageID, partID, delta, part?.text);
   }
 
@@ -1604,6 +1617,22 @@ class SummaryAggregator {
     });
   }
 
+  private emitThinkingFinishedOnce(sessionId: string, messageId: string): void {
+    if (
+      !this.onThinkingFinishedCallback ||
+      !this.thinkingFiredForMessages.has(messageId) ||
+      this.thinkingFinishedForMessages.has(messageId)
+    ) {
+      return;
+    }
+
+    this.thinkingFinishedForMessages.add(messageId);
+    const callback = this.onThinkingFinishedCallback;
+    setImmediate(() => {
+      callback(sessionId, messageId);
+    });
+  }
+
   private emitExternalUserInputIfReady(sessionId: string, messageId: string): void {
     if (sessionId !== this.currentSessionId || this.deliveredExternalUserMessageIds.has(messageId)) {
       return;
@@ -1640,6 +1669,8 @@ class SummaryAggregator {
     this.messages.delete(messageId);
     this.partHashes.delete(messageId);
     this.knownTextPartIds.delete(messageId);
+    this.thinkingFiredForMessages.delete(messageId);
+    this.thinkingFinishedForMessages.delete(messageId);
 
     if (this.textMessageStates.size === 0) {
       logger.debug("[Aggregator] No more active messages, stopping typing indicator");

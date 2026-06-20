@@ -49,7 +49,10 @@ import {
   prepareAssistantStreamingPayload,
   renderAssistantFinalPartsSafe,
 } from "../messages/assistant-rendering.js";
-import { prepareThinkingStreamingPayload } from "../messages/thinking-rendering.js";
+import {
+  makeThinkingPayloadExpandable,
+  prepareThinkingStreamingPayload,
+} from "../messages/thinking-rendering.js";
 import { deliverExternalUserInputNotification } from "../messages/external-user-input-notification.js";
 import {
   backgroundSessionTracker,
@@ -578,11 +581,15 @@ class EventSubscriptionService implements BotEventSubscriptionService {
       });
 
       if (update.isFirstUpdate) {
-        await this.toolCallStreamer.breakSession(update.sessionId, "thinking_started");
+        void this.toolCallStreamer.breakSession(update.sessionId, "thinking_started").catch((error) => {
+          logger.error("[Bot] Failed to break tool stream before thinking message", error);
+        });
       }
 
       if (!config.bot.hideThinkingMessages && config.bot.showThinkingContent) {
-        const payload = prepareThinkingStreamingPayload(update.sections, RESPONSE_STREAM_TEXT_LIMIT);
+        const payload = prepareThinkingStreamingPayload(update.sections, RESPONSE_STREAM_TEXT_LIMIT, {
+          expandable: false,
+        });
         if (payload) {
           payload.sendOptions = { disable_notification: true };
           payload.editOptions = undefined;
@@ -606,6 +613,22 @@ class EventSubscriptionService implements BotEventSubscriptionService {
       if (update.isFirstUpdate && pinnedMessageManager.isInitialized()) {
         await pinnedMessageManager.refresh();
       }
+    });
+
+    summaryAggregator.setOnThinkingFinished((sessionId, messageId) => {
+      if (!this.botInstance || !this.chatIdInstance) {
+        return;
+      }
+
+      const currentSession = getCurrentSession();
+      if (!currentSession || currentSession.id !== sessionId) {
+        return;
+      }
+
+      logger.debug("[Bot] Agent thinking finished", { sessionId, messageId });
+      void this.completeThinkingStream(sessionId, messageId).catch((error) => {
+        logger.error("[Bot] Failed to finalize thinking stream early", error);
+      });
     });
 
     summaryAggregator.setOnTokens(async (tokens, isCompleted) => {
@@ -1008,14 +1031,15 @@ class EventSubscriptionService implements BotEventSubscriptionService {
   private async completeThinkingStream(sessionId: string, messageId: string): Promise<void> {
     const key = this.getThinkingPayloadKey(sessionId, messageId);
     const payload = this.thinkingStreamingPayloads.get(key);
+    const finalPayload = payload ? makeThinkingPayloadExpandable(payload) : undefined;
     const result = await this.responseStreamer.complete(
       sessionId,
       this.getThinkingStreamId(messageId),
-      payload,
+      finalPayload,
     );
     this.thinkingStreamingPayloads.delete(key);
 
-    if (result.streamed || !payload) {
+    if (result.streamed || !finalPayload) {
       return;
     }
 
@@ -1023,12 +1047,12 @@ class EventSubscriptionService implements BotEventSubscriptionService {
       return;
     }
 
-    for (const part of payload.parts) {
+    for (const part of finalPayload.parts) {
       await sendRenderedBotPart({
         api: this.botInstance.api,
         chatId: this.chatIdInstance,
         part,
-        options: payload.sendOptions as Parameters<typeof sendBotText>[0]["options"],
+        options: finalPayload.sendOptions as Parameters<typeof sendBotText>[0]["options"],
       });
     }
   }

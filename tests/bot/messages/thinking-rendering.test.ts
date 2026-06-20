@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { prepareThinkingStreamingPayload } from "../../../src/bot/messages/thinking-rendering.js";
+import {
+  makeThinkingPayloadExpandable,
+  prepareThinkingStreamingPayload,
+} from "../../../src/bot/messages/thinking-rendering.js";
 import { t } from "../../../src/i18n/index.js";
 
 describe("bot/messages/thinking-rendering", () => {
@@ -16,7 +19,7 @@ describe("bot/messages/thinking-rendering", () => {
     expect(payload?.parts).toEqual([
       {
         text: `${header}\n${text}`,
-        entities: [{ type: "blockquote", offset: header.length + 1, length: text.length }],
+        entities: [{ type: "expandable_blockquote", offset: header.length + 1, length: text.length }],
         fallbackText: `${header}\n> Line one\n> Line two`,
         source: "entities",
       },
@@ -38,6 +41,34 @@ describe("bot/messages/thinking-rendering", () => {
     ]);
   });
 
+  it("can render thinking content as a regular quote while streaming", () => {
+    const header = `${t("bot.thinking")} — Analysis`;
+    const payload = prepareThinkingStreamingPayload(
+      [{ id: "r1", title: "Analysis", text: "Line one" }],
+      3800,
+      { expandable: false },
+    );
+
+    expect(payload?.parts[0].entities).toEqual([
+      { type: "blockquote", offset: header.length + 1, length: "Line one".length },
+    ]);
+  });
+
+  it("converts streamed quote payloads to expandable quotes for final delivery", () => {
+    const header = t("bot.thinking");
+    const payload = prepareThinkingStreamingPayload([{ id: "r1", text: "Line one" }], 3800, {
+      expandable: false,
+    });
+
+    expect(payload).not.toBeNull();
+
+    const finalPayload = makeThinkingPayloadExpandable(payload!);
+
+    expect(finalPayload.parts[0].entities).toEqual([
+      { type: "expandable_blockquote", offset: header.length + 1, length: "Line one".length },
+    ]);
+  });
+
   it("splits long thinking content into multiple quoted parts", () => {
     const header = t("bot.thinking");
     const payload = prepareThinkingStreamingPayload(
@@ -51,7 +82,7 @@ describe("bot/messages/thinking-rendering", () => {
       `${header}\nij`,
     ]);
     expect(payload?.parts[0].entities).toEqual([
-      { type: "blockquote", offset: header.length + 1, length: 4 },
+      { type: "expandable_blockquote", offset: header.length + 1, length: 4 },
     ]);
   });
 });

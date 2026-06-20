@@ -10,6 +10,10 @@ export interface ThinkingSection {
   text: string;
 }
 
+interface ThinkingStreamingPayloadOptions {
+  expandable?: boolean;
+}
+
 function formatHeader(title?: string): string {
   const fallback = t("bot.thinking");
   const normalizedTitle = title?.trim();
@@ -35,7 +39,7 @@ function splitText(text: string, maxLength: number): string[] {
   return chunks;
 }
 
-function createThinkingPart(header: string, text: string): TelegramRenderedPart {
+function createThinkingPart(header: string, text: string, expandable: boolean): TelegramRenderedPart {
   if (!text) {
     return {
       text: header,
@@ -46,7 +50,7 @@ function createThinkingPart(header: string, text: string): TelegramRenderedPart 
 
   const renderedText = `${header}\n${text}`;
   const entity: MessageEntity = {
-    type: "blockquote",
+    type: expandable ? "expandable_blockquote" : "blockquote",
     offset: header.length + 1,
     length: text.length,
   };
@@ -62,8 +66,10 @@ function createThinkingPart(header: string, text: string): TelegramRenderedPart 
 export function prepareThinkingStreamingPayload(
   sections: ThinkingSection[],
   maxPartLength: number,
+  options: ThinkingStreamingPayloadOptions = {},
 ): StreamingMessagePayload | null {
   const parts: TelegramRenderedPart[] = [];
+  const expandable = options.expandable ?? true;
 
   for (const section of sections) {
     const header = formatHeader(section.title);
@@ -72,9 +78,23 @@ export function prepareThinkingStreamingPayload(
     const chunks = text ? splitText(text, textLimit) : [""];
 
     for (const chunk of chunks) {
-      parts.push(createThinkingPart(header, chunk));
+      parts.push(createThinkingPart(header, chunk, expandable));
     }
   }
 
   return parts.length > 0 ? { parts } : null;
+}
+
+export function makeThinkingPayloadExpandable(
+  payload: StreamingMessagePayload,
+): StreamingMessagePayload {
+  return {
+    ...payload,
+    parts: payload.parts.map((part) => ({
+      ...part,
+      entities: part.entities?.map((entity) =>
+        entity.type === "blockquote" ? { ...entity, type: "expandable_blockquote" } : entity,
+      ),
+    })),
+  };
 }

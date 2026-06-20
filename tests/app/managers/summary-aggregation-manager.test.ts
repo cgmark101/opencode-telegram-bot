@@ -28,6 +28,7 @@ describe("summary/aggregator", () => {
     summaryAggregator.setOnPartial(() => {});
     summaryAggregator.setOnExternalUserInput(() => {});
     summaryAggregator.setOnThinking(() => {});
+    summaryAggregator.setOnThinkingFinished(() => {});
     summaryAggregator.setOnSubagent(() => {});
     summaryAggregator.setOnSessionIdle(() => {});
     summaryAggregator.setOnSessionError(() => {});
@@ -713,6 +714,106 @@ describe("summary/aggregator", () => {
       "Final answer.",
       expect.any(Object),
     );
+  });
+
+  it("signals thinking finished once when assistant text starts after reasoning", async () => {
+    const onThinkingFinished = vi.fn();
+    summaryAggregator.setOnThinkingFinished(onThinkingFinished);
+    summaryAggregator.setSession("session-1");
+
+    summaryAggregator.processEvent({
+      type: "message.updated",
+      properties: {
+        info: {
+          id: "message-thinking-finished",
+          sessionID: "session-1",
+          role: "assistant",
+          time: { created: Date.now() },
+        },
+      },
+    } as unknown as Event);
+
+    summaryAggregator.processEvent({
+      type: "message.part.updated",
+      properties: {
+        part: {
+          id: "reasoning-part",
+          sessionID: "session-1",
+          messageID: "message-thinking-finished",
+          type: "reasoning",
+          text: "Thinking...",
+        },
+      },
+    } as unknown as Event);
+
+    summaryAggregator.processEvent({
+      type: "message.part.updated",
+      properties: {
+        part: {
+          id: "text-part",
+          sessionID: "session-1",
+          messageID: "message-thinking-finished",
+          type: "text",
+          text: "Answer start",
+        },
+      },
+    } as unknown as Event);
+
+    summaryAggregator.processEvent({
+      type: "message.part.delta",
+      properties: {
+        part: {
+          id: "text-part",
+          sessionID: "session-1",
+          messageID: "message-thinking-finished",
+          type: "text",
+        },
+        delta: " continues",
+      },
+    } as unknown as Event);
+
+    await new Promise<void>((resolve) => setImmediate(resolve));
+
+    expect(onThinkingFinished).toHaveBeenCalledTimes(1);
+    expect(onThinkingFinished).toHaveBeenCalledWith(
+      "session-1",
+      "message-thinking-finished",
+    );
+  });
+
+  it("does not signal thinking finished for assistant text without reasoning", async () => {
+    const onThinkingFinished = vi.fn();
+    summaryAggregator.setOnThinkingFinished(onThinkingFinished);
+    summaryAggregator.setSession("session-1");
+
+    summaryAggregator.processEvent({
+      type: "message.updated",
+      properties: {
+        info: {
+          id: "message-no-thinking-finished",
+          sessionID: "session-1",
+          role: "assistant",
+          time: { created: Date.now() },
+        },
+      },
+    } as unknown as Event);
+
+    summaryAggregator.processEvent({
+      type: "message.part.updated",
+      properties: {
+        part: {
+          id: "text-part",
+          sessionID: "session-1",
+          messageID: "message-no-thinking-finished",
+          type: "text",
+          text: "Answer only",
+        },
+      },
+    } as unknown as Event);
+
+    await new Promise<void>((resolve) => setImmediate(resolve));
+
+    expect(onThinkingFinished).not.toHaveBeenCalled();
   });
 
   it("streams partial text and passes messageId on completion", () => {
