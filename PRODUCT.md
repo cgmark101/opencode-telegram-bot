@@ -86,6 +86,7 @@ No public inbound ports are required for normal usage.
 - Configurable scheduled task limit (default: 10)
 - Configurable bot locale
 - Configurable visibility for service messages (thinking/tool calls)
+- Configurable compact output mode with a single edited progress message
 - Configurable opt-in display of full thinking/reasoning content
 - Configurable max code file size in KB (default: 100)
 - Optional STT settings for voice transcription (`STT_API_URL`, `STT_API_KEY`, `STT_MODEL`, `STT_LANGUAGE`)

@@ -237,6 +237,7 @@ When installed via npm, the configuration wizard handles the initial setup. The 
 | `TRACK_BACKGROUND_SESSIONS`                | Track detached/non-current sessions in the current selected project/worktree and send short notifications             |    No    | `true`                   |
 | `RESPONSE_STREAMING`                       | Stream assistant replies while they are generated across one or more Telegram messages                                |    No    | `true`                   |
 | `MESSAGE_FORMAT_MODE`                      | Assistant reply formatting mode: `markdown` (Telegram MarkdownV2) or `raw`                                            |    No    | `markdown`               |
+| `COMPACT_OUTPUT_MODE`                      | Use one edited compact progress message with tool/file counts and no diff documents                                   |    No    | `false`                  |
 | `CODE_FILE_MAX_SIZE_KB`                    | Max file size (KB) to send as document                                                                                |    No    | `100`                    |
 | `STT_API_URL`                              | Whisper-compatible API base URL (enables voice/audio transcription)                                                   |    No    | —                        |
 | `STT_API_KEY`                              | API key for your STT provider                                                                                         |    No    | —                        |

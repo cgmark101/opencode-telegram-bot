@@ -88,6 +88,8 @@ export interface ToolFileInfo extends ToolInfo {
 
 type ToolCallback = (toolInfo: ToolInfo) => void;
 
+type RootToolUpdateCallback = (toolInfo: ToolInfo) => void;
+
 type ToolFileCallback = (fileInfo: ToolFileInfo) => void;
 
 type QuestionCallback = (questions: Question[], requestID: string, sessionId: string) => void;
@@ -235,6 +237,7 @@ class SummaryAggregator {
   private onPartialCallback: MessagePartialCallback | null = null;
   private onExternalUserInputCallback: ExternalUserInputCallback | null = null;
   private onToolCallback: ToolCallback | null = null;
+  private onRootToolUpdateCallback: RootToolUpdateCallback | null = null;
   private onToolFileCallback: ToolFileCallback | null = null;
   private onQuestionCallback: QuestionCallback | null = null;
   private onQuestionErrorCallback: QuestionErrorCallback | null = null;
@@ -289,6 +292,10 @@ class SummaryAggregator {
 
   setOnTool(callback: ToolCallback): void {
     this.onToolCallback = callback;
+  }
+
+  setOnRootToolUpdate(callback: RootToolUpdateCallback): void {
+    this.onRootToolUpdateCallback = callback;
   }
 
   setOnToolFile(callback: ToolFileCallback): void {
@@ -1311,6 +1318,20 @@ class SummaryAggregator {
       logger.debug(
         `[Aggregator] Tool event: callID=${part.callID}, tool=${part.tool}, status=${"status" in state ? state.status : "unknown"}`,
       );
+
+      if (this.onRootToolUpdateCallback) {
+        this.onRootToolUpdateCallback({
+          sessionId: part.sessionID,
+          messageId: messageID,
+          callId: part.callID,
+          tool: part.tool,
+          state: part.state,
+          input,
+          title,
+          metadata: "metadata" in state ? (state.metadata as { [key: string]: unknown }) : undefined,
+          hasFileAttachment: false,
+        });
+      }
 
       if (part.tool === "question") {
         logger.debug(`[Aggregator] Question tool part update:`, JSON.stringify(part, null, 2));

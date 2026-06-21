@@ -24,6 +24,7 @@ describe("summary/aggregator", () => {
     summaryAggregator.clear();
     summaryAggregator.setOnCleared(() => {});
     summaryAggregator.setOnTool(() => {});
+    summaryAggregator.setOnRootToolUpdate(() => {});
     summaryAggregator.setOnToolFile(() => {});
     summaryAggregator.setOnPartial(() => {});
     summaryAggregator.setOnExternalUserInput(() => {});
@@ -91,6 +92,84 @@ describe("summary/aggregator", () => {
         hasFileAttachment: false,
       }),
     );
+  });
+
+  it("emits root tool updates before completion filtering", () => {
+    const onRootToolUpdate = vi.fn();
+    summaryAggregator.setOnRootToolUpdate(onRootToolUpdate);
+    summaryAggregator.setSession("session-1");
+
+    summaryAggregator.processEvent({
+      type: "message.updated",
+      properties: {
+        info: {
+          id: "message-1",
+          sessionID: "session-1",
+          role: "assistant",
+          time: { created: Date.now() },
+        },
+      },
+    } as unknown as Event);
+
+    summaryAggregator.processEvent({
+      type: "message.part.updated",
+      properties: {
+        part: {
+          id: "part-1",
+          sessionID: "session-1",
+          messageID: "message-1",
+          type: "tool",
+          callID: "call-task",
+          tool: "task",
+          state: {
+            status: "running",
+            input: {
+              description: "Explore repo",
+            },
+            metadata: {},
+          },
+        },
+      },
+    } as unknown as Event);
+
+    expect(onRootToolUpdate).toHaveBeenCalledTimes(1);
+    expect(onRootToolUpdate.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        sessionId: "session-1",
+        callId: "call-task",
+        tool: "task",
+        hasFileAttachment: false,
+      }),
+    );
+  });
+
+  it("does not emit root tool updates for unrelated child sessions", () => {
+    const onRootToolUpdate = vi.fn();
+    summaryAggregator.setOnRootToolUpdate(onRootToolUpdate);
+    summaryAggregator.setSession("session-1");
+
+    summaryAggregator.processEvent({
+      type: "message.part.updated",
+      properties: {
+        part: {
+          id: "part-1",
+          sessionID: "child-session",
+          messageID: "message-1",
+          type: "tool",
+          callID: "child-call",
+          tool: "bash",
+          state: {
+            status: "running",
+            input: {
+              command: "npm test",
+            },
+            metadata: {},
+          },
+        },
+      },
+    } as unknown as Event);
+
+    expect(onRootToolUpdate).not.toHaveBeenCalled();
   });
 
   it("emits live subagent updates with per-session model, context, cost, and current tool", () => {
