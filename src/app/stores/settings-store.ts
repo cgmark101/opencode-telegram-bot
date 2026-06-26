@@ -105,6 +105,15 @@ export function setCompactOutputMode(enabled: boolean): void {
   void writeSettingsFile(currentSettings);
 }
 
+export function getShowThinkingContent(): boolean {
+  return currentSettings.showThinkingContent ?? true;
+}
+
+export function setShowThinkingContent(enabled: boolean): void {
+  currentSettings.showThinkingContent = enabled;
+  void writeSettingsFile(currentSettings);
+}
+
 export function getCurrentAgent(): string | undefined {
   return currentSettings.currentAgent;
 }

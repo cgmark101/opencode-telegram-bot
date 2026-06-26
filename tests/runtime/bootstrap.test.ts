@@ -95,7 +95,6 @@ describe("runtime/bootstrap", () => {
     expect(updated).toContain("OPENCODE_SERVER_USERNAME=opencode");
     expect(updated).toContain("# OPENCODE_SERVER_PASSWORD=");
     expect(updated).toContain("BOT_LOCALE=ru");
-    expect(updated).toContain("# Hide thinking indicator messages (default: false)");
 
     expect(updated.indexOf("# Telegram Bot Token (from @BotFather)")).toBeLessThan(
       updated.indexOf("TELEGRAM_BOT_TOKEN=token:value"),

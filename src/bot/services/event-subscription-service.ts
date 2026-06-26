@@ -8,7 +8,7 @@ import { summaryAggregator, type ToolInfo } from "../../app/managers/summary-agg
 import { formatCompactToolInfo, formatToolInfo } from "../../app/formatters/summary-formatter.js";
 import { renderSubagentCards } from "../../app/formatters/subagent-formatter.js";
 import { ToolMessageBatcher } from "../../app/formatters/tool-message-batcher.js";
-import { getCompactOutputMode } from "../../app/stores/settings-store.js";
+import { getCompactOutputMode, getShowThinkingContent } from "../../app/stores/settings-store.js";
 import { getCurrentSession } from "../../app/services/session-service.js";
 import { ingestSessionInfoForCache } from "../../app/services/session-cache-service.js";
 import { logger } from "../../utils/logger.js";
@@ -720,7 +720,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         });
       }
 
-      if (!config.bot.hideThinkingMessages && config.bot.showThinkingContent) {
+      if (getShowThinkingContent()) {
         const payload = prepareThinkingStreamingPayload(update.sections, RESPONSE_STREAM_TEXT_LIMIT, {
           expandable: false,
         });
@@ -739,9 +739,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
           );
         }
       } else if (update.isFirstUpdate) {
-        deliverThinkingMessage(update.sessionId, this.toolMessageBatcher, {
-          hideThinkingMessages: config.bot.hideThinkingMessages,
-        });
+        deliverThinkingMessage(update.sessionId, this.toolMessageBatcher);
       }
 
       if (update.isFirstUpdate && pinnedMessageManager.isInitialized()) {

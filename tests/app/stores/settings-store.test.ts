@@ -6,9 +6,11 @@ import { setRuntimeMode } from "../../../src/runtime/mode.js";
 import {
   __resetSettingsForTests,
   getCompactOutputMode,
+  getShowThinkingContent,
   getTtsMode,
   loadSettings,
   setCompactOutputMode,
+  setShowThinkingContent,
 } from "../../../src/app/stores/settings-store.js";
 
 describe("app/stores/settings-store", () => {
@@ -58,6 +60,20 @@ describe("app/stores/settings-store", () => {
     expect(getCompactOutputMode()).toBe(true);
   });
 
+  it("shows thinking content by default", async () => {
+    await loadSettings();
+
+    expect(getShowThinkingContent()).toBe(true);
+  });
+
+  it("loads thinking content setting from settings.json", async () => {
+    await writeFile(path.join(tempHome, "settings.json"), JSON.stringify({ showThinkingContent: false }));
+
+    await loadSettings();
+
+    expect(getShowThinkingContent()).toBe(false);
+  });
+
   it("persists compact output mode to settings.json", async () => {
     await loadSettings();
 
@@ -75,6 +91,18 @@ describe("app/stores/settings-store", () => {
     await vi.waitFor(async () => {
       const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
       expect(settings.compactOutputMode).toBe(false);
+    });
+  });
+
+  it("persists thinking content setting to settings.json", async () => {
+    await loadSettings();
+
+    setShowThinkingContent(false);
+
+    expect(getShowThinkingContent()).toBe(false);
+    await vi.waitFor(async () => {
+      const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
+      expect(settings.showThinkingContent).toBe(false);
     });
   });
 });

@@ -152,11 +152,10 @@ export const de: I18nDictionary = {
 
   "settings.menu.title": "⚙️ Einstellungen",
   "settings.compact_output.label": "Kompakte Ausgabe",
+  "settings.thinking_content.label": "Thinking-Inhalt",
   "settings.tts.label": "Audioantworten",
-  "settings.tts.title": "Audioantwort-Modus",
   "settings.value.on": "Ein",
   "settings.value.off": "Aus",
-  "settings.button.back": "⬅️ Zurück",
   "settings.saved": "✅ Einstellung gespeichert.",
 
   "projects.empty":

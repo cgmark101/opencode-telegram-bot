@@ -152,11 +152,10 @@ export const es: I18nDictionary = {
 
   "settings.menu.title": "⚙️ Ajustes",
   "settings.compact_output.label": "Salida compacta",
+  "settings.thinking_content.label": "Contenido de thinking",
   "settings.tts.label": "Respuestas de audio",
-  "settings.tts.title": "Modo de respuestas de audio",
   "settings.value.on": "Activado",
   "settings.value.off": "Desactivado",
-  "settings.button.back": "⬅️ Atrás",
   "settings.saved": "✅ Ajuste guardado.",
 
   "projects.empty":

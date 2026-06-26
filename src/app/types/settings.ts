@@ -16,6 +16,7 @@ export interface Settings {
   pinnedMessageId?: number;
   ttsMode?: "off" | "all" | "auto";
   compactOutputMode?: boolean;
+  showThinkingContent?: boolean;
   sessionDirectoryCache?: SessionDirectoryCacheInfo;
   scheduledTasks?: ScheduledTask[];
   scheduledTaskSessionIgnores?: ScheduledTaskSessionIgnoreInfo[];

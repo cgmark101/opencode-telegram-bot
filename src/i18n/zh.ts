@@ -132,11 +132,10 @@ export const zh: I18nDictionary = {
 
   "settings.menu.title": "⚙️ 设置",
   "settings.compact_output.label": "紧凑输出模式",
+  "settings.thinking_content.label": "思考内容",
   "settings.tts.label": "语音回复",
-  "settings.tts.title": "语音回复模式",
   "settings.value.on": "开启",
   "settings.value.off": "关闭",
-  "settings.button.back": "⬅️ 返回",
   "settings.saved": "✅ 设置已保存。",
 
   "projects.empty":

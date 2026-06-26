@@ -145,11 +145,10 @@ export const en = {
 
   "settings.menu.title": "⚙️ Settings",
   "settings.compact_output.label": "Compact output mode",
+  "settings.thinking_content.label": "Thinking content",
   "settings.tts.label": "Audio replies",
-  "settings.tts.title": "Audio reply mode",
   "settings.value.on": "On",
   "settings.value.off": "Off",
-  "settings.button.back": "⬅️ Back",
   "settings.saved": "✅ Setting saved.",
 
   "projects.empty":

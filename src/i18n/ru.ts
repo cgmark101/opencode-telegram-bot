@@ -144,11 +144,10 @@ export const ru: I18nDictionary = {
 
   "settings.menu.title": "⚙️ Настройки",
   "settings.compact_output.label": "Компактный вывод",
+  "settings.thinking_content.label": "Содержимое thinking",
   "settings.tts.label": "Аудиоответы",
-  "settings.tts.title": "Режим аудиоответов",
   "settings.value.on": "Вкл",
   "settings.value.off": "Выкл",
-  "settings.button.back": "⬅️ Назад",
   "settings.saved": "✅ Настройка сохранена.",
 
   "projects.empty":

@@ -133,11 +133,10 @@ export const ar: I18nDictionary = {
 
   "settings.menu.title": "⚙️ الإعدادات",
   "settings.compact_output.label": "وضع الإخراج المختصر",
+  "settings.thinking_content.label": "محتوى التفكير",
   "settings.tts.label": "الردود الصوتية",
-  "settings.tts.title": "وضع الردود الصوتية",
   "settings.value.on": "مفعّل",
   "settings.value.off": "معطّل",
-  "settings.button.back": "⬅️ رجوع",
   "settings.saved": "✅ تم حفظ الإعداد.",
 
   "projects.empty": "📭 لم يتم العثور على مشاريع.\n\nافتح مجلدًا في OpenCode وأنشئ جلسة واحدة على الأقل، ثم سيظهر المشروع هنا.",

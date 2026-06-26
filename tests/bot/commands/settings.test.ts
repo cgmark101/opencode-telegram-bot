@@ -7,12 +7,15 @@ import { t } from "../../../src/i18n/index.js";
 import {
   SETTINGS_CALLBACK_PREFIX,
   SETTINGS_COMPACT_OUTPUT_CALLBACK,
+  SETTINGS_THINKING_CONTENT_CALLBACK,
   SETTINGS_TTS_CALLBACK,
 } from "../../../src/bot/menus/settings-menu.js";
 
 const mocked = vi.hoisted(() => ({
   getCompactOutputModeMock: vi.fn(),
   setCompactOutputModeMock: vi.fn(),
+  getShowThinkingContentMock: vi.fn(),
+  setShowThinkingContentMock: vi.fn(),
   getTtsModeMock: vi.fn(),
   setTtsModeMock: vi.fn(),
   isTtsConfiguredMock: vi.fn(),
@@ -21,6 +24,8 @@ const mocked = vi.hoisted(() => ({
 vi.mock("../../../src/app/stores/settings-store.js", () => ({
   getCompactOutputMode: mocked.getCompactOutputModeMock,
   setCompactOutputMode: mocked.setCompactOutputModeMock,
+  getShowThinkingContent: mocked.getShowThinkingContentMock,
+  setShowThinkingContent: mocked.setShowThinkingContentMock,
   getTtsMode: mocked.getTtsModeMock,
   setTtsMode: mocked.setTtsModeMock,
 }));
@@ -33,6 +38,8 @@ describe("bot/commands/settings-command", () => {
   beforeEach(() => {
     mocked.getCompactOutputModeMock.mockReset();
     mocked.setCompactOutputModeMock.mockReset();
+    mocked.getShowThinkingContentMock.mockReset();
+    mocked.setShowThinkingContentMock.mockReset();
     mocked.getTtsModeMock.mockReset();
     mocked.setTtsModeMock.mockReset();
     mocked.isTtsConfiguredMock.mockReset();
@@ -41,6 +48,7 @@ describe("bot/commands/settings-command", () => {
 
   it("shows settings menu with current compact output and TTS modes", async () => {
     mocked.getCompactOutputModeMock.mockReturnValue(true);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
     mocked.getTtsModeMock.mockReturnValue("auto");
     const replyMock = vi.fn().mockResolvedValue({ message_id: 10 });
     const ctx = {
@@ -62,12 +70,36 @@ describe("bot/commands/settings-command", () => {
     );
     expect(opts.reply_markup.inline_keyboard[2][0].text).toBe(t("inline.button.cancel"));
   });
+
+  it("shows thinking content setting when compact output is disabled", async () => {
+    mocked.getCompactOutputModeMock.mockReturnValue(false);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
+    mocked.getTtsModeMock.mockReturnValue("off");
+    const replyMock = vi.fn().mockResolvedValue({ message_id: 10 });
+    const ctx = {
+      chat: { id: 42, type: "private" },
+      message: { text: "/settings" },
+      reply: replyMock,
+    } as unknown as Context;
+
+    await settingsCommand(ctx as never);
+
+    const [, opts] = replyMock.mock.calls[0];
+    expect(opts.reply_markup.inline_keyboard[1][0].text).toBe(
+      `${t("settings.thinking_content.label")}: ${t("settings.value.on")}`,
+    );
+    expect(opts.reply_markup.inline_keyboard[2][0].text).toBe(
+      `${t("settings.tts.label")}: ${t("status.tts.off")}`,
+    );
+  });
 });
 
 describe("bot/callbacks/settings-callback-handler", () => {
   beforeEach(() => {
     mocked.getCompactOutputModeMock.mockReset();
     mocked.setCompactOutputModeMock.mockReset();
+    mocked.getShowThinkingContentMock.mockReset();
+    mocked.setShowThinkingContentMock.mockReset();
     mocked.getTtsModeMock.mockReset();
     mocked.setTtsModeMock.mockReset();
     mocked.isTtsConfiguredMock.mockReset();
@@ -93,27 +125,12 @@ describe("bot/callbacks/settings-callback-handler", () => {
     } as unknown as Context;
   }
 
-  it("opens compact output mode value picker", async () => {
-    mocked.getCompactOutputModeMock.mockReturnValue(false);
-    activateSettingsMenu();
-    const ctx = createCallbackContext(SETTINGS_COMPACT_OUTPUT_CALLBACK);
-
-    const result = await handleSettingsCallback(ctx);
-
-    expect(result).toBe(true);
-    expect(ctx.answerCallbackQuery).toHaveBeenCalledTimes(1);
-    expect(ctx.editMessageText).toHaveBeenCalledTimes(1);
-    const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
-    expect(text).toBe(`${t("settings.menu.title")}\n\n<b>${t("settings.compact_output.label")}</b>`);
-    expect(opts?.parse_mode).toBe("HTML");
-    expect(opts?.reply_markup.inline_keyboard[0][0].text).toContain("✅");
-  });
-
-  it("saves compact output mode and returns to settings menu", async () => {
-    mocked.getCompactOutputModeMock.mockReturnValue(true);
+  it("toggles compact output mode and returns to settings menu", async () => {
+    mocked.getCompactOutputModeMock.mockReturnValueOnce(false).mockReturnValueOnce(true);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
     mocked.getTtsModeMock.mockReturnValue("off");
     activateSettingsMenu();
-    const ctx = createCallbackContext(`${SETTINGS_COMPACT_OUTPUT_CALLBACK}:on`);
+    const ctx = createCallbackContext(SETTINGS_COMPACT_OUTPUT_CALLBACK);
 
     const result = await handleSettingsCallback(ctx);
 
@@ -130,47 +147,50 @@ describe("bot/callbacks/settings-callback-handler", () => {
     );
   });
 
-  it("opens TTS mode value picker", async () => {
-    mocked.getTtsModeMock.mockReturnValue("all");
+  it("toggles thinking content and returns to settings menu", async () => {
+    mocked.getCompactOutputModeMock.mockReturnValue(false);
+    mocked.getShowThinkingContentMock.mockReturnValueOnce(true).mockReturnValueOnce(false);
+    mocked.getTtsModeMock.mockReturnValue("off");
+    activateSettingsMenu();
+    const ctx = createCallbackContext(SETTINGS_THINKING_CONTENT_CALLBACK);
+
+    const result = await handleSettingsCallback(ctx);
+
+    expect(result).toBe(true);
+    expect(mocked.setShowThinkingContentMock).toHaveBeenCalledWith(false);
+    expect(ctx.answerCallbackQuery).toHaveBeenCalledWith({ text: t("settings.saved") });
+    const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
+    expect(text).toBe(t("settings.menu.title"));
+    expect(opts?.reply_markup.inline_keyboard[1][0].text).toBe(
+      `${t("settings.thinking_content.label")}: ${t("settings.value.off")}`,
+    );
+  });
+
+  it("cycles TTS mode and returns to settings menu", async () => {
+    mocked.isTtsConfiguredMock.mockReturnValue(true);
+    mocked.getCompactOutputModeMock.mockReturnValue(false);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
+    mocked.getTtsModeMock.mockReturnValueOnce("off").mockReturnValueOnce("all");
     activateSettingsMenu();
     const ctx = createCallbackContext(SETTINGS_TTS_CALLBACK);
 
     const result = await handleSettingsCallback(ctx);
 
     expect(result).toBe(true);
-    expect(ctx.answerCallbackQuery).toHaveBeenCalledTimes(1);
-    expect(ctx.editMessageText).toHaveBeenCalledTimes(1);
-    const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
-    expect(text).toBe(`${t("settings.menu.title")}\n\n<b>${t("settings.tts.title")}</b>`);
-    expect(opts?.parse_mode).toBe("HTML");
-    expect(opts?.reply_markup.inline_keyboard[0][0].text).toContain("🔇");
-    expect(opts?.reply_markup.inline_keyboard[1][0].text).toContain("✅");
-    expect(opts?.reply_markup.inline_keyboard[2][0].text).toContain("🎤");
-  });
-
-  it("saves TTS mode and returns to settings menu", async () => {
-    mocked.isTtsConfiguredMock.mockReturnValue(true);
-    mocked.getCompactOutputModeMock.mockReturnValue(false);
-    mocked.getTtsModeMock.mockReturnValue("auto");
-    activateSettingsMenu();
-    const ctx = createCallbackContext(`${SETTINGS_TTS_CALLBACK}:auto`);
-
-    const result = await handleSettingsCallback(ctx);
-
-    expect(result).toBe(true);
-    expect(mocked.setTtsModeMock).toHaveBeenCalledWith("auto");
-    expect(ctx.answerCallbackQuery).toHaveBeenCalledWith({ text: t("tts.auto") });
+    expect(mocked.setTtsModeMock).toHaveBeenCalledWith("all");
+    expect(ctx.answerCallbackQuery).toHaveBeenCalledWith({ text: t("tts.all") });
     const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
     expect(text).toBe(t("settings.menu.title"));
-    expect(opts?.reply_markup.inline_keyboard[1][0].text).toBe(
-      `${t("settings.tts.label")}: ${t("status.tts.auto")}`,
+    expect(opts?.reply_markup.inline_keyboard[2][0].text).toBe(
+      `${t("settings.tts.label")}: ${t("status.tts.all")}`,
     );
   });
 
   it("shows alert when TTS is not configured", async () => {
     mocked.isTtsConfiguredMock.mockReturnValue(false);
+    mocked.getTtsModeMock.mockReturnValue("off");
     activateSettingsMenu();
-    const ctx = createCallbackContext(`${SETTINGS_TTS_CALLBACK}:all`);
+    const ctx = createCallbackContext(SETTINGS_TTS_CALLBACK);
 
     const result = await handleSettingsCallback(ctx);
 
@@ -183,12 +203,13 @@ describe("bot/callbacks/settings-callback-handler", () => {
     expect(ctx.editMessageText).not.toHaveBeenCalled();
   });
 
-  it("allows selecting TTS off when TTS is not configured", async () => {
+  it("allows cycling TTS to off when TTS is not configured", async () => {
     mocked.isTtsConfiguredMock.mockReturnValue(false);
     mocked.getCompactOutputModeMock.mockReturnValue(false);
-    mocked.getTtsModeMock.mockReturnValue("off");
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
+    mocked.getTtsModeMock.mockReturnValueOnce("auto").mockReturnValueOnce("off");
     activateSettingsMenu();
-    const ctx = createCallbackContext(`${SETTINGS_TTS_CALLBACK}:off`);
+    const ctx = createCallbackContext(SETTINGS_TTS_CALLBACK);
 
     const result = await handleSettingsCallback(ctx);
 
