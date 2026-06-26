@@ -15,6 +15,7 @@ export const ar: I18nDictionary = {
   "cmd.description.sessions": "عرض الجلسات السابقة",
   "cmd.description.messages": "استعراض رسائل الجلسة",
   "cmd.description.tts": "اختيار وضع الردود الصوتية",
+  "cmd.description.settings": "تغيير إعدادات البوت",
   "cmd.description.projects": "عرض المشاريع",
   "cmd.description.worktree": "التبديل بين نسخ العمل في Git",
   "cmd.description.task": "إنشاء مهمة مجدولة",
@@ -131,6 +132,13 @@ export const ar: I18nDictionary = {
   "tts.auto": "🎤 تم تفعيل الردود الصوتية للرسائل الصوتية فقط.",
   "tts.not_configured": "⚠️ الردود الصوتية غير متاحة حاليًا. اضبط `TTS_API_URL` و`TTS_API_KEY` أولًا.",
   "tts.failed": "⚠️ تعذر إنشاء الرد الصوتي.",
+
+  "settings.menu.title": "⚙️ الإعدادات",
+  "settings.compact_output.label": "وضع الإخراج المختصر",
+  "settings.value.on": "مفعّل",
+  "settings.value.off": "معطّل",
+  "settings.button.back": "⬅️ رجوع",
+  "settings.saved": "✅ تم حفظ الإعداد.",
 
   "projects.empty": "📭 لم يتم العثور على مشاريع.\n\nافتح مجلدًا في OpenCode وأنشئ جلسة واحدة على الأقل، ثم سيظهر المشروع هنا.",
   "projects.select": "اختر مشروعًا:",

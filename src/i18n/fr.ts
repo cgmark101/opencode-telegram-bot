@@ -8,6 +8,7 @@ export const fr: I18nDictionary = {
   "cmd.description.sessions": "Lister les sessions",
   "cmd.description.messages": "Parcourir les messages de session",
   "cmd.description.tts": "Choisir le mode des réponses audio",
+  "cmd.description.settings": "Modifier les paramètres du bot",
   "cmd.description.projects": "Lister les projets",
   "cmd.description.worktree": "Changer de worktree git",
   "cmd.description.task": "Créer une tâche planifiée",
@@ -152,6 +153,13 @@ export const fr: I18nDictionary = {
   "tts.not_configured":
     "⚠️ Les réponses audio ne sont pas disponibles. Définissez d'abord `TTS_API_URL` et `TTS_API_KEY`.",
   "tts.failed": "⚠️ Impossible de générer la réponse audio.",
+
+  "settings.menu.title": "⚙️ Paramètres",
+  "settings.compact_output.label": "Sortie compacte",
+  "settings.value.on": "Activé",
+  "settings.value.off": "Désactivé",
+  "settings.button.back": "⬅️ Retour",
+  "settings.saved": "✅ Paramètre enregistré.",
 
   "projects.empty":
     "📭 Aucun projet trouvé.\n\nOuvrez un répertoire dans OpenCode et créez au moins une session, il apparaîtra ensuite ici.",

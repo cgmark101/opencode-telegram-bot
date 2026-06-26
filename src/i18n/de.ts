@@ -8,6 +8,7 @@ export const de: I18nDictionary = {
   "cmd.description.sessions": "Sitzungen auflisten",
   "cmd.description.messages": "Sitzungsnachrichten durchsuchen",
   "cmd.description.tts": "Audioantwort-Modus wählen",
+  "cmd.description.settings": "Bot-Einstellungen ändern",
   "cmd.description.projects": "Projekte auflisten",
   "cmd.description.worktree": "Git-Worktrees wechseln",
   "cmd.description.task": "Geplante Aufgabe erstellen",
@@ -150,6 +151,13 @@ export const de: I18nDictionary = {
   "tts.not_configured":
     "⚠️ Audioantworten sind nicht verfugbar. Setze zuerst `TTS_API_URL` und `TTS_API_KEY`.",
   "tts.failed": "⚠️ Audioreply konnte nicht erzeugt werden.",
+
+  "settings.menu.title": "⚙️ Einstellungen",
+  "settings.compact_output.label": "Kompakte Ausgabe",
+  "settings.value.on": "Ein",
+  "settings.value.off": "Aus",
+  "settings.button.back": "⬅️ Zurück",
+  "settings.saved": "✅ Einstellung gespeichert.",
 
   "projects.empty":
     "📭 Keine Projekte gefunden.\n\nÖffne ein Verzeichnis in OpenCode und erstelle mindestens eine Sitzung, dann erscheint es hier.",

@@ -18,6 +18,7 @@ describe("bot/routers/command-router", () => {
       "help",
       "status",
       "tts",
+      "settings",
       "opencode_start",
       "opencode_stop",
       "projects",

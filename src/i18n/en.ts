@@ -6,6 +6,7 @@ export const en = {
   "cmd.description.sessions": "List sessions",
   "cmd.description.messages": "Browse session messages",
   "cmd.description.tts": "Choose audio reply mode",
+  "cmd.description.settings": "Change bot settings",
   "cmd.description.projects": "List projects",
   "cmd.description.worktree": "Switch git worktrees",
   "cmd.description.task": "Create a scheduled task",
@@ -143,6 +144,13 @@ export const en = {
   "tts.not_configured":
     "⚠️ Audio replies are unavailable. Set `TTS_API_URL` and `TTS_API_KEY` first.",
   "tts.failed": "⚠️ Failed to generate audio reply.",
+
+  "settings.menu.title": "⚙️ Settings",
+  "settings.compact_output.label": "Compact output mode",
+  "settings.value.on": "On",
+  "settings.value.off": "Off",
+  "settings.button.back": "⬅️ Back",
+  "settings.saved": "✅ Setting saved.",
 
   "projects.empty":
     "📭 No projects found.\n\nOpen a directory in OpenCode and create at least one session, then it will appear here.",

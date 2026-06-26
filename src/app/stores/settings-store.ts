@@ -96,6 +96,15 @@ export function setTtsMode(mode: TtsMode): void {
   void writeSettingsFile(currentSettings);
 }
 
+export function getCompactOutputMode(): boolean {
+  return currentSettings.compactOutputMode ?? false;
+}
+
+export function setCompactOutputMode(enabled: boolean): void {
+  currentSettings.compactOutputMode = enabled;
+  void writeSettingsFile(currentSettings);
+}
+
 export function getCurrentAgent(): string | undefined {
   return currentSettings.currentAgent;
 }

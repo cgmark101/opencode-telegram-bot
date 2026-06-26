@@ -15,6 +15,7 @@ export interface Settings {
   currentModel?: ModelInfo;
   pinnedMessageId?: number;
   ttsMode?: "off" | "all" | "auto";
+  compactOutputMode?: boolean;
   sessionDirectoryCache?: SessionDirectoryCacheInfo;
   scheduledTasks?: ScheduledTask[];
   scheduledTaskSessionIgnores?: ScheduledTaskSessionIgnoreInfo[];

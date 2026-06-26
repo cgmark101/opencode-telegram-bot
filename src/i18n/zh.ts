@@ -8,6 +8,7 @@ export const zh: I18nDictionary = {
   "cmd.description.sessions": "列出会话",
   "cmd.description.messages": "浏览会话消息",
   "cmd.description.tts": "选择语音回复模式",
+  "cmd.description.settings": "更改机器人设置",
   "cmd.description.projects": "列出项目",
   "cmd.description.worktree": "切换 git worktree",
   "cmd.description.task": "创建定时任务",
@@ -130,6 +131,13 @@ export const zh: I18nDictionary = {
   "tts.auto": "🎤 仅为语音消息启用语音回复。",
   "tts.not_configured": "⚠️ 语音回复暂不可用。请先设置 `TTS_API_URL` 和 `TTS_API_KEY`。",
   "tts.failed": "⚠️ 生成语音回复失败。",
+
+  "settings.menu.title": "⚙️ 设置",
+  "settings.compact_output.label": "紧凑输出模式",
+  "settings.value.on": "开启",
+  "settings.value.off": "关闭",
+  "settings.button.back": "⬅️ 返回",
+  "settings.saved": "✅ 设置已保存。",
 
   "projects.empty":
     "📭 未找到项目。\n\n在 OpenCode 中打开一个目录并至少创建一个会话，然后它会出现在这里。",

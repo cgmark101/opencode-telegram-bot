@@ -8,6 +8,7 @@ import { summaryAggregator, type ToolInfo } from "../../app/managers/summary-agg
 import { formatCompactToolInfo, formatToolInfo } from "../../app/formatters/summary-formatter.js";
 import { renderSubagentCards } from "../../app/formatters/subagent-formatter.js";
 import { ToolMessageBatcher } from "../../app/formatters/tool-message-batcher.js";
+import { getCompactOutputMode } from "../../app/stores/settings-store.js";
 import { getCurrentSession } from "../../app/services/session-service.js";
 import { ingestSessionInfoForCache } from "../../app/services/session-cache-service.js";
 import { logger } from "../../utils/logger.js";
@@ -69,13 +70,16 @@ import { stopEventListening, subscribeToEvents } from "../../opencode/events.js"
 const TELEGRAM_DOCUMENT_CAPTION_MAX_LENGTH = 1024;
 const RESPONSE_STREAM_THROTTLE_MS = config.bot.responseStreamThrottleMs;
 const RESPONSE_STREAMING_MODE = config.bot.responseStreamingMode;
-const COMPACT_PROGRESS_MODE = config.bot.compactOutputMode;
 const RESPONSE_STREAM_TEXT_LIMIT = 3800;
 const SESSION_RETRY_PREFIX = "🔁";
 const SUBAGENT_STREAM_PREFIX = "🧩";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const TEMP_DIR = path.join(__dirname, "..", "..", ".tmp");
+
+function isCompactProgressMode(): boolean {
+  return getCompactOutputMode();
+}
 
 type EventStreamItem = {
   type: string;
@@ -331,7 +335,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         void this.finalizeCompactProgress(sessionId)
           .then(() => {
             const activeSession = getCurrentSession();
@@ -405,7 +409,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
 
           await this.completeThinkingStream(sessionId, messageId);
 
-          if (COMPACT_PROGRESS_MODE) {
+          if (isCompactProgressMode()) {
             await this.finalizeCompactProgress(sessionId);
           }
 
@@ -476,7 +480,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
     });
 
     summaryAggregator.setOnRootToolUpdate((toolInfo) => {
-      if (!COMPACT_PROGRESS_MODE) {
+      if (!isCompactProgressMode()) {
         return;
       }
 
@@ -506,7 +510,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         return;
       }
 
@@ -541,7 +545,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         return;
       }
 
@@ -582,7 +586,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         return;
       }
 
@@ -616,7 +620,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         this.compactProgressStreamer.updateWaitingForQuestion(sessionId);
       }
 
@@ -669,7 +673,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         this.compactProgressStreamer.updateWaitingForPermission(currentSession.id);
       }
 
@@ -701,7 +705,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         isFirstUpdate: update.isFirstUpdate,
       });
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         this.compactProgressStreamer.updateThinking(update.sessionId);
 
         if (update.isFirstUpdate && pinnedMessageManager.isInitialized()) {
@@ -936,7 +940,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
         return;
       }
 
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         this.compactProgressStreamer.updateActivity(sessionId, t("progress.compact.retrying"));
         return;
       }
@@ -952,7 +956,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
     });
 
     summaryAggregator.setOnSessionDiff(async (sessionId, diffs) => {
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         for (const diff of diffs) {
           this.compactProgressStreamer.addFileChange(sessionId, diff.file);
         }
@@ -970,7 +974,7 @@ class EventSubscriptionService implements BotEventSubscriptionService {
     });
 
     summaryAggregator.setOnFileChange((change) => {
-      if (COMPACT_PROGRESS_MODE) {
+      if (isCompactProgressMode()) {
         const currentSession = getCurrentSession();
         if (currentSession) {
           this.compactProgressStreamer.addFileChange(currentSession.id, change.file);

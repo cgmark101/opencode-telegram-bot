@@ -128,30 +128,6 @@ describe("config boolean env parsing", () => {
     expect(config.bot.messageFormatMode).toBe("markdown");
   });
 
-  it("disables compact output mode by default", async () => {
-    vi.stubEnv("COMPACT_OUTPUT_MODE", "");
-
-    const config = await loadConfig();
-
-    expect(config.bot.compactOutputMode).toBe(false);
-  });
-
-  it("parses compact output mode as a boolean", async () => {
-    vi.stubEnv("COMPACT_OUTPUT_MODE", "true");
-
-    const config = await loadConfig();
-
-    expect(config.bot.compactOutputMode).toBe(true);
-  });
-
-  it("falls back to disabled compact output mode on invalid value", async () => {
-    vi.stubEnv("COMPACT_OUTPUT_MODE", "compact");
-
-    const config = await loadConfig();
-
-    expect(config.bot.compactOutputMode).toBe(false);
-  });
-
   it("parses supported locale from BOT_LOCALE", async () => {
     vi.stubEnv("BOT_LOCALE", "fr");
 

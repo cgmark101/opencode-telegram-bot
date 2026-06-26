@@ -8,6 +8,7 @@ export const ru: I18nDictionary = {
   "cmd.description.sessions": "Список сессий",
   "cmd.description.messages": "Сообщения текущей сессии",
   "cmd.description.tts": "Выбрать режим аудиоответов",
+  "cmd.description.settings": "Изменить настройки бота",
   "cmd.description.projects": "Список проектов",
   "cmd.description.worktree": "Переключить git worktree",
   "cmd.description.task": "Создать задачу по расписанию",
@@ -142,6 +143,13 @@ export const ru: I18nDictionary = {
   "tts.auto": "🎤 Аудиоответы включены только для голосовых сообщений.",
   "tts.not_configured": "⚠️ Аудиоответы недоступны. Сначала укажите `TTS_API_URL` и `TTS_API_KEY`.",
   "tts.failed": "⚠️ Не удалось создать аудиоответ.",
+
+  "settings.menu.title": "⚙️ Настройки",
+  "settings.compact_output.label": "Компактный вывод",
+  "settings.value.on": "Вкл",
+  "settings.value.off": "Выкл",
+  "settings.button.back": "⬅️ Назад",
+  "settings.saved": "✅ Настройка сохранена.",
 
   "projects.empty":
     "📭 Проектов нет.\n\nОткройте директорию в OpenCode и создайте хотя бы одну сессию, после этого она появится здесь.",

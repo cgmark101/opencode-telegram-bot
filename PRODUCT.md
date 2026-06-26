@@ -86,7 +86,7 @@ No public inbound ports are required for normal usage.
 - Configurable scheduled task limit (default: 10)
 - Configurable bot locale
 - Configurable visibility for service messages (thinking/tool calls)
-- Configurable compact output mode with a single edited progress message
+- Configurable compact output mode with a single edited progress message (`/settings`)
 - Configurable opt-in display of full thinking/reasoning content
 - Configurable max code file size in KB (default: 100)
 - Optional STT settings for voice transcription (`STT_API_URL`, `STT_API_KEY`, `STT_MODEL`, `STT_LANGUAGE`)
@@ -108,6 +108,7 @@ Current command set:
 - `/projects` - show and switch projects
 - `/worktree` - show and switch existing git worktrees for the current repository
 - `/tts` - choose audio reply mode (`off`, `all`, or `auto`)
+- `/settings` - change bot settings
 - `/task` - create a scheduled task
 - `/tasklist` - browse and delete scheduled tasks
 - `/rename` - rename current session

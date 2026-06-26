@@ -1,12 +1,14 @@
 import os from "node:os";
 import path from "node:path";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { setRuntimeMode } from "../../../src/runtime/mode.js";
 import {
   __resetSettingsForTests,
+  getCompactOutputMode,
   getTtsMode,
   loadSettings,
+  setCompactOutputMode,
 } from "../../../src/app/stores/settings-store.js";
 
 describe("app/stores/settings-store", () => {
@@ -41,4 +43,38 @@ describe("app/stores/settings-store", () => {
       expect(getTtsMode()).toBe(expectedMode);
     },
   );
+
+  it("uses disabled compact output mode by default", async () => {
+    await loadSettings();
+
+    expect(getCompactOutputMode()).toBe(false);
+  });
+
+  it("loads compact output mode from settings.json", async () => {
+    await writeFile(path.join(tempHome, "settings.json"), JSON.stringify({ compactOutputMode: true }));
+
+    await loadSettings();
+
+    expect(getCompactOutputMode()).toBe(true);
+  });
+
+  it("persists compact output mode to settings.json", async () => {
+    await loadSettings();
+
+    setCompactOutputMode(true);
+
+    expect(getCompactOutputMode()).toBe(true);
+    await vi.waitFor(async () => {
+      const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
+      expect(settings.compactOutputMode).toBe(true);
+    });
+
+    setCompactOutputMode(false);
+
+    expect(getCompactOutputMode()).toBe(false);
+    await vi.waitFor(async () => {
+      const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
+      expect(settings.compactOutputMode).toBe(false);
+    });
+  });
 });
