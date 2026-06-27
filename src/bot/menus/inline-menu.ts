@@ -91,7 +91,8 @@ export function appendInlineMenuCancelButton(
     keyboard.row();
   }
 
-  keyboard.text(t("inline.button.cancel"), getInlineCancelCallbackData(menuKind));
+  const buttonText = menuKind === "settings" ? t("inline.button.close") : t("inline.button.cancel");
+  keyboard.text(buttonText, getInlineCancelCallbackData(menuKind));
   return keyboard;
 }
 

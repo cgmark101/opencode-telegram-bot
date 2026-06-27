@@ -50,6 +50,7 @@ export const de: I18nDictionary = {
     "⚠️ Dieser Befehl ist erst verfügbar, wenn der aktuelle Frage-Flow abgeschlossen ist.",
 
   "inline.button.cancel": "❌ Abbrechen",
+  "inline.button.close": "❌ Schließen",
   "inline.inactive_callback": "Dieses Menü ist inaktiv",
   "inline.cancelled_callback": "Abgebrochen",
 
@@ -150,7 +151,8 @@ export const de: I18nDictionary = {
     "⚠️ Audioantworten sind nicht verfugbar. Setze zuerst `TTS_API_URL` und `TTS_API_KEY`.",
   "tts.failed": "⚠️ Audioreply konnte nicht erzeugt werden.",
 
-  "settings.menu.title": "⚙️ Einstellungen",
+  "settings.menu.title":
+    "⚙️ Bot-Einstellungen\nTippen Sie auf eine Einstellung, um ihren Wert umzuschalten:",
   "settings.compact_output.label": "Kompakte Ausgabe",
   "settings.thinking_content.label": "Thinking-Inhalt",
   "settings.response_streaming.label": "Antwort-Streaming",

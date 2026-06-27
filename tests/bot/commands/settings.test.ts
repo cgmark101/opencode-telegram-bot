@@ -87,7 +87,7 @@ describe("bot/commands/settings-command", () => {
     expect(opts.reply_markup.inline_keyboard[2][0].text).toBe(
       `${t("settings.tts.label")}: ${t("status.tts.auto")}`,
     );
-    expect(opts.reply_markup.inline_keyboard[3][0].text).toBe(t("inline.button.cancel"));
+    expect(opts.reply_markup.inline_keyboard[3][0].text).toBe(t("inline.button.close"));
   });
 
   it("shows thinking content setting when compact output is disabled", async () => {

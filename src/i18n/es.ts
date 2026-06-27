@@ -50,6 +50,7 @@ export const es: I18nDictionary = {
     "⚠️ Este comando no está disponible hasta que se complete el flujo de la pregunta actual.",
 
   "inline.button.cancel": "❌ Cancelar",
+  "inline.button.close": "❌ Cerrar",
   "inline.inactive_callback": "Este menú está inactivo",
   "inline.cancelled_callback": "Cancelado",
 
@@ -73,7 +74,8 @@ export const es: I18nDictionary = {
   "progress.compact.waiting_permission": "🔐 Esperando permiso...",
   "progress.compact.retrying": "🔁 Reintentando...",
   "progress.compact.task": "🤖 Tarea en ejecución",
-  "progress.compact.done": "{header}\nllamadas de herramientas: {tools} · archivos modificados: {files}",
+  "progress.compact.done":
+    "{header}\nllamadas de herramientas: {tools} · archivos modificados: {files}",
   "bot.project_not_selected":
     "🏗 No hay un proyecto seleccionado.\n\nPrimero selecciona un proyecto con /projects.",
   "bot.creating_session": "🔄 Creando una sesión nueva...",
@@ -150,7 +152,7 @@ export const es: I18nDictionary = {
     "⚠️ Las respuestas de audio no estan disponibles. Configura primero `TTS_API_URL` y `TTS_API_KEY`.",
   "tts.failed": "⚠️ No se pudo generar la respuesta de audio.",
 
-  "settings.menu.title": "⚙️ Ajustes",
+  "settings.menu.title": "⚙️ Ajustes del bot\nToca un ajuste para cambiar su valor:",
   "settings.compact_output.label": "Salida compacta",
   "settings.thinking_content.label": "Contenido de thinking",
   "settings.response_streaming.label": "Streaming de respuesta",

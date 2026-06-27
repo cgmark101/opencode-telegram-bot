@@ -50,6 +50,7 @@ export const fr: I18nDictionary = {
     "⚠️ Cette commande n'est pas disponible tant que le flux de question actuel n'est pas terminé.",
 
   "inline.button.cancel": "❌ Annuler",
+  "inline.button.close": "❌ Fermer",
   "inline.inactive_callback": "Ce menu est inactif",
   "inline.cancelled_callback": "Annulé",
 
@@ -152,7 +153,7 @@ export const fr: I18nDictionary = {
     "⚠️ Les réponses audio ne sont pas disponibles. Définissez d'abord `TTS_API_URL` et `TTS_API_KEY`.",
   "tts.failed": "⚠️ Impossible de générer la réponse audio.",
 
-  "settings.menu.title": "⚙️ Paramètres",
+  "settings.menu.title": "⚙️ Paramètres du bot\nTouchez un paramètre pour basculer sa valeur :",
   "settings.compact_output.label": "Sortie compacte",
   "settings.thinking_content.label": "Contenu thinking",
   "settings.response_streaming.label": "Streaming de réponse",

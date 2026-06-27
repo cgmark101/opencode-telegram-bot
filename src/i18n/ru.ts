@@ -47,6 +47,7 @@ export const ru: I18nDictionary = {
     "⚠️ Эта команда недоступна, пока не завершен текущий опрос.",
 
   "inline.button.cancel": "❌ Отмена",
+  "inline.button.close": "❌ Закрыть",
   "inline.inactive_callback": "Это меню уже неактивно",
   "inline.cancelled_callback": "Отменено",
 
@@ -142,7 +143,7 @@ export const ru: I18nDictionary = {
   "tts.not_configured": "⚠️ Аудиоответы недоступны. Сначала укажите `TTS_API_URL` и `TTS_API_KEY`.",
   "tts.failed": "⚠️ Не удалось создать аудиоответ.",
 
-  "settings.menu.title": "⚙️ Настройки",
+  "settings.menu.title": "⚙️ Настройки бота\nНажмите на параметр, чтобы переключить его значение:",
   "settings.compact_output.label": "Компактный вывод",
   "settings.thinking_content.label": "Содержимое thinking",
   "settings.response_streaming.label": "Стриминг ответа",

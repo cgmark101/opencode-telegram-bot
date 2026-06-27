@@ -47,6 +47,7 @@ export const en = {
     "⚠️ This command is not available until current question flow is completed.",
 
   "inline.button.cancel": "❌ Cancel",
+  "inline.button.close": "❌ Close",
   "inline.inactive_callback": "This menu is inactive",
   "inline.cancelled_callback": "Cancelled",
 
@@ -143,7 +144,7 @@ export const en = {
     "⚠️ Audio replies are unavailable. Set `TTS_API_URL` and `TTS_API_KEY` first.",
   "tts.failed": "⚠️ Failed to generate audio reply.",
 
-  "settings.menu.title": "⚙️ Settings",
+  "settings.menu.title": "⚙️ Bot settings\nTap a setting to toggle its value:",
   "settings.compact_output.label": "Compact output mode",
   "settings.thinking_content.label": "Thinking content",
   "settings.response_streaming.label": "Response streaming",

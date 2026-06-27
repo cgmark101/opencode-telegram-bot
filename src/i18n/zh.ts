@@ -43,6 +43,7 @@ export const zh: I18nDictionary = {
   "question.blocked.command_not_allowed": "⚠️ 在当前问答流程完成之前不可用此命令。",
 
   "inline.button.cancel": "❌ 取消",
+  "inline.button.close": "❌ 关闭",
   "inline.inactive_callback": "此菜单已失效",
   "inline.cancelled_callback": "已取消",
 
@@ -130,7 +131,7 @@ export const zh: I18nDictionary = {
   "tts.not_configured": "⚠️ 语音回复暂不可用。请先设置 `TTS_API_URL` 和 `TTS_API_KEY`。",
   "tts.failed": "⚠️ 生成语音回复失败。",
 
-  "settings.menu.title": "⚙️ 设置",
+  "settings.menu.title": "⚙️ 机器人设置\n点按设置项以切换其值：",
   "settings.compact_output.label": "紧凑输出模式",
   "settings.thinking_content.label": "思考内容",
   "settings.response_streaming.label": "回复流式模式",
