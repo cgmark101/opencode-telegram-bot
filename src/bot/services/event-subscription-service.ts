@@ -5,7 +5,7 @@ import { Bot, Context, InputFile } from "grammy";
 import { config } from "../../config.js";
 import { t } from "../../i18n/index.js";
 import { summaryAggregator, type ToolInfo } from "../../app/managers/summary-aggregation-manager.js";
-import { formatCompactToolInfo, formatToolInfo } from "../../app/formatters/summary-formatter.js";
+import { formatCompactToolActivity, formatToolInfo } from "../../app/formatters/summary-formatter.js";
 import { renderSubagentCards } from "../../app/formatters/subagent-formatter.js";
 import { ToolMessageBatcher } from "../../app/formatters/tool-message-batcher.js";
 import {
@@ -1352,12 +1352,12 @@ class EventSubscriptionService implements BotEventSubscriptionService {
     return "default";
   }
 
-  private getCompactToolActivity(toolInfo: ToolInfo): string {
+  private getCompactToolActivity(toolInfo: ToolInfo): string | null {
     if (toolInfo.tool === "task") {
       return t("progress.compact.task");
     }
 
-    return formatCompactToolInfo(toolInfo, 128, toolInfo.tool);
+    return formatCompactToolActivity(toolInfo, 128);
   }
 
   private formatShortSessionId(sessionId: string): string {
