@@ -38,6 +38,7 @@ Languages: English (`en`), العربية (`ar`), Deutsch (`de`), Español (`es`
 - **Custom Commands** — run OpenCode custom commands (and built-ins like `init`/`review`) from an inline menu with confirmation
 - **Skills Catalog** — browse OpenCode skills from an inline menu and run them immediately or with arguments in the next message
 - **Interactive Q&A** — answer agent questions and approve permissions via inline buttons
+- **Runtime settings** — use `/settings` to change runtime preferences; see [Runtime Settings](#runtime-settings)
 - **Voice prompts** — send voice/audio messages, transcribe them via a Whisper-compatible API, and optionally enable spoken replies in `/settings`
 - **File attachments** — send images, PDF documents, and text-based files to OpenCode, including multiple files in one Telegram album
 - **Scheduled tasks** — schedule prompts to run later or on a recurring interval; see [Scheduled Tasks](#scheduled-tasks)
@@ -250,6 +251,8 @@ When installed via npm, the configuration wizard handles the initial setup. The 
 > **Keep your `.env` file private.** It contains your bot token. Never commit it to version control.
 
 Logs are written to `./logs` when running from sources and to the runtime config directory `logs/` folder in `installed` mode. Log rotation depends on runtime mode: `sources` creates one file per bot launch, while `installed` appends to one file per day. Old log files are removed according to `LOG_RETENTION`.
+
+### Runtime Settings
 
 Runtime preferences are changed from `/settings` and stored in `settings.json`:
 
