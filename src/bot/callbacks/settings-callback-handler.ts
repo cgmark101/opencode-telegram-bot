@@ -2,13 +2,16 @@ import type { Context } from "grammy";
 import { isTtsConfigured } from "../../app/services/tts-service.js";
 import {
   getCompactOutputMode,
+  getResponseStreamingMode,
   getSendDiffFileAttachments,
   getShowThinkingContent,
   getTtsMode,
   setCompactOutputMode,
+  setResponseStreamingMode,
   setSendDiffFileAttachments,
   setShowThinkingContent,
   setTtsMode,
+  type ResponseStreamingMode,
   type TtsMode,
 } from "../../app/stores/settings-store.js";
 import { t } from "../../i18n/index.js";
@@ -19,6 +22,7 @@ import {
   SETTINGS_CALLBACK_PREFIX,
   SETTINGS_COMPACT_OUTPUT_CALLBACK,
   SETTINGS_DIFF_FILES_CALLBACK,
+  SETTINGS_RESPONSE_STREAMING_CALLBACK,
   SETTINGS_THINKING_CONTENT_CALLBACK,
   SETTINGS_TTS_CALLBACK,
 } from "../menus/settings-menu.js";
@@ -47,6 +51,10 @@ function getNextTtsMode(mode: TtsMode): TtsMode {
   return "off";
 }
 
+function getNextResponseStreamingMode(mode: ResponseStreamingMode): ResponseStreamingMode {
+  return mode === "edit" ? "draft" : "edit";
+}
+
 export async function handleSettingsCallback(ctx: Context): Promise<boolean> {
   const callbackData = ctx.callbackQuery?.data;
 
@@ -72,6 +80,16 @@ export async function handleSettingsCallback(ctx: Context): Promise<boolean> {
 
     if (callbackData === SETTINGS_THINKING_CONTENT_CALLBACK) {
       setShowThinkingContent(!getShowThinkingContent());
+      const { text, keyboard } = buildSettingsMenuView();
+      await ctx.answerCallbackQuery({ text: t("settings.saved") });
+      await ctx.editMessageText(text, {
+        reply_markup: appendInlineMenuCancelButton(keyboard, "settings"),
+      });
+      return true;
+    }
+
+    if (callbackData === SETTINGS_RESPONSE_STREAMING_CALLBACK) {
+      setResponseStreamingMode(getNextResponseStreamingMode(getResponseStreamingMode()));
       const { text, keyboard } = buildSettingsMenuView();
       await ctx.answerCallbackQuery({ text: t("settings.saved") });
       await ctx.editMessageText(text, {

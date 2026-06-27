@@ -3,6 +3,8 @@ import type { ProjectInfo } from "./project.js";
 import type { SessionDirectoryCacheInfo, SessionInfo } from "./session.js";
 import type { ScheduledTask } from "./scheduled-task.js";
 
+export type ResponseStreamingMode = "edit" | "draft";
+
 export interface ScheduledTaskSessionIgnoreInfo {
   sessionId: string;
   createdAt: string;
@@ -17,6 +19,7 @@ export interface Settings {
   ttsMode?: "off" | "all" | "auto";
   compactOutputMode?: boolean;
   showThinkingContent?: boolean;
+  responseStreamingMode?: ResponseStreamingMode;
   sendDiffFileAttachments?: boolean;
   sessionDirectoryCache?: SessionDirectoryCacheInfo;
   scheduledTasks?: ScheduledTask[];

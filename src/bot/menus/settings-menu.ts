@@ -1,9 +1,11 @@
 import { InlineKeyboard } from "grammy";
 import {
   getCompactOutputMode,
+  getResponseStreamingMode,
   getSendDiffFileAttachments,
   getShowThinkingContent,
   getTtsMode,
+  type ResponseStreamingMode,
   type TtsMode,
 } from "../../app/stores/settings-store.js";
 import { t } from "../../i18n/index.js";
@@ -11,6 +13,7 @@ import { t } from "../../i18n/index.js";
 export const SETTINGS_CALLBACK_PREFIX = "settings:";
 export const SETTINGS_COMPACT_OUTPUT_CALLBACK = `${SETTINGS_CALLBACK_PREFIX}compact_output`;
 export const SETTINGS_THINKING_CONTENT_CALLBACK = `${SETTINGS_CALLBACK_PREFIX}thinking_content`;
+export const SETTINGS_RESPONSE_STREAMING_CALLBACK = `${SETTINGS_CALLBACK_PREFIX}response_streaming`;
 export const SETTINGS_DIFF_FILES_CALLBACK = `${SETTINGS_CALLBACK_PREFIX}diff_files`;
 export const SETTINGS_TTS_CALLBACK = `${SETTINGS_CALLBACK_PREFIX}tts`;
 
@@ -30,9 +33,16 @@ export function formatTtsModeValue(mode: TtsMode): string {
   return t("status.tts.off");
 }
 
+export function formatResponseStreamingModeValue(mode: ResponseStreamingMode): string {
+  return mode === "draft"
+    ? t("settings.response_streaming.draft")
+    : t("settings.response_streaming.edit");
+}
+
 export function buildSettingsMenuView(): { text: string; keyboard: InlineKeyboard } {
   const compactOutputMode = getCompactOutputMode();
   const showThinkingContent = getShowThinkingContent();
+  const responseStreamingMode = getResponseStreamingMode();
   const sendDiffFileAttachments = getSendDiffFileAttachments();
   const ttsMode = getTtsMode();
   const keyboard = new InlineKeyboard()
@@ -54,6 +64,11 @@ export function buildSettingsMenuView(): { text: string; keyboard: InlineKeyboar
   }
 
   keyboard
+    .row()
+    .text(
+      `${t("settings.response_streaming.label")}: ${formatResponseStreamingModeValue(responseStreamingMode)}`,
+      SETTINGS_RESPONSE_STREAMING_CALLBACK,
+    )
     .row()
     .text(`${t("settings.tts.label")}: ${formatTtsModeValue(ttsMode)}`, SETTINGS_TTS_CALLBACK);
 

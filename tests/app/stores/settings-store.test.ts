@@ -6,11 +6,13 @@ import { setRuntimeMode } from "../../../src/runtime/mode.js";
 import {
   __resetSettingsForTests,
   getCompactOutputMode,
+  getResponseStreamingMode,
   getSendDiffFileAttachments,
   getShowThinkingContent,
   getTtsMode,
   loadSettings,
   setCompactOutputMode,
+  setResponseStreamingMode,
   setSendDiffFileAttachments,
   setShowThinkingContent,
 } from "../../../src/app/stores/settings-store.js";
@@ -82,6 +84,20 @@ describe("app/stores/settings-store", () => {
     expect(getSendDiffFileAttachments()).toBe(true);
   });
 
+  it("uses edit response streaming mode by default", async () => {
+    await loadSettings();
+
+    expect(getResponseStreamingMode()).toBe("edit");
+  });
+
+  it("loads response streaming mode from settings.json", async () => {
+    await writeFile(path.join(tempHome, "settings.json"), JSON.stringify({ responseStreamingMode: "draft" }));
+
+    await loadSettings();
+
+    expect(getResponseStreamingMode()).toBe("draft");
+  });
+
   it("loads diff file attachment setting from settings.json", async () => {
     await writeFile(
       path.join(tempHome, "settings.json"),
@@ -134,6 +150,18 @@ describe("app/stores/settings-store", () => {
     await vi.waitFor(async () => {
       const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
       expect(settings.sendDiffFileAttachments).toBe(false);
+    });
+  });
+
+  it("persists response streaming mode to settings.json", async () => {
+    await loadSettings();
+
+    setResponseStreamingMode("draft");
+
+    expect(getResponseStreamingMode()).toBe("draft");
+    await vi.waitFor(async () => {
+      const settings = JSON.parse(await readFile(path.join(tempHome, "settings.json"), "utf-8"));
+      expect(settings.responseStreamingMode).toBe("draft");
     });
   });
 });

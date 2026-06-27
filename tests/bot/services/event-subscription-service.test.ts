@@ -19,6 +19,7 @@ vi.mock("../../../src/opencode/events.js", () => ({
 
 type FakeBotApi = {
   sendMessage: ReturnType<typeof vi.fn>;
+  sendMessageDraft: ReturnType<typeof vi.fn>;
   editMessageText: ReturnType<typeof vi.fn>;
   deleteMessage: ReturnType<typeof vi.fn>;
   sendDocument: ReturnType<typeof vi.fn>;
@@ -27,6 +28,7 @@ type FakeBotApi = {
 function createFakeBot(): { bot: Bot<Context>; api: FakeBotApi } {
   const api: FakeBotApi = {
     sendMessage: vi.fn().mockResolvedValue({ message_id: 100 }),
+    sendMessageDraft: vi.fn().mockResolvedValue(undefined),
     editMessageText: vi.fn().mockResolvedValue(undefined),
     deleteMessage: vi.fn().mockResolvedValue(undefined),
     sendDocument: vi.fn().mockResolvedValue({ message_id: 101 }),
@@ -73,6 +75,24 @@ function emitWriteTool(summaryAggregator: { processEvent(event: Event): void }):
   } as unknown as Event);
 }
 
+function emitThinkingPart(
+  summaryAggregator: { processEvent(event: Event): void },
+  text: string,
+): void {
+  summaryAggregator.processEvent({
+    type: "message.part.updated",
+    properties: {
+      part: {
+        id: "reasoning-1",
+        sessionID: "session-1",
+        messageID: "message-1",
+        type: "reasoning",
+        text,
+      },
+    },
+  } as unknown as Event);
+}
+
 function emitSessionIdle(summaryAggregator: { processEvent(event: Event): void }): void {
   summaryAggregator.processEvent({
     type: "session.idle",
@@ -89,6 +109,7 @@ describe("bot/services/event-subscription-service", () => {
     vi.stubEnv("TELEGRAM_ALLOWED_USER_ID", "123456789");
     vi.stubEnv("OPENCODE_MODEL_PROVIDER", "test-provider");
     vi.stubEnv("OPENCODE_MODEL_ID", "test-model");
+    vi.stubEnv("RESPONSE_STREAM_THROTTLE_MS", "1");
     vi.stubEnv("OPENCODE_TELEGRAM_HOME", await mkdtemp(path.join(os.tmpdir(), "event-service-")));
     tempHome = process.env.OPENCODE_TELEGRAM_HOME!;
     setRuntimeMode("installed");
@@ -112,7 +133,10 @@ describe("bot/services/event-subscription-service", () => {
     await rm(tempHome, { recursive: true, force: true });
   });
 
-  async function setupService(sendDiffFileAttachments: boolean): Promise<{
+  async function setupService(
+    sendDiffFileAttachments: boolean,
+    options: { responseStreamingMode?: "edit" | "draft"; showThinkingContent?: boolean } = {},
+  ): Promise<{
     api: FakeBotApi;
     summaryAggregator: { setSession(sessionId: string): void; processEvent(event: Event): void };
   }> {
@@ -131,6 +155,8 @@ describe("bot/services/event-subscription-service", () => {
     });
     settingsStore.setCompactOutputMode(false);
     settingsStore.setSendDiffFileAttachments(sendDiffFileAttachments);
+    settingsStore.setResponseStreamingMode(options.responseStreamingMode ?? "edit");
+    settingsStore.setShowThinkingContent(options.showThinkingContent ?? true);
 
     const { bot, api } = createFakeBot();
     const service = createEventSubscriptionService();
@@ -161,10 +187,54 @@ describe("bot/services/event-subscription-service", () => {
     emitWriteTool(summaryAggregator);
     emitSessionIdle(summaryAggregator);
 
+    await vi.waitFor(
+      () => {
+        expect(api.sendMessage).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 },
+    );
+    expect(api.sendMessage.mock.calls[0][1]).toContain("write");
+    expect(api.sendDocument).not.toHaveBeenCalled();
+  });
+
+  it("uses edit streaming for visible thinking content when assistant responses use draft mode", async () => {
+    const { api, summaryAggregator } = await setupService(true, {
+      responseStreamingMode: "draft",
+      showThinkingContent: true,
+    });
+
+    emitThinkingPart(summaryAggregator, "First thought");
+
+    await vi.waitFor(
+      () => {
+        expect(api.sendMessage).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 },
+    );
+
+    emitThinkingPart(summaryAggregator, "First thought\nSecond thought");
+
+    await vi.waitFor(
+      () => {
+        expect(api.editMessageText).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 },
+    );
+    expect(api.sendMessageDraft).not.toHaveBeenCalled();
+  });
+
+  it("keeps hidden thinking as a separate non-draft message", async () => {
+    const { api, summaryAggregator } = await setupService(true, {
+      responseStreamingMode: "draft",
+      showThinkingContent: false,
+    });
+
+    emitThinkingPart(summaryAggregator, "Hidden thought");
+
     await vi.waitFor(() => {
       expect(api.sendMessage).toHaveBeenCalledTimes(1);
     });
-    expect(api.sendMessage.mock.calls[0][1]).toContain("write");
-    expect(api.sendDocument).not.toHaveBeenCalled();
+    expect(api.editMessageText).not.toHaveBeenCalled();
+    expect(api.sendMessageDraft).not.toHaveBeenCalled();
   });
 });

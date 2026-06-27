@@ -8,6 +8,7 @@ import {
   SETTINGS_CALLBACK_PREFIX,
   SETTINGS_COMPACT_OUTPUT_CALLBACK,
   SETTINGS_DIFF_FILES_CALLBACK,
+  SETTINGS_RESPONSE_STREAMING_CALLBACK,
   SETTINGS_THINKING_CONTENT_CALLBACK,
   SETTINGS_TTS_CALLBACK,
 } from "../../../src/bot/menus/settings-menu.js";
@@ -15,6 +16,8 @@ import {
 const mocked = vi.hoisted(() => ({
   getCompactOutputModeMock: vi.fn(),
   setCompactOutputModeMock: vi.fn(),
+  getResponseStreamingModeMock: vi.fn(),
+  setResponseStreamingModeMock: vi.fn(),
   getSendDiffFileAttachmentsMock: vi.fn(),
   setSendDiffFileAttachmentsMock: vi.fn(),
   getShowThinkingContentMock: vi.fn(),
@@ -27,6 +30,8 @@ const mocked = vi.hoisted(() => ({
 vi.mock("../../../src/app/stores/settings-store.js", () => ({
   getCompactOutputMode: mocked.getCompactOutputModeMock,
   setCompactOutputMode: mocked.setCompactOutputModeMock,
+  getResponseStreamingMode: mocked.getResponseStreamingModeMock,
+  setResponseStreamingMode: mocked.setResponseStreamingModeMock,
   getSendDiffFileAttachments: mocked.getSendDiffFileAttachmentsMock,
   setSendDiffFileAttachments: mocked.setSendDiffFileAttachmentsMock,
   getShowThinkingContent: mocked.getShowThinkingContentMock,
@@ -43,6 +48,8 @@ describe("bot/commands/settings-command", () => {
   beforeEach(() => {
     mocked.getCompactOutputModeMock.mockReset();
     mocked.setCompactOutputModeMock.mockReset();
+    mocked.getResponseStreamingModeMock.mockReset();
+    mocked.setResponseStreamingModeMock.mockReset();
     mocked.getSendDiffFileAttachmentsMock.mockReset();
     mocked.setSendDiffFileAttachmentsMock.mockReset();
     mocked.getShowThinkingContentMock.mockReset();
@@ -50,6 +57,7 @@ describe("bot/commands/settings-command", () => {
     mocked.getTtsModeMock.mockReset();
     mocked.setTtsModeMock.mockReset();
     mocked.isTtsConfiguredMock.mockReset();
+    mocked.getResponseStreamingModeMock.mockReturnValue("edit");
     mocked.getSendDiffFileAttachmentsMock.mockReturnValue(true);
     interactionManager.clear("settings_test_reset");
   });
@@ -74,9 +82,12 @@ describe("bot/commands/settings-command", () => {
       `${t("settings.compact_output.label")}: ${t("settings.value.on")}`,
     );
     expect(opts.reply_markup.inline_keyboard[1][0].text).toBe(
+      `${t("settings.response_streaming.label")}: ${t("settings.response_streaming.edit")}`,
+    );
+    expect(opts.reply_markup.inline_keyboard[2][0].text).toBe(
       `${t("settings.tts.label")}: ${t("status.tts.auto")}`,
     );
-    expect(opts.reply_markup.inline_keyboard[2][0].text).toBe(t("inline.button.cancel"));
+    expect(opts.reply_markup.inline_keyboard[3][0].text).toBe(t("inline.button.cancel"));
   });
 
   it("shows thinking content setting when compact output is disabled", async () => {
@@ -100,7 +111,30 @@ describe("bot/commands/settings-command", () => {
       `${t("settings.diff_files.label")}: ${t("settings.value.on")}`,
     );
     expect(opts.reply_markup.inline_keyboard[3][0].text).toBe(
+      `${t("settings.response_streaming.label")}: ${t("settings.response_streaming.edit")}`,
+    );
+    expect(opts.reply_markup.inline_keyboard[4][0].text).toBe(
       `${t("settings.tts.label")}: ${t("status.tts.off")}`,
+    );
+  });
+
+  it("marks draft response streaming mode as experimental", async () => {
+    mocked.getCompactOutputModeMock.mockReturnValue(false);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
+    mocked.getResponseStreamingModeMock.mockReturnValue("draft");
+    mocked.getTtsModeMock.mockReturnValue("off");
+    const replyMock = vi.fn().mockResolvedValue({ message_id: 10 });
+    const ctx = {
+      chat: { id: 42, type: "private" },
+      message: { text: "/settings" },
+      reply: replyMock,
+    } as unknown as Context;
+
+    await settingsCommand(ctx as never);
+
+    const [, opts] = replyMock.mock.calls[0];
+    expect(opts.reply_markup.inline_keyboard[3][0].text).toBe(
+      `${t("settings.response_streaming.label")}: ${t("settings.response_streaming.draft")}`,
     );
   });
 });
@@ -109,6 +143,8 @@ describe("bot/callbacks/settings-callback-handler", () => {
   beforeEach(() => {
     mocked.getCompactOutputModeMock.mockReset();
     mocked.setCompactOutputModeMock.mockReset();
+    mocked.getResponseStreamingModeMock.mockReset();
+    mocked.setResponseStreamingModeMock.mockReset();
     mocked.getSendDiffFileAttachmentsMock.mockReset();
     mocked.setSendDiffFileAttachmentsMock.mockReset();
     mocked.getShowThinkingContentMock.mockReset();
@@ -116,6 +152,7 @@ describe("bot/callbacks/settings-callback-handler", () => {
     mocked.getTtsModeMock.mockReset();
     mocked.setTtsModeMock.mockReset();
     mocked.isTtsConfiguredMock.mockReset();
+    mocked.getResponseStreamingModeMock.mockReturnValue("edit");
     mocked.getSendDiffFileAttachmentsMock.mockReturnValue(true);
     interactionManager.clear("settings_test_reset");
   });
@@ -157,6 +194,9 @@ describe("bot/callbacks/settings-callback-handler", () => {
       `${t("settings.compact_output.label")}: ${t("settings.value.on")}`,
     );
     expect(opts?.reply_markup.inline_keyboard[1][0].text).toBe(
+      `${t("settings.response_streaming.label")}: ${t("settings.response_streaming.edit")}`,
+    );
+    expect(opts?.reply_markup.inline_keyboard[2][0].text).toBe(
       `${t("settings.tts.label")}: ${t("status.tts.off")}`,
     );
   });
@@ -200,6 +240,26 @@ describe("bot/callbacks/settings-callback-handler", () => {
     );
   });
 
+  it("toggles response streaming mode and returns to settings menu", async () => {
+    mocked.getCompactOutputModeMock.mockReturnValue(false);
+    mocked.getShowThinkingContentMock.mockReturnValue(true);
+    mocked.getResponseStreamingModeMock.mockReturnValueOnce("edit").mockReturnValueOnce("draft");
+    mocked.getTtsModeMock.mockReturnValue("off");
+    activateSettingsMenu();
+    const ctx = createCallbackContext(SETTINGS_RESPONSE_STREAMING_CALLBACK);
+
+    const result = await handleSettingsCallback(ctx);
+
+    expect(result).toBe(true);
+    expect(mocked.setResponseStreamingModeMock).toHaveBeenCalledWith("draft");
+    expect(ctx.answerCallbackQuery).toHaveBeenCalledWith({ text: t("settings.saved") });
+    const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
+    expect(text).toBe(t("settings.menu.title"));
+    expect(opts?.reply_markup.inline_keyboard[3][0].text).toBe(
+      `${t("settings.response_streaming.label")}: ${t("settings.response_streaming.draft")}`,
+    );
+  });
+
   it("cycles TTS mode and returns to settings menu", async () => {
     mocked.isTtsConfiguredMock.mockReturnValue(true);
     mocked.getCompactOutputModeMock.mockReturnValue(false);
@@ -215,7 +275,7 @@ describe("bot/callbacks/settings-callback-handler", () => {
     expect(ctx.answerCallbackQuery).toHaveBeenCalledWith({ text: t("tts.all") });
     const [text, opts] = vi.mocked(ctx.editMessageText).mock.calls[0];
     expect(text).toBe(t("settings.menu.title"));
-    expect(opts?.reply_markup.inline_keyboard[3][0].text).toBe(
+    expect(opts?.reply_markup.inline_keyboard[4][0].text).toBe(
       `${t("settings.tts.label")}: ${t("status.tts.all")}`,
     );
   });

@@ -3,7 +3,11 @@ import type { ModelInfo } from "../types/model.js";
 import type { ProjectInfo } from "../types/project.js";
 import type { SessionDirectoryCacheInfo, SessionInfo } from "../types/session.js";
 import { cloneScheduledTask, type ScheduledTask } from "../types/scheduled-task.js";
-import type { ScheduledTaskSessionIgnoreInfo, Settings } from "../types/settings.js";
+import type {
+  ResponseStreamingMode,
+  ScheduledTaskSessionIgnoreInfo,
+  Settings,
+} from "../types/settings.js";
 import { getRuntimePaths } from "../../runtime/paths.js";
 import { logger } from "../../utils/logger.js";
 
@@ -111,6 +115,17 @@ export function getShowThinkingContent(): boolean {
 
 export function setShowThinkingContent(enabled: boolean): void {
   currentSettings.showThinkingContent = enabled;
+  void writeSettingsFile(currentSettings);
+}
+
+export type { ResponseStreamingMode };
+
+export function getResponseStreamingMode(): ResponseStreamingMode {
+  return currentSettings.responseStreamingMode === "draft" ? "draft" : "edit";
+}
+
+export function setResponseStreamingMode(mode: ResponseStreamingMode): void {
+  currentSettings.responseStreamingMode = mode;
   void writeSettingsFile(currentSettings);
 }
 
