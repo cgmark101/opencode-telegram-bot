@@ -109,6 +109,7 @@ export const en = {
   "bot.media_group_download_error":
     "🔴 Failed to download one of the files. Nothing was sent to OpenCode.",
   "bot.model_no_pdf": "⚠️ Current model doesn't support PDF input. Sending text only.",
+  "bot.document_extraction_error": "🔴 Failed to extract document text: {error}",
   "bot.text_file_too_large": "⚠️ Text file is too large (max {maxSizeKb}KB)",
 
   "status.header_running": "🟢 OpenCode Server is running",

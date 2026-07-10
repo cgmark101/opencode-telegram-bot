@@ -181,6 +181,10 @@ export const config = {
     language: getEnvVar("STT_LANGUAGE", false),
     notePrompt: getEnvVar("STT_NOTE_PROMPT", false),
   },
+  docExtractor: {
+    apiUrl: getEnvVar("DOC_EXTRACTOR_URL", false),
+    apiKey: getEnvVar("DOC_EXTRACTOR_API_KEY", false),
+  },
   tts: (() => {
     const provider = getOptionalTtsProviderEnvVar("TTS_PROVIDER", "openai");
     const defaultVoice =

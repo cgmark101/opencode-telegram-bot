@@ -117,6 +117,7 @@ export const es: I18nDictionary = {
   "bot.media_group_download_error":
     "🔴 No se pudo descargar uno de los archivos. No se envió nada a OpenCode.",
   "bot.model_no_pdf": "⚠️ El modelo actual no admite entrada PDF. Enviaré solo texto.",
+  "bot.document_extraction_error": "🔴 No se pudo extraer el texto del documento: {error}",
   "bot.text_file_too_large": "⚠️ El archivo de texto es demasiado grande (max {maxSizeKb}KB)",
 
   "status.header_running": "🟢 OpenCode Server está en ejecución",

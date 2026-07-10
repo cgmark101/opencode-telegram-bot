@@ -111,6 +111,7 @@ export const ar: I18nDictionary = {
     "⚠️ تعذر معالجة ملف أو أكثر في هذه المجموعة. لم يتم إرسال أي ملف إلى OpenCode.",
   "bot.media_group_download_error": "🔴 تعذر تنزيل أحد الملفات. لم يتم إرسال أي ملف إلى OpenCode.",
   "bot.model_no_pdf": "⚠️ النموذج الحالي لا يدعم ملفات PDF. سيتم إرسال النص فقط.",
+  "bot.document_extraction_error": "🔴 فشل استخراج نص المستند: {error}",
   "bot.text_file_too_large": "⚠️ حجم الملف النصي أكبر من الحد المسموح ({maxSizeKb}KB)",
 
   "status.header_running": "🟢 خادم OpenCode يعمل",

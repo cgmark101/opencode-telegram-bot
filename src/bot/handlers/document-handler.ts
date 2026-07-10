@@ -7,6 +7,7 @@ import {
   isTextMimeType,
   isFileSizeAllowed,
 } from "../../app/services/file-download-service.js";
+import { isDocExtractorConfigured, extractDocument } from "../../app/services/document-extractor-service.js";
 import { getModelCapabilities, supportsInput } from "../../app/services/model-capabilities-service.js";
 import { getStoredModel } from "../../app/services/model-selection-service.js";
 import { logger } from "../../utils/logger.js";
@@ -117,13 +118,36 @@ export async function handleDocumentMessage(
       const capabilities = await getCapabilities(storedModel.providerID, storedModel.modelID);
 
       if (!supportsInput(capabilities, "pdf")) {
-        logger.warn(
-          `[Document] Model ${storedModel.providerID}/${storedModel.modelID} doesn't support PDF input`,
-        );
-        await ctx.reply(t("bot.model_no_pdf"));
+        if (isDocExtractorConfigured()) {
+          logger.warn(
+            `[Document] Model doesn't support PDF input, delegating to DOC_EXTRACTOR_URL`,
+          );
+          await ctx.reply(t("bot.file_downloading"));
+          const downloadedFile = await downloadFile(ctx.api, doc.file_id);
 
-        if (caption.trim().length > 0) {
-          await processPrompt(ctx, caption, deps);
+          try {
+            const result = await extractDocument(downloadedFile.buffer, mimeType, filename);
+            const promptWithFile = `--- Content of ${filename} ---\n${result.text}\n--- End of file ---\n\n${caption}`;
+            logger.info(
+              `[Document] Sending extracted PDF text (${result.text.length} chars) as prompt`,
+            );
+            await processPrompt(ctx, promptWithFile, deps);
+          } catch (extractErr) {
+            const errMsg = extractErr instanceof Error ? extractErr.message : String(extractErr);
+            logger.error(`[Document] PDF extraction failed: ${errMsg}`);
+            await ctx.reply(t("bot.document_extraction_error"));
+            if (caption.trim().length > 0) {
+              await processPrompt(ctx, caption, deps);
+            }
+          }
+        } else {
+          logger.warn(
+            `[Document] Model doesn't support PDF input and DOC_EXTRACTOR_URL is not configured`,
+          );
+          await ctx.reply(t("bot.model_no_pdf"));
+          if (caption.trim().length > 0) {
+            await processPrompt(ctx, caption, deps);
+          }
         }
         return;
       }

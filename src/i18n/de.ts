@@ -116,6 +116,7 @@ export const de: I18nDictionary = {
   "bot.media_group_download_error":
     "🔴 Eine der Dateien konnte nicht heruntergeladen werden. Es wurde nichts an OpenCode gesendet.",
   "bot.model_no_pdf": "⚠️ Das aktuelle Modell unterstützt keine PDF-Eingabe. Sende nur Text.",
+  "bot.document_extraction_error": "🔴 Dokumenttext konnte nicht extrahiert werden: {error}",
   "bot.text_file_too_large": "⚠️ Textdatei ist zu groß (max. {maxSizeKb}KB)",
 
   "status.header_running": "🟢 OpenCode-Server läuft",

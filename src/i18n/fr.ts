@@ -118,6 +118,8 @@ export const fr: I18nDictionary = {
     "🔴 Impossible de télécharger l'un des fichiers. Rien n'a été envoyé à OpenCode.",
   "bot.model_no_pdf":
     "⚠️ Le modèle actuel ne prend pas en charge les PDF. Envoi du texte uniquement.",
+  "bot.document_extraction_error":
+    "🔴 Échec de l'extraction du texte du document : {error}",
   "bot.text_file_too_large": "⚠️ Le fichier texte est trop volumineux (max {maxSizeKb}KB)",
 
   "status.header_running": "🟢 Le serveur OpenCode est en cours d'exécution",

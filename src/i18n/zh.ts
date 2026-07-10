@@ -98,6 +98,7 @@ export const zh: I18nDictionary = {
     "⚠️ 此相册中有一个或多个文件无法处理。未向 OpenCode 发送任何内容。",
   "bot.media_group_download_error": "🔴 无法下载其中一个文件。未向 OpenCode 发送任何内容。",
   "bot.model_no_pdf": "⚠️ 当前模型不支持PDF输入。将仅发送文本。",
+  "bot.document_extraction_error": "🔴 文档文本提取失败：{error}",
   "bot.text_file_too_large": "⚠️ 文本文件过大（最大 {maxSizeKb}KB）",
 
   "status.header_running": "🟢 OpenCode 服务器正在运行",

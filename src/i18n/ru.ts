@@ -109,6 +109,7 @@ export const ru: I18nDictionary = {
   "bot.media_group_download_error":
     "🔴 Не удалось скачать один из файлов. В OpenCode ничего не отправлено.",
   "bot.model_no_pdf": "⚠️ Текущая модель не поддерживает PDF. Отправляю только текст.",
+  "bot.document_extraction_error": "🔴 Не удалось извлечь текст из документа: {error}",
   "bot.text_file_too_large": "⚠️ Текстовый файл слишком большой (макс. {maxSizeKb}КБ)",
 
   "status.header_running": "🟢 OpenCode Server запущен",
