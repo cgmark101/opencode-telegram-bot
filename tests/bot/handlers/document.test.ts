@@ -4,7 +4,13 @@ import {
   handleDocumentMessage,
   type DocumentHandlerDeps,
 } from "../../../src/bot/handlers/document-handler.js";
+
+vi.mock("../../../src/app/services/document-extractor-service.js", () => ({
+  isDocExtractorConfigured: vi.fn(),
+  extractDocument: vi.fn(),
+}));
 import { t } from "../../../src/i18n/index.js";
+import { isDocExtractorConfigured } from "../../../src/app/services/document-extractor-service.js";
 
 function createDocumentContext(overrides: Partial<Context["message"]> = {}): {
   ctx: Context;
@@ -327,6 +333,157 @@ describe("bot/handlers/document", () => {
 
       expect(downloadMock).not.toHaveBeenCalled();
       expect(processPromptMock).toHaveBeenCalledWith(ctx, "Describe this image", deps);
+    });
+  });
+
+  describe("document extraction via DOC_EXTRACTOR_URL", () => {
+    beforeEach(() => {
+      vi.mocked(isDocExtractorConfigured).mockReturnValue(true);
+    });
+
+    it("extracts and sends PDF text when model does not support PDF and extractor is configured", async () => {
+      const { ctx, replyMock } = createDocumentContext({
+        document: {
+          file_id: "pdf-file-id",
+          file_unique_id: "pdf-unique-id",
+          file_name: "document.pdf",
+          mime_type: "application/pdf",
+          file_size: 5000,
+        },
+      });
+      const { deps, processPromptMock, downloadMock, getCapabilitiesMock } = createDocumentDeps({
+        getModelCapabilities: vi.fn().mockResolvedValue({
+          input: { pdf: false },
+        }),
+      });
+
+      const { extractDocument: extractDoc } = await import("../../../src/app/services/document-extractor-service.js");
+      vi.mocked(extractDoc).mockResolvedValue({ text: "Extracted PDF content" });
+
+      await handleDocumentMessage(ctx, deps);
+
+      expect(replyMock).toHaveBeenCalledWith(t("bot.file_downloading"));
+      expect(downloadMock).toHaveBeenCalled();
+      expect(extractDoc).toHaveBeenCalledWith(
+        expect.any(Buffer),
+        "application/pdf",
+        "document.pdf",
+      );
+      expect(processPromptMock).toHaveBeenCalledWith(
+        ctx,
+        expect.stringContaining("Extracted PDF content"),
+        deps,
+      );
+    });
+
+    it("extracts DOCX when model does not support PDF input", async () => {
+      const { ctx, replyMock } = createDocumentContext({
+        document: {
+          file_id: "docx-file-id",
+          file_unique_id: "docx-unique-id",
+          file_name: "report.docx",
+          mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          file_size: 5000,
+        },
+      });
+      const { deps, processPromptMock, getCapabilitiesMock } = createDocumentDeps({
+        getModelCapabilities: vi.fn().mockResolvedValue({
+          input: { pdf: false },
+        }),
+      });
+
+      const { extractDocument: extractDoc } = await import("../../../src/app/services/document-extractor-service.js");
+      vi.mocked(extractDoc).mockResolvedValue({ text: "DOCX content" });
+
+      await handleDocumentMessage(ctx, deps);
+
+      expect(extractDoc).toHaveBeenCalledWith(
+        expect.any(Buffer),
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "report.docx",
+      );
+      expect(processPromptMock).toHaveBeenCalledWith(
+        ctx,
+        expect.stringContaining("DOCX content"),
+        deps,
+      );
+    });
+
+    it("shows extraction error and falls back to caption", async () => {
+      const { ctx, replyMock } = createDocumentContext({
+        document: {
+          file_id: "pdf-file-id",
+          file_unique_id: "pdf-unique-id",
+          file_name: "document.pdf",
+          mime_type: "application/pdf",
+          file_size: 5000,
+        },
+        caption: "Summarize this",
+      });
+      const { deps, processPromptMock } = createDocumentDeps({
+        getModelCapabilities: vi.fn().mockResolvedValue({
+          input: { pdf: false },
+        }),
+      });
+
+      const { extractDocument: extractDoc } = await import("../../../src/app/services/document-extractor-service.js");
+      vi.mocked(extractDoc).mockRejectedValue(new Error("API unreachable"));
+
+      await handleDocumentMessage(ctx, deps);
+
+      expect(replyMock).toHaveBeenCalledWith(t("bot.document_extraction_error"));
+      expect(processPromptMock).toHaveBeenCalledWith(ctx, "Summarize this", deps);
+    });
+
+    it("shows extraction error without fallback when no caption", async () => {
+      const { ctx, replyMock } = createDocumentContext({
+        document: {
+          file_id: "pdf-file-id",
+          file_unique_id: "pdf-unique-id",
+          file_name: "document.pdf",
+          mime_type: "application/pdf",
+          file_size: 5000,
+        },
+        caption: "",
+      });
+      const { deps, processPromptMock } = createDocumentDeps({
+        getModelCapabilities: vi.fn().mockResolvedValue({
+          input: { pdf: false },
+        }),
+      });
+
+      const { extractDocument: extractDoc } = await import("../../../src/app/services/document-extractor-service.js");
+      vi.mocked(extractDoc).mockRejectedValue(new Error("API unreachable"));
+
+      await handleDocumentMessage(ctx, deps);
+
+      expect(replyMock).toHaveBeenCalledWith(t("bot.document_extraction_error"));
+      expect(processPromptMock).not.toHaveBeenCalled();
+    });
+
+    it("shows model_no_pdf when extractor is not configured", async () => {
+      vi.mocked(isDocExtractorConfigured).mockReturnValue(false);
+
+      const { ctx, replyMock } = createDocumentContext({
+        document: {
+          file_id: "pdf-file-id",
+          file_unique_id: "pdf-unique-id",
+          file_name: "document.pdf",
+          mime_type: "application/pdf",
+          file_size: 5000,
+        },
+        caption: "Summarize",
+      });
+      const { deps, processPromptMock } = createDocumentDeps({
+        getModelCapabilities: vi.fn().mockResolvedValue({
+          input: { pdf: false },
+        }),
+      });
+
+      await handleDocumentMessage(ctx, deps);
+
+      expect(replyMock).toHaveBeenCalledWith(t("bot.model_no_pdf"));
+      expect(processPromptMock).toHaveBeenCalledWith(ctx, "Summarize", deps);
     });
   });
 

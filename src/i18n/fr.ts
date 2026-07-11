@@ -111,7 +111,7 @@ export const fr: I18nDictionary = {
   "bot.file_too_large": "⚠️ Le fichier est trop volumineux (max {maxSizeMb}MB)",
   "bot.file_download_error": "🔴 Impossible de télécharger le fichier",
   "bot.file_type_unsupported":
-    "⚠️ Ce type de fichier n'est pas pris en charge. Envoyez une image, un PDF ou un fichier texte/code.",
+    "⚠️ Ce type de fichier n'est pas pris en charge. Envoyez une image, un document (PDF, DOCX, PPTX) ou un fichier texte/code.",
   "bot.media_group_not_processed":
     "⚠️ Un ou plusieurs fichiers de cet album ne peuvent pas être traités. Rien n'a été envoyé à OpenCode.",
   "bot.media_group_download_error":
@@ -119,7 +119,7 @@ export const fr: I18nDictionary = {
   "bot.model_no_pdf":
     "⚠️ Le modèle actuel ne prend pas en charge les PDF. Envoi du texte uniquement.",
   "bot.document_extraction_error":
-    "🔴 Échec de l'extraction du texte du document : {error}",
+    "🔴 Échec de l'extraction du texte du document.",
   "bot.text_file_too_large": "⚠️ Le fichier texte est trop volumineux (max {maxSizeKb}KB)",
 
   "status.header_running": "🟢 Le serveur OpenCode est en cours d'exécution",

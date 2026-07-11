@@ -113,14 +113,28 @@ export async function handleDocumentMessage(
       return;
     }
 
-    if (mimeType === "application/pdf") {
+    const DOCUMENT_MIME_TYPES = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.oasis.opendocument.text",
+      "application/vnd.oasis.opendocument.presentation",
+      "application/vnd.oasis.opendocument.spreadsheet",
+      "text/rtf",
+    ];
+
+    if (DOCUMENT_MIME_TYPES.includes(mimeType)) {
       const storedModel = getStored();
       const capabilities = await getCapabilities(storedModel.providerID, storedModel.modelID);
 
       if (!supportsInput(capabilities, "pdf")) {
         if (isDocExtractorConfigured()) {
           logger.warn(
-            `[Document] Model doesn't support PDF input, delegating to DOC_EXTRACTOR_URL`,
+            `[Document] Model doesn't support PDF input, delegating document to DOC_EXTRACTOR_URL`,
           );
           await ctx.reply(t("bot.file_downloading"));
           const downloadedFile = await downloadFile(ctx.api, doc.file_id);
@@ -129,12 +143,12 @@ export async function handleDocumentMessage(
             const result = await extractDocument(downloadedFile.buffer, mimeType, filename);
             const promptWithFile = `--- Content of ${filename} ---\n${result.text}\n--- End of file ---\n\n${caption}`;
             logger.info(
-              `[Document] Sending extracted PDF text (${result.text.length} chars) as prompt`,
+              `[Document] Sending extracted document text from ${filename} (${result.text.length} chars) as prompt`,
             );
             await processPrompt(ctx, promptWithFile, deps);
           } catch (extractErr) {
             const errMsg = extractErr instanceof Error ? extractErr.message : String(extractErr);
-            logger.error(`[Document] PDF extraction failed: ${errMsg}`);
+            logger.error(`[Document] Document extraction failed: ${errMsg}`);
             await ctx.reply(t("bot.document_extraction_error"));
             if (caption.trim().length > 0) {
               await processPrompt(ctx, caption, deps);
@@ -165,7 +179,7 @@ export async function handleDocumentMessage(
       };
 
       logger.info(
-        `[Document] Sending PDF (${downloadedFile.buffer.length} bytes, ${filename}) with prompt`,
+        `[Document] Sending document (${downloadedFile.buffer.length} bytes, ${filename}, ${mimeType}) with prompt`,
       );
 
       await processPrompt(ctx, caption, deps, [filePart]);

@@ -8,7 +8,7 @@ export interface DocExtractorResult {
 }
 
 export function isDocExtractorConfigured(): boolean {
-  return Boolean(config.docExtractor.apiUrl && config.docExtractor.apiKey);
+  return Boolean(config.docExtractor.apiUrl);
 }
 
 export async function extractDocument(
@@ -18,14 +18,14 @@ export async function extractDocument(
 ): Promise<DocExtractorResult> {
   if (!isDocExtractorConfigured()) {
     throw new Error(
-      "Document extractor is not configured: DOC_EXTRACTOR_URL and DOC_EXTRACTOR_API_KEY are required",
+      "Document extractor is not configured: DOC_EXTRACTOR_URL is required",
     );
   }
 
   const url = config.docExtractor.apiUrl!;
 
   const formData = new FormData();
-  formData.append("file", new Blob([new Uint8Array(fileBuffer)]), filename);
+  formData.append("file", new Blob([new Uint8Array(fileBuffer)], { type: mimeType }), filename);
 
   logger.debug(
     `[DocExtractor] Sending extraction request: url=${url}, mime=${mimeType}, filename=${filename}, size=${fileBuffer.length} bytes`,
@@ -35,11 +35,14 @@ export async function extractDocument(
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
+    const headers: Record<string, string> = {};
+    if (config.docExtractor.apiKey) {
+      headers["Authorization"] = `Bearer ${config.docExtractor.apiKey}`;
+    }
+
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${config.docExtractor.apiKey}`,
-      },
+      headers,
       body: formData,
       signal: controller.signal,
     });

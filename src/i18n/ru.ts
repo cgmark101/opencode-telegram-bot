@@ -103,13 +103,13 @@ export const ru: I18nDictionary = {
   "bot.file_too_large": "⚠️ Файл слишком большой (макс. {maxSizeMb}МБ)",
   "bot.file_download_error": "🔴 Не удалось скачать файл",
   "bot.file_type_unsupported":
-    "⚠️ Этот тип файла не поддерживается. Отправьте изображение, PDF или текстовый/кодовый файл.",
+    "⚠️ Этот тип файла не поддерживается. Отправьте изображение, документ (PDF, DOCX, PPTX) или текстовый/кодовый файл.",
   "bot.media_group_not_processed":
     "⚠️ Один или несколько файлов в альбоме нельзя обработать. В OpenCode ничего не отправлено.",
   "bot.media_group_download_error":
     "🔴 Не удалось скачать один из файлов. В OpenCode ничего не отправлено.",
   "bot.model_no_pdf": "⚠️ Текущая модель не поддерживает PDF. Отправляю только текст.",
-  "bot.document_extraction_error": "🔴 Не удалось извлечь текст из документа: {error}",
+  "bot.document_extraction_error": "🔴 Не удалось извлечь текст из документа.",
   "bot.text_file_too_large": "⚠️ Текстовый файл слишком большой (макс. {maxSizeKb}КБ)",
 
   "status.header_running": "🟢 OpenCode Server запущен",

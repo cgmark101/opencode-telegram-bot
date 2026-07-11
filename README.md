@@ -239,6 +239,8 @@ When installed via npm, the configuration wizard handles the initial setup. The 
 | `STT_MODEL`                                | STT model name passed to `/audio/transcriptions`                                                                      |    No    | `whisper-large-v3-turbo` |
 | `STT_LANGUAGE`                             | Optional language hint (empty = provider auto-detect)                                                                 |    No    | —                        |
 | `STT_NOTE_PROMPT`                          | Optional note prepended to the LLM prompt as `[Note: ...]` for voice transcriptions; empty / `false` / `0` disable it |    No    | —                        |
+| `DOC_EXTRACTOR_URL`                        | Document text extraction API URL (enables PDF/DOCX/PPTX extraction)                                                    |    No    | —                        |
+| `DOC_EXTRACTOR_API_KEY`                    | API key for the document extractor (optional for self-hosted extractors)                                                |    No    | —                        |
 | `TTS_PROVIDER`                             | TTS provider: `openai` for OpenAI-compatible APIs, `elevenlabs` for ElevenLabs, or `google` for Google Cloud TTS      |    No    | `openai`                 |
 | `TTS_API_URL`                              | TTS API base URL for OpenAI-compatible APIs or ElevenLabs                                                             |    No    | —                        |
 | `TTS_API_KEY`                              | TTS API key for OpenAI-compatible APIs or ElevenLabs                                                                  |    No    | —                        |
@@ -364,6 +366,20 @@ Supported provider examples (Whisper-compatible):
   - `STT_MODEL=openai/whisper-large-v3`
 
 If STT variables are not set, voice/audio transcription is disabled and the bot will ask you to configure STT.
+
+### Document Text Extraction (Optional)
+
+If `DOC_EXTRACTOR_URL` is set, the bot will extract text from PDF, DOCX, PPTX, and other document files using an external API when the current model does not natively support document input.
+
+The API contract is:
+
+- **Endpoint:** `POST {DOC_EXTRACTOR_URL}`
+- **Content-Type:** `multipart/form-data`
+- **Field:** `file` — the document binary
+- **Authorization:** `Bearer {DOC_EXTRACTOR_API_KEY}` (only sent when a key is configured)
+- **Response:** JSON `{ "text": "extracted content..." }`
+
+If the extractor is not configured and the model doesn't support documents, the bot replies with a notice and forwards only the caption text.
 
 ### Model Configuration
 
