@@ -28,6 +28,7 @@ interface ModelSearchMetadata {
 }
 
 interface ModelListMetadata {
+  quick: ModelInfo[];
   favorites: ModelInfo[];
   recent: ModelInfo[];
 }
@@ -90,6 +91,7 @@ function parseModelListMetadata(): ModelListMetadata | null {
   }
 
   return {
+    quick: parseModelItems("quick" in modelLists ? modelLists.quick : undefined),
     favorites: parseModelItems("favorites" in modelLists ? modelLists.favorites : undefined),
     recent: parseModelItems("recent" in modelLists ? modelLists.recent : undefined),
   };
@@ -128,7 +130,7 @@ function resolveModelListCallback(data: string): ModelInfo | null {
 
   const [kind, indexText] = parts;
   const index = parseNonNegativeIndex(indexText);
-  if ((kind !== "favorites" && kind !== "recent") || index === null) {
+  if ((kind !== "quick" && kind !== "favorites" && kind !== "recent") || index === null) {
     return null;
   }
 
@@ -137,7 +139,10 @@ function resolveModelListCallback(data: string): ModelInfo | null {
     return null;
   }
 
-  const model = kind === "favorites" ? lists.favorites[index] : lists.recent[index];
+  const model =
+    kind === "quick" ? lists.quick[index] :
+    kind === "favorites" ? lists.favorites[index] :
+    lists.recent[index];
   if (!model) {
     return null;
   }

@@ -114,6 +114,29 @@ export function parseInitialSettingsPreset(): Record<string, unknown> {
   return parsed as Record<string, unknown>;
 }
 
+export function parseModelProviderList(providerValue: string): Array<{ providerID: string; modelID: string }> {
+  const trimmed = providerValue.trim();
+  if (!trimmed.startsWith("[")) {
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed.map((item, i) => {
+      if (typeof item !== "object" || item === null || !item.provider || !item.model) {
+        throw new Error(
+          `OPENCODE_MODEL_PROVIDER[${i}]: each entry must have "provider" and "model" strings.`,
+        );
+      }
+      return { providerID: String(item.provider), modelID: String(item.model) };
+    });
+  } catch {
+    return [];
+  }
+}
+
 const VALID_TTS_PROVIDERS: TtsProvider[] = ["openai", "google", "elevenlabs", "edge"];
 
 function getOptionalTtsProviderEnvVar(key: string, defaultValue: TtsProvider): TtsProvider {
@@ -198,10 +221,15 @@ export const config = {
     password: getEnvVar("OPENCODE_SERVER_PASSWORD", false),
     autoRestartEnabled: getOptionalBooleanEnvVar("OPENCODE_AUTO_RESTART_ENABLED", false),
     monitorIntervalSec: getOptionalPositiveIntEnvVar("OPENCODE_MONITOR_INTERVAL_SEC", 300),
-    model: {
-      provider: getEnvVar("OPENCODE_MODEL_PROVIDER", true), // Required
-      modelId: getEnvVar("OPENCODE_MODEL_ID", true), // Required
-    },
+    model: (() => {
+      const providerValue = getEnvVar("OPENCODE_MODEL_PROVIDER", true);
+      const modelIdValue = getEnvVar("OPENCODE_MODEL_ID", true);
+      return {
+        provider: providerValue,
+        modelId: modelIdValue,
+        modelsList: parseModelProviderList(providerValue),
+      };
+    })(),
   },
   server: {
     logLevel: getEnvVar("LOG_LEVEL", false) || "info",

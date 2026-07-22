@@ -302,6 +302,7 @@ export const en = {
   "model.menu.empty": "⚠️ No available models",
   "model.menu.select": "Select model:",
   "model.menu.current": "Current model: {name}\n\nSelect model:",
+  "model.menu.quick_title": "⚡ Quick access",
   "model.menu.favorites_title": "⭐ Favorites (Add models to favorites in OpenCode CLI)",
   "model.menu.favorites_empty": "— Empty.",
   "model.menu.recent_title": "🕘 Recent",

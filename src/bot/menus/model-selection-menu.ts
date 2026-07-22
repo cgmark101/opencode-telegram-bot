@@ -13,21 +13,23 @@ export const MODEL_SEARCH_AGAIN_CALLBACK = "model:search:again";
 export const MODEL_SEARCH_CANCEL_CALLBACK = "model:search:cancel";
 export const MODEL_LIST_CALLBACK_PREFIX = "model:list:";
 
-type ModelListKind = "favorites" | "recent";
+type ModelListKind = "quick" | "favorites" | "recent";
 
 export function buildModelListCallback(kind: ModelListKind, index: number): string {
   return `${MODEL_LIST_CALLBACK_PREFIX}${kind}:${index}`;
 }
 
 function buildModelSelectionMenuText(modelLists: ModelSelectionLists): string {
-  const lines = [t("model.menu.select"), t("model.menu.favorites_title")];
+  const lines = [t("model.menu.select")];
 
+  if (modelLists.quick.length > 0) {
+    lines.push(t("model.menu.quick_title"));
+  }
+  lines.push(t("model.menu.favorites_title"));
   if (modelLists.favorites.length === 0) {
     lines.push(t("model.menu.favorites_empty"));
   }
-
   lines.push(t("model.menu.recent_title"));
-
   if (modelLists.recent.length === 0) {
     lines.push(t("model.menu.recent_empty"));
   }
@@ -50,7 +52,9 @@ export async function buildModelSelectionMenu(
   // Search button — always present as first row
   keyboard.text(t("model.search.button"), MODEL_SEARCH_CALLBACK).row();
 
-  if (favorites.length === 0 && recent.length === 0) {
+  const quick = lists.quick;
+
+  if (favorites.length === 0 && recent.length === 0 && quick.length === 0) {
     logger.warn("[ModelHandler] No model choices found in favorites/recent");
     return keyboard;
   }
@@ -72,6 +76,7 @@ export async function buildModelSelectionMenu(
     keyboard.text(labelWithCheck, buildModelListCallback(kind, index)).row();
   };
 
+  quick.forEach((model, index) => addButton(model, "⚡", "quick", index));
   favorites.forEach((model, index) => addButton(model, "⭐", "favorites", index));
   recent.forEach((model, index) => addButton(model, "🕘", "recent", index));
 

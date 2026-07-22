@@ -305,6 +305,7 @@ export const ru: I18nDictionary = {
   "model.menu.empty": "⚠️ Нет доступных моделей",
   "model.menu.select": "Выберите модель:",
   "model.menu.current": "Текущая модель: {name}\n\nВыберите модель:",
+  "model.menu.quick_title": "⚡ Быстрый доступ",
   "model.menu.favorites_title": "⭐ Избранное (Добавляйте модели в избранное через OpenCode CLI)",
   "model.menu.favorites_empty": "— Список пуст.",
   "model.menu.recent_title": "🕘 Недавние",

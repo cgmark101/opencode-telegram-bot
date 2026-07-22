@@ -19,6 +19,7 @@ export interface FavoriteModel {
 }
 
 export interface ModelSelectionLists {
+  quick: FavoriteModel[];
   favorites: FavoriteModel[];
   recent: FavoriteModel[];
 }

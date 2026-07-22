@@ -120,6 +120,7 @@ describe("bot model selection", () => {
   describe("buildModelSelectionMenu", () => {
     it("includes search button as the first row", async () => {
       mocked.getModelSelectionListsMock.mockResolvedValue({
+        quick: [],
         favorites: [{ providerID: "openai", modelID: "gpt-4o" }],
         recent: [{ providerID: "google", modelID: "gemini-pro" }],
       });
@@ -135,6 +136,7 @@ describe("bot model selection", () => {
 
     it("still returns keyboard with search button when no favorites or recent", async () => {
       mocked.getModelSelectionListsMock.mockResolvedValue({
+        quick: [],
         favorites: [],
         recent: [],
       });
@@ -150,6 +152,7 @@ describe("bot model selection", () => {
     it("uses short callback data for long model IDs", async () => {
       const longModelID = "accounts/hubabuba3227-1hvtqlh/deployments/kpwpvuky";
       mocked.getModelSelectionListsMock.mockResolvedValue({
+        quick: [],
         favorites: [],
         recent: [{ providerID: "fireworks", modelID: longModelID }],
       });
@@ -164,6 +167,7 @@ describe("bot model selection", () => {
 
     it("stores the rendered model lists with the active menu", async () => {
       const modelLists = {
+        quick: [],
         favorites: [{ providerID: "openai", modelID: "gpt-4o" }],
         recent: [{ providerID: "google", modelID: "gemini-pro" }],
       };

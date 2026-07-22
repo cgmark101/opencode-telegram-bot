@@ -31,6 +31,7 @@ const {
         model: {
           provider: "opencode",
           modelId: "big-pickle",
+          modelsList: [],
         },
       },
     },
@@ -116,6 +117,10 @@ describe("app/services/model-selection-service", () => {
     resetCurrentModelState();
     __resetModelCatalogCacheForTests();
 
+    configMock.opencode.model.modelsList = [];
+    configMock.opencode.model.provider = "opencode";
+    configMock.opencode.model.modelId = "big-pickle";
+
     loggerInfoMock.mockReset();
     loggerWarnMock.mockReset();
     loggerErrorMock.mockReset();
@@ -179,6 +184,8 @@ describe("app/services/model-selection-service", () => {
       expect(result.recent).toHaveLength(2);
       expect(result.recent).toContainEqual({ providerID: "google", modelID: "gemini-pro" });
       expect(result.recent).toContainEqual({ providerID: "openai", modelID: "gpt-3.5" });
+
+      expect(result.quick).toHaveLength(0);
     });
 
     it("deduplicates models with same provider/model combination", async () => {
@@ -241,6 +248,7 @@ describe("app/services/model-selection-service", () => {
 
       expect(result.favorites).toHaveLength(0);
       expect(result.recent).toHaveLength(0);
+      expect(result.quick).toHaveLength(0);
 
       // Restore config
       configMock.opencode.model.provider = "opencode";
@@ -407,6 +415,48 @@ describe("app/services/model-selection-service", () => {
       expect(second.favorites).toContainEqual({ providerID: "openai", modelID: "gpt-4o" });
       expect(second.favorites).not.toContainEqual({ providerID: "openai", modelID: "retired" });
     });
+
+    it("returns quick models from config with modelsList", async () => {
+      await setupMockModelFile({
+        favorite: [{ providerID: "openai", modelID: "gpt-4o" }],
+        recent: [{ providerID: "google", modelID: "gemini-pro" }],
+      });
+      configMock.opencode.model.modelsList = [
+        { providerID: "omniroute", modelID: "free-stack" },
+        { providerID: "opencode", modelID: "deepseek" },
+      ];
+
+      const result = await getModelSelectionLists();
+
+      // First model from modelsList is default → in favorites, rest in quick
+      expect(result.quick).toHaveLength(1);
+      expect(result.quick).toContainEqual({ providerID: "opencode", modelID: "deepseek" });
+      expect(result.favorites).toContainEqual({ providerID: "omniroute", modelID: "free-stack" });
+
+      configMock.opencode.model.modelsList = [];
+    });
+
+    it("deduplicates recent models from quick and favorites", async () => {
+      await setupMockModelFile({
+        favorite: [{ providerID: "openai", modelID: "gpt-4o" }],
+        recent: [
+          { providerID: "omniroute", modelID: "free-stack" },
+          { providerID: "opencode", modelID: "deepseek" },
+        ],
+      });
+      configMock.opencode.model.modelsList = [
+        { providerID: "omniroute", modelID: "free-stack" },
+      ];
+
+      const result = await getModelSelectionLists();
+
+      // First model from modelsList is default → in favorites
+      expect(result.favorites).toContainEqual({ providerID: "omniroute", modelID: "free-stack" });
+      expect(result.quick).toHaveLength(0);
+      expect(result.recent).not.toContainEqual({ providerID: "omniroute", modelID: "free-stack" });
+
+      configMock.opencode.model.modelsList = [];
+    });
   });
 
   describe("getFavoriteModels", () => {
@@ -479,6 +529,28 @@ describe("app/services/model-selection-service", () => {
         variant: "high",
       });
       expect(setCurrentModelMock).not.toHaveBeenCalled();
+    });
+
+    it("falls back to modelsList first entry when stored model unavailable and no env model", async () => {
+      configMock.opencode.model.provider = "";
+      configMock.opencode.model.modelId = "";
+      configMock.opencode.model.modelsList = [
+        { providerID: "omniroute", modelID: "free-stack" },
+      ];
+      setCurrentModelState({ providerID: "openai", modelID: "retired", variant: "high" });
+
+      await reconcileStoredModelSelection();
+
+      expect(getCurrentModelState()).toEqual({
+        providerID: "omniroute",
+        modelID: "free-stack",
+        variant: "default",
+      });
+      expect(setCurrentModelMock).toHaveBeenCalledTimes(1);
+
+      configMock.opencode.model.provider = "opencode";
+      configMock.opencode.model.modelId = "big-pickle";
+      configMock.opencode.model.modelsList = [];
     });
   });
 

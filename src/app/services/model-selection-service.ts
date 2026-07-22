@@ -30,6 +30,13 @@ function getModelKey(providerID: string, modelID: string): string {
 }
 
 function getEnvDefaultModel(): FavoriteModel | null {
+  // If modelsList is set (OPENCODE_MODEL_PROVIDER as array), use first as default
+  if (config.opencode.model.modelsList.length > 0) {
+    const first = config.opencode.model.modelsList[0];
+    return { providerID: first.providerID, modelID: first.modelID };
+  }
+
+  // Fallback to traditional provider + modelId
   const providerID = config.opencode.model.provider;
   const modelID = config.opencode.model.modelId;
 
@@ -38,6 +45,20 @@ function getEnvDefaultModel(): FavoriteModel | null {
   }
 
   return { providerID, modelID };
+}
+
+function getEnvQuickModels(): FavoriteModel[] {
+  const quick: FavoriteModel[] = [];
+
+  // From modelsList (OPENCODE_MODEL_PROVIDER as array) - all except first (already default)
+  if (config.opencode.model.modelsList.length > 1) {
+    for (let i = 1; i < config.opencode.model.modelsList.length; i++) {
+      const m = config.opencode.model.modelsList[i];
+      quick.push({ providerID: m.providerID, modelID: m.modelID });
+    }
+  }
+
+  return quick;
 }
 
 function dedupeModels(models: FavoriteModel[]): FavoriteModel[] {
@@ -261,6 +282,7 @@ function getOpenCodeModelStatePath(): string {
  */
 export async function getModelSelectionLists(): Promise<ModelSelectionLists> {
   const envDefaultModel = getEnvDefaultModel();
+  const quickModels = getEnvQuickModels();
 
   try {
     const fs = await import("fs/promises");
@@ -300,18 +322,18 @@ export async function getModelSelectionLists(): Promise<ModelSelectionLists> {
       );
     }
 
-    const favoriteKeys = new Set(
-      favorites.map((model) => getModelKey(model.providerID, model.modelID)),
+    const allKeys = new Set(
+      [...favorites, ...quickModels].map((m) => getModelKey(m.providerID, m.modelID)),
     );
     const recent = dedupeModels(validatedRecent).filter(
-      (model) => !favoriteKeys.has(getModelKey(model.providerID, model.modelID)),
+      (model) => !allKeys.has(getModelKey(model.providerID, model.modelID)),
     );
 
     logger.debug(
-      `[ModelManager] Loaded model selection lists from ${stateFilePath}: favorites=${favorites.length}, recent=${recent.length}`,
+      `[ModelManager] Loaded model selection lists from ${stateFilePath}: quick=${quickModels.length}, favorites=${favorites.length}, recent=${recent.length}`,
     );
 
-    return { favorites, recent };
+    return { quick: quickModels, favorites, recent };
   } catch (err) {
     if (envDefaultModel) {
       logger.warn(
@@ -319,6 +341,7 @@ export async function getModelSelectionLists(): Promise<ModelSelectionLists> {
         err,
       );
       return {
+        quick: quickModels,
         favorites: [envDefaultModel],
         recent: [],
       };
@@ -326,6 +349,7 @@ export async function getModelSelectionLists(): Promise<ModelSelectionLists> {
 
     logger.error("[ModelManager] Failed to load OpenCode model state:", err);
     return {
+      quick: quickModels,
       favorites: [],
       recent: [],
     };
@@ -468,7 +492,16 @@ export function getStoredModel(): ModelInfo {
     return storedModel;
   }
 
-  // Fallback to model from config (environment variables)
+  // Fallback to model from config (environment variables or modelsList)
+  if (config.opencode.model.modelsList.length > 0) {
+    logger.debug("[ModelManager] Using model from modelsList");
+    return {
+      providerID: config.opencode.model.modelsList[0].providerID,
+      modelID: config.opencode.model.modelsList[0].modelID,
+      variant: "default",
+    };
+  }
+
   if (config.opencode.model.provider && config.opencode.model.modelId) {
     logger.debug("[ModelManager] Using model from config");
     return {
@@ -478,8 +511,7 @@ export function getStoredModel(): ModelInfo {
     };
   }
 
-  // This should not happen if config is properly set
-  logger.warn("[ModelManager] No model found in settings or config, returning empty model");
+  logger.warn("[ModelManager] No model found in settings or config");
   return {
     providerID: "",
     modelID: "",

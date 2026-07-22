@@ -32,7 +32,7 @@ Languages: English (`en`), العربية (`ar`), Deutsch (`de`), Español (`es`
 - **Track live session** — follow a live OpenCode CLI session; see [Track Existing Session](#track-existing-session)
 - **Background session notifications** — get short notifications when detached or non-current sessions in the current project/worktree reply, ask questions, or request permissions
 - **Live status** — pinned message with current project/worktree, model, context usage, and changed files list, updated in real time
-- **Model switching** — pick models from OpenCode favorites and recent history directly in the chat (favorites are shown first)
+- **Model switching** — pick models from OpenCode favorites, recent history, or quick-access buttons directly in the chat (favorites are shown first)
 - **Agent modes** — switch between Plan and Build modes on the fly
 - **Subagent activity** — watch live subagent progress in chat, including the current task, agent, model, and active tool step
 - **Custom Commands** — run OpenCode custom commands (and built-ins like `init`/`review`) from an inline menu with confirmation
@@ -399,6 +399,14 @@ The model picker uses OpenCode local model state (`favorite` + `recent`):
 - Models already in favorites are not duplicated in recent
 - Current model is marked with `✅`
 - Default model from `OPENCODE_MODEL_PROVIDER` + `OPENCODE_MODEL_ID` is always included in favorites
+
+Alternatively, set `OPENCODE_MODEL_PROVIDER` as a JSON array to define multiple models at once.
+The first entry becomes the default; all entries after the first appear as ⚡ quick-access buttons.
+`OPENCODE_MODEL_ID` is ignored when `OPENCODE_MODEL_PROVIDER` is an array.
+
+```env
+OPENCODE_MODEL_PROVIDER=[{"provider":"openai","model":"gpt-4o"},{"provider":"anthropic","model":"claude-sonnet-4-20250514"}]
+```
 
 To add a model to favorites, open OpenCode TUI (`opencode`), go to model selection, and press **Cmd+F/Ctrl+F** on the model.
 

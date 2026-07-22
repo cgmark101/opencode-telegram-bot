@@ -317,6 +317,7 @@ export const es: I18nDictionary = {
   "model.menu.empty": "⚠️ No hay modelos disponibles",
   "model.menu.select": "Selecciona el modelo:",
   "model.menu.current": "Modelo actual: {name}\n\nSelecciona el modelo:",
+  "model.menu.quick_title": "⚡ Acceso rápido",
   "model.menu.favorites_title": "⭐ Favoritos (Agrega modelos a favoritos en OpenCode CLI)",
   "model.menu.favorites_empty": "— Vacío.",
   "model.menu.recent_title": "🕘 Recientes",

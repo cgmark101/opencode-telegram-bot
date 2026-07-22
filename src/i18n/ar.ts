@@ -293,6 +293,7 @@ export const ar: I18nDictionary = {
   "model.menu.empty": "⚠️ لا توجد نماذج متاحة",
   "model.menu.select": "اختر نموذجًا:",
   "model.menu.current": "النموذج الحالي: {name}\n\nاختر نموذجًا:",
+  "model.menu.quick_title": "⚡ وصول سريع",
   "model.menu.favorites_title": "⭐ المفضلة (أضف النماذج إلى المفضلة من OpenCode CLI)",
   "model.menu.favorites_empty": "— لا توجد نماذج في المفضلة.",
   "model.menu.recent_title": "🕘 المستخدمة مؤخرًا",

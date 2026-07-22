@@ -272,6 +272,7 @@ export const zh: I18nDictionary = {
   "model.menu.empty": "⚠️ 没有可用模型",
   "model.menu.select": "请选择模型：",
   "model.menu.current": "当前模型：{name}\n\n请选择模型：",
+  "model.menu.quick_title": "⚡ 快速访问",
   "model.menu.favorites_title": "⭐ 收藏（可在 OpenCode CLI 中将模型加入收藏）",
   "model.menu.favorites_empty": "— 列表为空。",
   "model.menu.recent_title": "🕘 最近使用",
